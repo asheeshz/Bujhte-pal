@@ -1,0 +1,358 @@
+/* ====================== CSS Styles ====================== */
+
+/* --- नेविगेशन बार स्टाइल --- */
+.story-nav {
+    background-color: #e0d8c0; padding: 10px 15px; text-align: center;
+    border-bottom: 2px solid #8b4513; margin-bottom: 20px;
+    position: sticky; top: 0; z-index: 100;
+}
+.story-nav a {
+    color: #5a3c20; text-decoration: none; margin: 0 10px;
+    padding: 8px 12px; border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-weight: bold; font-family: 'Hind', sans-serif;
+}
+.story-nav a:hover, .story-nav a.active { background-color: #8b4513; color: #fff; }
+
+/* कहानी भागों के बीच नेविगेशन बटन */
+.part-navigation {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; margin-top: 25px; margin-bottom: 15px; padding: 0 10px;
+}
+/* विशिष्ट बटन छिपाना (JS द्वारा नियंत्रित क्लास) */
+ .prev-part-link.disabled, .next-part-link.disabled { visibility: hidden; }
+
+body.kaalpath-body-style { /* विशिष्ट क्लास */
+    padding-top: 60px; background-color: #fff5e1; /* हल्का पीला */ color: #3c2a21;
+    font-family: 'Hind', sans-serif; line-height: 1.8; overflow-x: hidden;
+}
+
+/* --- इमेज टाइटल स्टाइल --- */
+ .animated-title-image-wrapper {
+     position: relative; margin: 30px auto; max-width: 1100px;
+     border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+ }
+ .animated-title-image-wrapper img { display: block; width: 100%; height: auto; z-index: 0; transition: transform 0.6s ease; }
+.full-image-tint-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.45); border-radius: 20px; z-index: 1; pointer-events: none;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeInUpSlight { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes sunPulseGlow {
+    0%, 100% { text-shadow: 0 0 5px #ffee58, 0 0 10px #ffca28, 0 0 20px #ff7043, 0 0 30px #ec407a; opacity: 0.8; }
+    50% { text-shadow: 0 0 8px #fffde7, 0 0 15px #fff176, 0 0 25px #ffa726, 0 0 40px #f06292; opacity: 1; }
+}
+.image-title-text-content {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2;
+    padding: 20px 30px; width: 90%; max-width: 900px; text-align: center;
+}
+.overlay-title-head {
+    font-family: 'Lora', serif; font-size: 1.2em; font-weight: 600;
+    margin-bottom: 20px; letter-spacing: 2.5px; text-transform: uppercase;
+    background: linear-gradient(135deg, #fffacd, #ffcdd2);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    opacity: 0; animation: fadeIn 1.6s ease-out 0.4s forwards;
+}
+.overlay-main-title {
+    font-family: 'Tiro Devanagari Sanskrit', serif; font-size: 3.6em; font-weight: bold;
+    display: inline-block; position: relative; margin-bottom: 18px;
+    letter-spacing: 2px; line-height: 1.25; z-index: 1;
+    background: linear-gradient(45deg, #ffee58, #ef5350, #ec407a);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    opacity: 0; animation: fadeIn 1.2s ease-out 0.7s forwards;
+}
+.overlay-main-title::after {
+    content: attr(data-text); position: absolute; left: 0; top: 0;
+    right: 0; bottom: 0; z-index: 0; color: transparent; filter: blur(3px);
+    opacity: 0; animation: sunPulseGlow 3.5s ease-in-out infinite, fadeIn 1.8s ease-out 0.9s forwards;
+}
+.overlay-subtitle {
+    font-family: 'Hind', sans-serif; font-size: 1.4em; font-weight: 500;
+    opacity: 0; transform: translateY(15px); margin-top: 0; letter-spacing: 0.8px;
+    background: linear-gradient(to right, #ffcdd2, #ffffff, #f8bbd0);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: fadeInUpSlight 1.5s cubic-bezier(0.25, 0.8, 0.25, 1) 1.0s forwards;
+}
+
+/* कहानी विवरण अनुभाग */
+.story-description {
+    background-color: #fffaf1; border: 1px solid #e0cfc2;
+    border-left: 8px solid #ff8a00; padding: 20px 30px;
+    margin: 35px auto 20px auto; max-width: 850px;
+    border-radius: 0 15px 15px 0; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: left; font-size: 1.1em;
+}
+.story-description h3 {
+    font-family: 'Lora', serif; color: #6a4f3c; margin-top: 0;
+    margin-bottom: 15px; border-bottom: 2px solid #e0cfc2;
+    padding-bottom: 5px; font-size: 1.5em;
+}
+ .story-description p { margin-bottom: 10px; line-height: 1.7; color: #5a3e36; cursor: default; }
+ .story-description strong { color: #8b4513; font-weight: bold; }
+
+/* इमेज फ़्रेम और कैप्शन (कहानी के अंदर) */
+.image-frame {
+    position: relative; margin: 30px auto; padding: 12px;
+    background: linear-gradient(135deg, #e0d8c0, #c8bca7);
+    border-radius: 18px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2), inset 0 0 5px rgba(0,0,0,0.1);
+    max-width: 700px; overflow: hidden;
+}
+.image-frame img, .image-frame video, .image-frame iframe {
+    display: block; width: 100%; height: auto; max-width: 100%;
+    border-radius: 10px; object-fit: cover; border: 1px solid rgba(0,0,0,0.1);
+}
+.image-caption {
+    font-family: 'Lora', serif; position: absolute; bottom: 12px; left: 12px; right: 12px;
+    background: rgba(40, 30, 20, 0.85); color: #fff8e1; padding: 10px 15px;
+    border-radius: 0 0 10px 10px; text-align: center; font-size: 1em;
+    font-style: italic; opacity: 0; transition: opacity 0.4s ease-in-out; box-sizing: border-box;
+    pointer-events: none;
+}
+.image-frame:hover .image-caption { opacity: 1; }
+
+/* --- H2 विशेष डिज़ाइन --- */
+@keyframes custom-shimmer {
+  0% { background-position: -1200px 0; }
+  100% { background-position: 1200px 0; }
+}
+.custom-h2 {
+     font-family: 'Lora', serif; font-size: 1.8em; letter-spacing: 1px;
+     font-weight: 700; margin: 2.2em auto 1.4em auto; padding: 16px 30px;
+     max-width: fit-content; border-radius: 8px;
+     background: linear-gradient(140deg, #fff7e0, #efebe9);
+     box-shadow: inset 0 0 6px rgba(188, 143, 143, 0.25), 4px 4px 10px rgba(188, 170, 164, 0.4), -2px -2px 6px #ffffff;
+     position: relative; color: transparent;
+     background-clip: text; -webkit-background-clip: text;
+     background-image: linear-gradient(to right, #6d4c41 30%, #bf360c 50%, #6d4c41 70%);
+     background-size: 250% auto; animation: custom-shimmer 4s linear infinite;
+     border-bottom: 3px double #d7ccc8; transition: all 0.3s ease;
+}
+.custom-h2:hover {
+     box-shadow: inset 0 0 8px rgba(188, 143, 143, 0.3), 6px 6px 15px rgba(188, 170, 164, 0.5), -3px -3px 8px #ffffff;
+     transform: translateY(-1px);
+}
+
+/* --- H3 हल्की स्टाइल --- */
+.custom-h3 {
+    font-family: 'Lora', serif; font-size: 1.35em; color: #a1887f;
+    font-weight: 600; margin-top: 2em; margin-bottom: 0.8em;
+    padding-bottom: 5px; border-bottom: 1px dashed #d7ccc8;
+    position: relative; padding-left: 25px;
+}
+ .custom-h3::before {
+     content: "✧"; position: absolute; left: 0; top: 1px;
+     color: #ffab91; font-size: 1.1em;
+}
+
+/* --- पैराग्राफ स्टाइल (हल्का पीला बैकग्राउंड, साइड बॉर्डर) --- */
+.custom-p {
+     color: #5a3c20; text-align: justify; margin-bottom: 1.5em;
+     font-size: 1.08em;
+     transition: color 0.3s ease;
+     cursor: pointer; position: relative;
+     padding: 15px 15px;
+     border-radius: 0 6px 6px 0;
+     line-height: 1.85;
+     background-color: #fffde7; /* हल्का पीला बैकग्राउंड */
+     border: 1px solid rgba(224, 216, 192, 0.4);
+     border-left: 6px solid #ffcc80;
+     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+/* कहानी विवरण पैराग्राफ पर लागू न करें */
+.story-description .custom-p {
+     background-color: transparent; padding: 0; border-radius: 0;
+     cursor: default; line-height: 1.7; overflow: visible;
+     background-image: none; border: none; box-shadow: none;
+}
+
+
+/* --- शानदार "टीवी" विज्ञापन बैनर --- */
+@keyframes tvGradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+@keyframes tvPulseGlow {
+    0% { box-shadow: inset 0 0 10px 2px rgba(135, 206, 250, 0.3), 0 0 8px 1px rgba(135, 206, 250, 0.2); }
+    50% { box-shadow: inset 0 0 15px 4px rgba(135, 206, 250, 0.5), 0 0 15px 3px rgba(135, 206, 250, 0.4); }
+    100% { box-shadow: inset 0 0 10px 2px rgba(135, 206, 250, 0.3), 0 0 8px 1px rgba(135, 206, 250, 0.2); }
+}
+@keyframes zoomInOutText { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.95; } }
+@keyframes slideInHorizontal { from { transform: translateX(-30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+.tv-ad-frame {
+    margin: 50px auto; padding: 20px; max-width: 700px; border-radius: 25px;
+    background: linear-gradient(145deg, #444, #222);
+    box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.4), -5px -5px 10px rgba(80, 80, 80, 0.3), inset 0 0 5px rgba(0,0,0,0.5);
+    perspective: 1200px; transition: transform 0.4s ease;
+}
+.tv-ad-frame:hover { transform: scale(1.02) rotateY(2deg); }
+.tv-ad-screen {
+    background: radial-gradient(ellipse at center, #1a1a1d 0%, #0c0c0e 100%);
+    border-radius: 10px; padding: 30px 25px; overflow: hidden; position: relative;
+    min-height: 250px; display: flex; flex-direction: column; justify-content: center;
+    align-items: center; box-shadow: inset 0 0 15px 5px rgba(0, 0, 0, 0.6);
+     animation: tvPulseGlow 6s infinite ease-in-out;
+}
+.tv-ad-content { color: #f0f0f0; text-align: center; z-index: 3; }
+.tv-ad-head {
+    font-family: 'Lora', serif; font-size: 0.9em; color: rgba(173, 216, 230, 0.8);
+    margin-bottom: 10px; letter-spacing: 1px; text-transform: uppercase;
+    opacity: 0; animation: fadeIn 1.5s ease-out 0.5s forwards;
+}
+.tv-ad-title { /* क्लास */
+    font-family: 'Orbitron', sans-serif; font-size: 2.1em; color: #afeeee;
+    text-shadow: 0 0 5px rgba(175, 238, 238, 0.7), 0 0 10px rgba(72, 209, 204, 0.5);
+    margin-bottom: 12px; line-height: 1.3; opacity: 0;
+    animation: zoomInOutText 5s infinite ease-in-out 0.8s, fadeIn 1s ease-out 0.8s forwards;
+}
+.tv-ad-subtitle {
+    font-family: 'Hind', sans-serif; font-size: 1.1em; color: #bdbdbd;
+    margin-bottom: 18px; opacity: 0;
+    animation: slideInHorizontal 1.3s ease-out 1.1s forwards;
+}
+.tv-ad-explanation {
+    font-family: 'Hind', sans-serif; font-size: 0.95em; color: #cccccc;
+    max-width: 450px; margin: 0 auto 25px auto; line-height: 1.6;
+    opacity: 0; animation: fadeIn 1.5s ease-out 1.4s forwards;
+}
+.tv-ad-button {
+    display: inline-block; padding: 10px 25px;
+    background: linear-gradient(45deg, #4fc3f7, #00bcd4); color: #000;
+    border: none; border-radius: 5px; text-decoration: none;
+    font-weight: bold; font-family: 'Hind', sans-serif; font-size: 1em;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 1px rgba(0,0,0,0.2);
+    transition: all 0.3s ease; opacity: 0;
+    animation: fadeInUpSlight 1.2s ease-out 1.7s forwards; z-index: 5; position: relative;
+}
+.tv-ad-button:hover {
+    background: linear-gradient(45deg, #00bcd4, #4fc3f7); color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4), inset 0 -1px 0px rgba(0,0,0,0.1);
+}
+
+/* --- स्टाइलिश वीडियो प्लेयर --- */
+.stylish-video-player {
+    margin: 50px auto; max-width: 800px; position: relative;
+    padding-bottom: 56.25%; height: 0; overflow: hidden;
+    border-radius: 15px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    border: 3px solid #c8bca7; background-color: #000;
+}
+.stylish-video-player iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+.video-caption-below { font-family: 'Lora', serif; text-align: center; font-size: 1em; color: #6d4c41; margin-top: 15px; font-style: italic; }
+
+/* --- पेजिनेशन स्टाइल (शानदार) --- */
+.pagination-section {
+    text-align: center; margin: 50px auto 40px auto; padding-top: 25px;
+    border-top: 1px solid #e0d8c0; max-width: 900px;
+}
+.pagination-link {
+    display: inline-block; margin: 0 6px; padding: 10px 18px;
+    border: 1px solid #ccbbaa; border-radius: 8px; color: #795548;
+    background-color: rgba(190, 160, 130, 0.1); text-decoration: none;
+    font-family: 'Hind', sans-serif; transition: all 0.3s ease;
+    font-size: 1em; box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+}
+.pagination-link:hover {
+    background-color: #e0d8c0; border-color: #8b4513; color: #3c2a21;
+    transform: translateY(-2px); box-shadow: 3px 3px 8px rgba(0,0,0,0.1);
+}
+.pagination-link.current {
+    background: linear-gradient(to bottom, #a1887f, #795548); color: #fff;
+    border-color: #5d4037; font-weight: bold; cursor: default;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2), 0 2px 5px rgba(0,0,0,0.2);
+    transform: none;
+}
+.pagination-link.disabled {
+    opacity: 0.5; cursor: default; pointer-events: none;
+    background-color: #f5f5f5; border-color: #e0e0e0; box-shadow: none; transform: none;
+}
+.pagination-label { margin: 0 10px; color: #757575; font-size: 0.9em; vertical-align: middle; }
+
+/* विशेष शब्द */
+.special-term, .special-term-1, .special-term-2, .special-term-3 {
+    font-weight: bold; cursor: help; padding: 0 2px; transition: all 0.3s ease;
+    font-family: 'Tiro Devanagari Sanskrit', serif;
+}
+.special-term-1 { color: #c71585; border-bottom: 2px dotted #e91e63; }
+.special-term-1:hover { background-color: rgba(233, 30, 99, 0.1); color: #ab0f5a; }
+.special-term-2 { color: #ff5722; background-color: #fff3e0; padding: 1px 4px; border-radius: 4px; }
+ .special-term-2:hover { background-color: #ffe0b2; color: #e64a19; }
+.special-term-3 { color: #6a4f3c; text-shadow: 1px 1px 3px rgba(255, 138, 0, 0.4); border-bottom: 2px solid #ff8a00; }
+.special-term-3:hover { color: #ff8a00; text-shadow: 1px 1px 5px rgba(255, 138, 0, 0.6); }
+
+ /* कस्टम डिव (ग्रेडिएंट बैकग्राउंड) */
+ .custom-div {
+    padding: 20px 15px; /* पैडिंग कम */
+    background: linear-gradient(135deg, #ffdde1, #fffacd, #ffcccb); /* गुलाबी-पीला-लाल ग्रेडिएंट */
+    margin: 30px auto;
+    max-width: 900px; border: 1px solid #e0cfc2; border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+ }
+ .custom-div:hover { box-shadow: 0 8px 35px rgba(0, 0, 0, 0.15); transform: translateY(-5px); }
+
+/* इमेज होवर स्केल (फ्रेम के अंदर) */
+ .custom-image { display: block; transition: transform 0.3s ease; }
+ .image-frame:hover .custom-image { transform: scale(1.05); }
+
+ /* पोस्ट मेटा */
+ .post-meta { font-size: 0.9em; color: #9e6d4f; margin-bottom: 20px; text-align: center; }
+
+ /* पोस्ट एक्स्ट्रास हटाया गया */
+ /* .post-extras { display: none; } */
+
+
+/* --- मीडिया क्वेरी समायोजन --- */
+@media (max-width: 768px) {
+    .story-nav { padding: 8px 5px; }
+    .story-nav a { margin: 0 5px; padding: 6px 8px; font-size: 14px; }
+    body.kaalpath-body-style { padding-top: 50px; } /* बॉडी पर लागू */
+
+    /* इमेज टाइटल (मोबाइल) */
+    .animated-title-image-wrapper { max-width: 95%; border-radius: 15px; }
+     .animated-title-image-wrapper img, .full-image-tint-overlay { border-radius: 15px; }
+     .image-title-text-content { padding: 15px 20px; }
+    .overlay-title-head { font-size: 1em; margin-bottom: 10px; letter-spacing: 1.5px; }
+    .overlay-main-title { font-size: 2.4em; letter-spacing: 1.5px; margin-bottom: 8px; }
+    .overlay-main-title::after { animation: none; text-shadow: 0 0 8px rgba(255, 223, 0, 0.5); filter: blur(2px); opacity: 0.7; }
+    .overlay-subtitle { font-size: 1.1em; }
+
+    /* H2 मोबाइल */
+    .custom-h2 { padding: 12px 20px; font-size: 1.6em; letter-spacing: 1px; border-bottom-width: 2px; border-radius: 6px; }
+
+    /* H3 मोबाइल */
+    .custom-h3 { font-size: 1.2em; padding-left: 0; }
+    .custom-h3::before { display: none; }
+
+    /* पैराग्राफ मोबाइल */
+     .custom-p { padding: 10px 12px; line-height: 1.8; font-size: 1.05em; border-left-width: 4px; border-radius: 0 4px 4px 0; }
+
+    /* टीवी विज्ञापन (मोबाइल) */
+     .tv-ad-frame { max-width: 95%; padding: 15px; perspective: none; }
+     .tv-ad-frame:hover { transform: none; }
+     .tv-ad-screen { padding: 20px 15px; min-height: 200px; animation: tvPulseGlow 6s infinite ease-in-out; }
+     .tv-ad-title { font-size: 1.7em; animation: fadeIn 1s ease-out 0.8s forwards; }
+     .tv-ad-subtitle { font-size: 1em; animation: fadeIn 1.3s ease-out 1.1s forwards; }
+     .tv-ad-explanation { font-size: 0.9em; animation: fadeIn 1.5s ease-out 1.4s forwards;}
+     .tv-ad-button { font-size: 1em; padding: 10px 20px; animation: fadeIn 1.2s ease-out 1.7s forwards; }
+
+     /* वीडियो प्लेयर (मोबाइल) */
+     .stylish-video-player { max-width: 95%; border-width: 2px; }
+     .video-caption-below { font-size: 0.9em; }
+
+    /* पेजिनेशन मोबाइल */
+    .pagination-link { padding: 6px 10px; margin: 0 3px; font-size: 0.9em; }
+    .pagination-label { display: none; }
+
+    .part-navigation { flex-direction: column; align-items: center; }
+    .part-navigation a { margin-bottom: 12px; width: 80%; max-width: 250px; text-align: center; order: 2; }
+     .part-navigation .home-link { order: 2; }
+     .part-navigation .prev-part-link { order: 1; }
+     .part-navigation .next-part-link { order: 3; }
+
+    #part1 .prev-part-link, #part1 .next-part-link.disabled { visibility: hidden; pointer-events: none; height: 0; padding: 0; margin-bottom: 0; border: none; line-height: 0; }
+    .story-description { padding: 15px 20px; font-size: 1em;}
+    .image-frame { padding: 8px; max-width: 95%; }
+    .image-caption { font-size: 0.9em; padding: 8px 10px; bottom: 8px; left: 8px; right: 8px;}
+    .post-extras { display: none; } /* शेयर/टैग हटाएं */
+}
+
+    </style>
