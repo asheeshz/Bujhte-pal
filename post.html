@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>अरण्यानी और कौशिक: वन और वेदना की प्रेम गाथा - भाग १</title>
+
+    <!-- गूगल फ़ॉन्ट्स -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400&family=Tiro+Devanagari+Sanskrit:ital@0;1&family=Orbitron:wght@700&family=Poppins:wght@400;500;700&family=Noto+Sans+Devanagari:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- सभी CSS नियम -->
+    <style>
+        /* --- सामान्य बॉडी और लेआउट --- */
+        body {
+            padding-top: 60px; background-color: #fff5e1; color: #3c2a21;
+            font-family: 'Hind', sans-serif; line-height: 1.8; overflow-x: hidden;
+            display: flex; flex-direction: column; min-height: 100vh; margin: 0;
+        }
+        .page-wrapper { flex-grow: 1; display: flex; flex-direction: column; }
+        .story-container {
+             flex-grow: 1; max-width: 1100px; width: 100%; margin: 0 auto;
+             padding: 0 15px; box-sizing: border-box;
+             padding-bottom: 40px; /* फुटर रैपर से पहले स्पेस */
+        }
+
+        /* --- नेविगेशन बार स्टाइल --- */
+        .story-nav {
+            background-color: #e0d8c0; padding: 10px 15px; text-align: center;
+            border-bottom: 2px solid #8b4513; /* <<< संदर्भ बॉर्डर स्टाइल */
+            margin-bottom: 20px;
+            position: sticky; top: 0; z-index: 1000; /* सबसे ऊपर */
+        }
+        .story-nav a {
+            color: #5a3c20; text-decoration: none; margin: 0 10px; padding: 8px 12px;
+            border-radius: 5px; transition: background-color 0.3s ease, color 0.3s ease;
+            font-weight: bold; font-family: 'Hind', sans-serif;
+        }
+        .story-nav a:hover, .story-nav a.active { background-color: #8b4513; color: #fff; }
+
+        /* --- कहानी भाग नेविगेशन बटन --- */
+        .part-navigation {
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; margin-top: 25px; margin-bottom: 15px; padding: 0 10px;
+        }
+        .prev-part-link.disabled, .next-part-link.disabled { visibility: hidden; pointer-events: none; }
+        .custom-a {
+             display: inline-block; padding: 10px 18px;
+             background: linear-gradient(to bottom right, #8b4513, #a0522d); color: #fff;
+             text-decoration: none; border-radius: 6px; font-family: 'Hind', sans-serif; font-weight: bold;
+             transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+             box-shadow: 0 2px 4px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2);
+             font-size: 1em; cursor: pointer;
+        }
+        .custom-a:hover { background: linear-gradient(to bottom right, #a0522d, #8b4513); transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+        .custom-a.disabled { background: #cccccc; color: #888888; pointer-events: none; box-shadow: none; opacity: 0.7; border-color: #bbbbbb; cursor: default; }
+        .hidden-on-last.disabled { visibility: hidden; }
+
+        /* --- इमेज टाइटल स्टाइल --- */
+         .animated-title-image-wrapper { position: relative; margin: 30px auto; max-width: 1100px; width: 100%; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+         .animated-title-image-wrapper img { display: block; width: 100%; height: auto; z-index: 0; transition: transform 0.6s ease; }
+        .full-image-tint-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.45); border-radius: inherit; z-index: 1; pointer-events: none; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInUpSlight { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes sunPulseGlow { 0%, 100% { text-shadow: 0 0 5px #ffee58, 0 0 10px #ffca28, 0 0 20px #ff7043, 0 0 30px #ec407a; opacity: 0.8; } 50% { text-shadow: 0 0 8px #fffde7, 0 0 15px #fff176, 0 0 25px #ffa726, 0 0 40px #f06292; opacity: 1; } }
+        .image-title-text-content { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; padding: 20px 30px; width: 90%; max-width: 900px; text-align: center; }
+        .overlay-title-head { font-family: 'Lora', serif; font-size: 1.2em; font-weight: 600; margin-bottom: 20px; letter-spacing: 2.5px; text-transform: uppercase; background: linear-gradient(135deg, #fffacd, #ffcdd2); -webkit-background-clip: text; background-clip: text; color: transparent; opacity: 0; animation: fadeIn 1.6s ease-out 0.4s forwards; }
+        .overlay-main-title { /* <<< यह शीर्षक स्टाइल */
+            font-family: 'Tiro Devanagari Sanskrit', serif;
+            font-size: 3.6em;
+            font-weight: bold;
+            display: inline-block;
+            position: relative;
+            margin-bottom: 18px;
+            letter-spacing: 2px;
+            line-height: 1.25;
+            z-index: 1;
+            background: linear-gradient(45deg, #ffee58, #ef5350, #ec407a); /* Gradient */
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            opacity: 0;
+            animation: fadeIn 1.2s ease-out 0.7s forwards;
+        }
+        .overlay-main-title::after { /* <<< ग्लो इफ़ेक्ट */
+            content: attr(data-text);
+            position: absolute; left: 0; top: 0; right: 0; bottom: 0;
+            z-index: 0;
+            color: transparent;
+            filter: blur(3px);
+            opacity: 0;
+            animation: sunPulseGlow 3.5s ease-in-out infinite, fadeIn 1.8s ease-out 0.9s forwards;
+        }
+        .overlay-subtitle { font-family: 'Hind', sans-serif; font-size: 1.4em; font-weight: 500; opacity: 0; transform: translateY(15px); margin-top: 0; letter-spacing: 0.8px; background: linear-gradient(to right, #ffcdd2, #ffffff, #f8bbd0); -webkit-background-clip: text; background-clip: text; color: transparent; animation: fadeInUpSlight 1.5s cubic-bezier(0.25, 0.8, 0.25, 1) 1.0s forwards; }
+
+        /* --- कहानी विवरण अनुभाग --- */
+        .story-description { background-color: #fffaf1; border: 1px solid #e0cfc2; border-left: 8px solid #ff8a00; padding: 20px 30px; margin: 35px auto 20px auto; max-width: 850px; border-radius: 0 15px 15px 0; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); text-align: left; font-size: 1.1em; }
+        .story-description h3 { font-family: 'Lora', serif; color: #6a4f3c; margin-top: 0; margin-bottom: 15px; border-bottom: 2px solid #e0cfc2; padding-bottom: 5px; font-size: 1.5em; }
+         .story-description p { margin-bottom: 10px; line-height: 1.7; color: #5a3e36; cursor: default; background-color: transparent !important; padding: 0 !important; border: none !important; box-shadow: none !important; }
+         .story-description strong { color: #8b4513; font-weight: bold; }
+
+        /* --- इमेज फ़्रेम और कैप्शन --- */
+        .image-frame { position: relative; margin: 30px auto; padding: 12px; background: linear-gradient(135deg, #e0d8c0, #c8bca7); border-radius: 18px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2), inset 0 0 5px rgba(0,0,0,0.1); max-width: 700px; overflow: hidden; }
+        .image-frame img, .image-frame video, .image-frame iframe { display: block; width: 100%; height: auto; max-width: 100%; border-radius: 10px; object-fit: cover; border: 1px solid rgba(0,0,0,0.1); }
+        .image-caption { font-family: 'Lora', serif; position: absolute; bottom: 12px; left: 12px; right: 12px; background: rgba(40, 30, 20, 0.85); color: #fff8e1; padding: 10px 15px; border-radius: 0 0 10px 10px; text-align: center; font-size: 1em; font-style: italic; opacity: 0; transition: opacity 0.4s ease-in-out; box-sizing: border-box; pointer-events: none; }
+        .image-frame:hover .image-caption { opacity: 1; }
+
+        /* --- H2 विशेष डिज़ाइन --- */
+        @keyframes custom-shimmer { 0% { background-position: -1200px 0; } 100% { background-position: 1200px 0; } }
+        .custom-h2 { font-family: 'Lora', serif; font-size: 1.8em; letter-spacing: 1px; font-weight: 700; margin: 2.2em auto 1.4em auto; padding: 16px 30px; max-width: fit-content; border-radius: 8px; background: linear-gradient(140deg, #fff7e0, #efebe9); box-shadow: inset 0 0 6px rgba(188, 143, 143, 0.25), 4px 4px 10px rgba(188, 170, 164, 0.4), -2px -2px 6px #ffffff; position: relative; color: transparent; background-clip: text; -webkit-background-clip: text; background-image: linear-gradient(to right, #6d4c41 30%, #bf360c 50%, #6d4c41 70%); background-size: 250% auto; animation: custom-shimmer 4s linear infinite; border-bottom: 3px double #d7ccc8; transition: all 0.3s ease; }
+        .custom-h2:hover { box-shadow: inset 0 0 8px rgba(188, 143, 143, 0.3), 6px 6px 15px rgba(188, 170, 164, 0.5), -3px -3px 8px #ffffff; transform: translateY(-1px); }
+
+        /* --- H3 हल्की स्टाइल --- */
+        .custom-h3 { font-family: 'Lora', serif; font-size: 1.35em; color: #a1887f; font-weight: 600; margin-top: 2em; margin-bottom: 0.8em; padding-bottom: 5px; border-bottom: 1px dashed #d7ccc8; position: relative; padding-left: 25px; }
+         .custom-h3::before { content: "✧"; position: absolute; left: 0; top: 1px; color: #ffab91; font-size: 1.1em; }
+
+        /* --- पैराग्राफ स्टाइल (कस्टम) --- */
+        .custom-p { color: #5a3c20; text-align: justify; margin-bottom: 1.5em; font-size: 1.08em; transition: background-color 0.3s ease; cursor: pointer; position: relative; padding: 15px 20px; border-radius: 0 6px 6px 0; line-height: 1.85; background-color: #fffde7; border: 1px solid rgba(224, 216, 192, 0.4); border-left: 6px solid #ffcc80; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05); }
+        .custom-p:hover { background-color: #fffacd; }
+
+        /* --- टीवी विज्ञापन बैनर --- */
+        /* ... (Ad styles remain unchanged) ... */
+        @keyframes tvPulseGlow { 0%, 100% { box-shadow: inset 0 0 10px 2px rgba(135, 206, 250, 0.3), 0 0 8px 1px rgba(135, 206, 250, 0.2); } 50% { box-shadow: inset 0 0 15px 4px rgba(135, 206, 250, 0.5), 0 0 15px 3px rgba(135, 206, 250, 0.4); } }
+        @keyframes zoomInOutText { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.95; } }
+        @keyframes slideInHorizontal { from { transform: translateX(-30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .tv-ad-frame { margin: 50px auto; padding: 20px; max-width: 700px; border-radius: 25px; background: linear-gradient(145deg, #444, #222); box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.4), -5px -5px 10px rgba(80, 80, 80, 0.3), inset 0 0 5px rgba(0,0,0,0.5); perspective: 1200px; transition: transform 0.4s ease; }
+        .tv-ad-frame:hover { transform: scale(1.02) rotateY(2deg); }
+        .tv-ad-screen { background: radial-gradient(ellipse at center, #1a1a1d 0%, #0c0c0e 100%); border-radius: 10px; padding: 30px 25px; overflow: hidden; position: relative; min-height: 250px; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: inset 0 0 15px 5px rgba(0, 0, 0, 0.6); animation: tvPulseGlow 6s infinite ease-in-out; }
+        .tv-ad-content { color: #f0f0f0; text-align: center; z-index: 3; }
+        .tv-ad-head { font-family: 'Lora', serif; font-size: 0.9em; color: rgba(173, 216, 230, 0.8); margin-bottom: 10px; letter-spacing: 1px; text-transform: uppercase; opacity: 0; animation: fadeIn 1.5s ease-out 0.5s forwards; }
+        .tv-ad-title { font-family: 'Orbitron', sans-serif; font-size: 2.1em; color: #afeeee; text-shadow: 0 0 5px rgba(175, 238, 238, 0.7), 0 0 10px rgba(72, 209, 204, 0.5); margin-bottom: 12px; line-height: 1.3; opacity: 0; animation: zoomInOutText 5s infinite ease-in-out 0.8s, fadeIn 1s ease-out 0.8s forwards; }
+        .tv-ad-subtitle { font-family: 'Hind', sans-serif; font-size: 1.1em; color: #bdbdbd; margin-bottom: 18px; opacity: 0; animation: slideInHorizontal 1.3s ease-out 1.1s forwards; }
+        .tv-ad-explanation { font-family: 'Hind', sans-serif !important; font-size: 0.95em !important; color: #cccccc !important; max-width: 450px !important; margin: 0 auto 25px auto !important; line-height: 1.6 !important; opacity: 0; animation: fadeIn 1.5s ease-out 1.4s forwards; background-color: transparent !important; padding: 0 !important; border: none !important; box-shadow: none !important; cursor: default !important; text-align: center !important; }
+        .tv-ad-button { display: inline-block; padding: 10px 25px; background: linear-gradient(45deg, #4fc3f7, #00bcd4); color: #000; border: none; border-radius: 5px; text-decoration: none; font-weight: bold; font-family: 'Hind', sans-serif; font-size: 1em; box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 1px rgba(0,0,0,0.2); transition: all 0.3s ease; opacity: 0; animation: fadeInUpSlight 1.2s ease-out 1.7s forwards; z-index: 5; position: relative; cursor: pointer; }
+        .tv-ad-button:hover { background: linear-gradient(45deg, #00bcd4, #4fc3f7); color: #fff; transform: translateY(-2px); box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4), inset 0 -1px 0px rgba(0,0,0,0.1); }
+
+        /* --- स्टाइलिश वीडियो प्लेयर --- */
+        /* ... (Video styles remain unchanged) ... */
+        .stylish-video-player { margin: 50px auto; max-width: 800px; position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 15px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); border: 3px solid #c8bca7; background-color: #000; }
+        .stylish-video-player iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .video-caption-below { font-family: 'Lora', serif; text-align: center; font-size: 1em; color: #6d4c41; margin-top: 15px; font-style: italic; }
+
+        /* --- कस्टम डिव (ग्रेडिएंट बैकग्राउंड) --- */
+         /* ... (Custom div styles remain unchanged) ... */
+         .custom-div { padding: 20px 25px; background: linear-gradient(135deg, #ffdde1, #fffacd, #ffcccb); margin: 30px auto; max-width: 900px; border: 1px solid #e0cfc2; border-radius: 20px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); transition: box-shadow 0.3s ease, transform 0.3s ease; }
+         .custom-div:hover { box-shadow: 0 8px 35px rgba(0, 0, 0, 0.15); transform: translateY(-5px); }
+
+        /* इमेज होवर स्केल */
+         .custom-image { display: block; transition: transform 0.3s ease; }
+         .image-frame:hover .custom-image { transform: scale(1.05); }
+
+         /* पोस्ट मेटा */
+         .post-meta { font-size: 0.9em; color: #9e6d4f; margin-bottom: 20px; text-align: center; }
+
+         /* विशेष शब्द */
+         /* ... (Special term styles remain unchanged) ... */
+        .special-term, .special-term-1, .special-term-2, .special-term-3 { font-weight: bold; cursor: help; padding: 0 2px; transition: all 0.3s ease; font-family: 'Tiro Devanagari Sanskrit', serif; }
+        .special-term-1 { color: #c71585; border-bottom: 2px dotted #e91e63; } .special-term-1:hover { background-color: rgba(233, 30, 99, 0.1); color: #ab0f5a; }
+        .special-term-2 { color: #ff5722; background-color: #fff3e0; padding: 1px 4px; border-radius: 4px; } .special-term-2:hover { background-color: #ffe0b2; color: #e64a19; }
+        .special-term-3 { color: #6a4f3c; text-shadow: 1px 1px 3px rgba(255, 138, 0, 0.4); border-bottom: 2px solid #ff8a00; } .special-term-3:hover { color: #ff8a00; text-shadow: 1px 1px 5px rgba(255, 138, 0, 0.6); }
+
+        /* ===== नया फुटर रैपर स्टाइल ===== */
+        .footer-wrapper {
+            background-color: #fffaf1; border: 1px solid #e0cfc2; border-radius: 20px;
+            padding: 25px; margin: 60px auto 0 auto; max-width: 1100px; width: 100%;
+            box-sizing: border-box; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            margin-top: auto; /* यह इसे page-wrapper में नीचे धकेलेगा */
+        }
+
+        /* ===== START: Screen Focus Cosmos Widget CSS (v1.4 - Prefix: sfcw-) ===== */
+        :root { /* ... CSS Variables ... */ }
+        .sfcw-widget { /* आंतरिक फुटर */
+            font-family: 'Noto Sans Devanagari', 'Poppins', sans-serif; position: relative; width: 100%;
+            padding: 45px 0 35px 0;
+            background: radial-gradient(ellipse at bottom, var(--sfcw-deep-space-2) 0%, var(--sfcw-deep-space-1) 100%), linear-gradient(315deg, var(--sfcw-deep-space-1) 0%, var(--sfcw-deep-space-3) 74%);
+            background-blend-mode: screen; overflow: hidden;
+            border-top: 2px solid #8b4513; /* <<< एकीकृत बॉर्डर स्टाइल */
+            box-sizing: border-box; box-shadow: inset 0 10px 20px rgba(0,0,0,0.4);
+            z-index: 2; border-radius: 15px; /* थोड़ा इनर रेडियस */
+        }
+        .sfcw-background-depth { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle, rgba(255,255,255,0.03) 5%, transparent 40%), radial-gradient(circle, rgba(0, 160, 160, 0.05) 10%, transparent 50%); background-size: 150px 150px, 250px 250px; background-position: 0 0, 50px 50px; opacity: 0.5; animation: sfcw-slow-pan 60s linear infinite; z-index: 0; border-radius: inherit; }
+        @keyframes sfcw-slow-pan { 100% { background-position: 150px 150px, 200px 200px; } }
+        #sfcw-particle-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; border-radius: inherit;}
+        .sfcw-container { max-width: 1000px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 2; text-align: center; color: var(--sfcw-secondary-glow); }
+        .sfcw-content-screen { background: var(--sfcw-screen-bg); border: 1px solid var(--sfcw-screen-border); border-radius: 15px; padding: 25px 20px 20px 20px; margin: 0 auto 25px auto; max-width: 600px; box-shadow: 0 0 20px var(--sfcw-screen-shadow), inset 0 0 10px rgba(0,0,0,0.3); position: relative; opacity: 0; filter: blur(3px); animation: sfcw-reveal-glow 1.5s cubic-bezier(0.23, 1, 0.32, 1) 0.5s forwards; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
+        .sfcw-credits, .sfcw-organization { margin-bottom: 12px; line-height: 1.8; text-shadow: 0 0 8px rgba(0, 0, 0, 0.8), 0 0 15px var(--sfcw-nebula-accent); }
+        .sfcw-organization { margin-bottom: 0; }
+        @keyframes sfcw-reveal-glow { from { opacity: 0; transform: translateY(30px) scale(0.95); filter: blur(3px); } to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
+        .sfcw-credits p, .sfcw-organization p { margin: 6px 0; font-size: 1.1em; }
+        .sfcw-energized-text { font-weight: 700; font-family: 'Orbitron', sans-serif; font-size: 1.6em; background-image: linear-gradient( 110deg, var(--sfcw-highlight) 0%, var(--sfcw-secondary-glow) 20%, var(--sfcw-link-hover) 40%, var(--sfcw-nebula-accent) 60%, var(--sfcw-secondary-glow) 80%, var(--sfcw-highlight) 100% ); background-size: 300% 100%; color: transparent; background-clip: text; -webkit-background-clip: text; animation: sfcw-energize-flow 5s linear infinite; display: inline-block; transition: text-shadow 0.3s ease; cursor: default; }
+        .sfcw-energized-text:hover { text-shadow: 0 0 15px var(--sfcw-highlight); }
+        @keyframes sfcw-energize-flow { 0% { background-position: 150% 50%; } 100% { background-position: -150% 50%; } }
+        .sfcw-credits .sfcw-author-title { font-size: 0.95em; font-style: normal; color: var(--sfcw-primary-glow); opacity: 0.9; margin-top: 2px; display: block; letter-spacing: 1px; word-spacing: 3px; }
+         .sfcw-author-title span.sfcw-separator-icon { opacity: 0.5; margin: 0 5px; font-size: 0.8em; vertical-align: middle; }
+        .sfcw-organization strong { font-weight: 700; color: var(--sfcw-highlight); }
+        .sfcw-organization a { color: inherit; text-decoration: none;} .sfcw-organization a:hover { text-decoration: underline; }
+        .sfcw-links, .sfcw-copyright { opacity: 0; filter: blur(3px); animation: sfcw-reveal-glow 1.5s cubic-bezier(0.23, 1, 0.32, 1) forwards; text-shadow: 0 0 8px rgba(0, 0, 0, 0.8), 0 0 15px var(--sfcw-nebula-accent); margin-bottom: 22px; line-height: 1.8; }
+        .sfcw-links { animation-delay: 0.9s; } .sfcw-copyright { animation-delay: 1.1s; margin-bottom: 0; }
+        .sfcw-links nav { margin-top: 15px; padding: 18px 0; background: rgba(11, 15, 26, 0.3); border: 1px solid rgba(0, 160, 160, 0.2); border-radius: 8px; box-shadow: 0 0 15px rgba(0, 160, 160, 0.1); }
+        .sfcw-links span.sfcw-link-label { font-weight: 500; color: var(--sfcw-primary-glow); margin-right: 10px; font-size: 1em; display: inline-block; margin-bottom: 8px; }
+        .sfcw-links a { color: var(--sfcw-secondary-glow); text-decoration: none; margin: 0 14px; font-size: 1.05em; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: inline-block; position: relative; padding-bottom: 3px; }
+        .sfcw-links a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 50%; background: linear-gradient(90deg, var(--sfcw-link-hover), var(--sfcw-nebula-accent)); transition: all 0.4s ease-out; transform: translateX(-50%); }
+        .sfcw-links a:hover { color: var(--sfcw-highlight); transform: translateY(-4px) scale(1.15); text-shadow: 0 0 12px var(--sfcw-link-hover); } .sfcw-links a:hover::after { width: 100%; }
+        .sfcw-links i.fas, .sfcw-links i.fab { margin-right: 6px; transition: transform 0.3s ease; vertical-align: middle; } .sfcw-links a:hover i { transform: rotate(-15deg) scale(1.1); }
+        .sfcw-links .sfcw-separator { color: rgba(0, 160, 160, 0.4); margin: 0 8px; font-size: 1em; opacity: 0.7; }
+        .sfcw-copyright { font-size: 0.9em; color: var(--sfcw-primary-glow); opacity: 0.75; margin-top: 25px; padding-top: 18px; border-top: 1px solid rgba(0, 160, 160, 0.2); }
+        .sfcw-copyright i.fa-copyright { margin-right: 5px; vertical-align: middle; }
+        /* Responsiveness */
+        @media (max-width: 768px) { .sfcw-content-screen { max-width: 90%; padding: 20px 15px 15px 15px;} .sfcw-widget { padding: 35px 0 25px 0; } .sfcw-credits p, .sfcw-organization p { font-size: 1.05em; } .sfcw-energized-text { font-size: 1.4em; } .sfcw-links a { margin: 6px 10px; font-size: 1em; } }
+        @media (max-width: 480px) { .sfcw-content-screen { max-width: 95%; padding: 15px 10px 10px 10px;} .sfcw-credits p, .sfcw-organization p { font-size: 1em; } .sfcw-energized-text { font-size: 1.2em; } .sfcw-author-title { letter-spacing: 0.5px; word-spacing: 2px; } .sfcw-links nav { padding: 15px 5px; } .sfcw-links a { margin: 8px 8px; font-size: 0.95em; } .sfcw-links span.sfcw-link-label { display: block; margin-bottom: 8px; } .sfcw-separator { display: none; } }
+        /* ===== END: Screen Focus Cosmos Widget CSS ===== */
+
+        /* --- पेजिनेशन स्टाइल (फुटर के नीचे) --- */
+        .pagination-section {
+            text-align: center; margin: 40px auto 30px auto; padding-top: 10px;
+            max-width: 900px; width: 100%; padding-left: 15px; padding-right: 15px;
+            box-sizing: border-box; position: relative; z-index: 5;
+        }
+        .pagination-link { display: inline-block; margin: 0 6px; padding: 10px 18px; border: 1px solid #ccbbaa; border-radius: 8px; color: #795548; background-color: rgba(190, 160, 130, 0.1); text-decoration: none; font-family: 'Hind', sans-serif; transition: all 0.3s ease; font-size: 1em; box-shadow: 2px 2px 5px rgba(0,0,0,0.05); }
+        .pagination-link:hover { background-color: #e0d8c0; border-color: #8b4513; color: #3c2a21; transform: translateY(-2px); box-shadow: 3px 3px 8px rgba(0,0,0,0.1); }
+        .pagination-link.current { background: linear-gradient(to bottom, #a1887f, #795548); color: #fff; border-color: #5d4037; font-weight: bold; cursor: default; box-shadow: inset 0 1px 3px rgba(0,0,0,0.2), 0 2px 5px rgba(0,0,0,0.2); transform: none; }
+        .pagination-label { margin: 0 10px; color: #757575; font-size: 0.9em; vertical-align: middle; }
+
+
+        /* --- मीडिया क्वेरी समायोजन (शेष भाग) --- */
+        @media (max-width: 768px) {
+            body { padding-top: 50px; }
+            .story-container { padding: 0 10px 30px 10px; }
+            .story-nav { padding: 8px 5px; } .story-nav a { margin: 0 5px; font-size: 14px; }
+            .animated-title-image-wrapper { border-radius: 15px; } .image-title-text-content { padding: 15px 20px; }
+            .overlay-title-head { font-size: 1em; }
+            .overlay-main-title { font-size: 2.4em; } /* मोबाइल टाइटल */
+            .overlay-main-title::after { animation: none; text-shadow: 0 0 8px rgba(255, 223, 0, 0.5); filter: blur(2px); opacity: 0.7; } /* मोबाइल ग्लो */
+            .overlay-subtitle { font-size: 1.1em; }
+            .story-description { padding: 15px 20px; font-size: 1em; max-width: 95%;}
+            .custom-h2 { padding: 12px 20px; font-size: 1.6em; }
+            .custom-h3 { font-size: 1.2em; padding-left: 15px; } .custom-h3::before { left: -5px; }
+             .custom-p { padding: 12px 15px; font-size: 1.05em; } .story-description p { font-size: 1em; }
+             .tv-ad-frame { max-width: 95%; } .tv-ad-screen { padding: 20px 15px; } .tv-ad-title { font-size: 1.7em; } .tv-ad-subtitle { font-size: 1em; } .tv-ad-explanation { font-size: 0.9em !important;} .tv-ad-button { font-size: 1em; }
+             .stylish-video-player { max-width: 95%; } .video-caption-below { font-size: 0.9em; }
+            .part-navigation { flex-direction: column; align-items: stretch; }
+            .part-navigation a { margin-bottom: 12px; width: 100%; max-width: none; text-align: center; order: 2; }
+            .part-navigation .home-link { order: 2; } .part-navigation .prev-part-link { order: 1; } .part-navigation .next-part-link { order: 3; }
+            .part-navigation .prev-part-link.disabled, .part-navigation .next-part-link.disabled, .part-navigation .next-part-link.hidden-on-last { visibility: hidden !important; pointer-events: none !important; height: 0 !important; padding: 0 !important; margin: 0 !important; border: none !important; line-height: 0 !important; overflow: hidden !important; }
+            .custom-div { max-width: 95%; padding: 15px; }
+            .image-frame { padding: 8px; max-width: 95%; } .image-caption { font-size: 0.9em; }
+            /* फुटर रैपर (मोबाइल) */
+            .footer-wrapper { max-width: 100%; width: auto; margin-left: 10px; margin-right: 10px; padding: 15px; margin-top: 40px; border-radius: 15px; }
+            .pagination-section { margin: 30px auto 20px auto; }
+            .pagination-link { padding: 8px 12px; margin: 0 4px; font-size: 0.9em; }
+            .pagination-label { display: none; }
+        }
+
+       @media (max-width: 480px) {
+            .pagination-link { padding: 6px 10px; margin: 0 3px; font-size: 0.85em;}
+            .footer-wrapper { padding: 10px; border-radius: 10px; margin-left: 5px; margin-right: 5px;}
+            /* फुटर लिंक स्टाइल पहले से CSS ब्लॉक में है */
+       }
+    </style>
+
+</head>
+<body>
+<div class="page-wrapper"> <!-- पेज रैपर -->
+
+    <!-- नेविगेशन बार -->
+    <nav class="story-nav">
+        <a href="index.html">मुख्य पृष्ठ</a>
+        <a href="#part1" class="active">भाग 1</a>
+        <a href="all-works.html">सभी रचनाएँ</a>
+    </nav>
+
+    <!-- कहानी सामग्री -->
+    <div class="story-container">
+        <!-- Title Image -->
+        <div class="animated-title-image-wrapper">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh_fENNPRZTMF3PIzBmK4jmxs22EisH1DHqQZweHp3p42xg6Hm9NOhnd7M7XwjPG8HN0M42skdLwaQgDJVkzhhWZhzs_6N8hyphenhyphenx1ZpMMC2Q-vpEN1ix8vdHae4zWk1o4rEL6bXoVQcJ0O8ilJzcQaCebipAuZX55noNHUDQxRykbRW_hoDDm-nw9XTsYUnaJ/s1046/image_search_1733601703122.png" alt="अरण्यानी और कौशिक कहानी का दृश्य">
+            <div class="full-image-tint-overlay"></div>
+            <div class="image-title-text-content">
+                <p class="overlay-title-head">एक कालजयी गाथा</p>
+                <span class="overlay-main-title notranslate" data-text="अरण्यानी च कौशिकश्च">अरण्यानी च कौशिकश्च</span> <!-- यह स्टाइल अब ठीक है -->
+                <p class="overlay-subtitle">वन और वेदना की प्रेम गाथा</p>
+            </div>
+        </div>
+
+        <!-- Story Description -->
+        <div class="story-description">
+             <h3>कथा-परिचय एवं स्रोत संकेत</h3>
+            <p>प्रस्तुत कथा, <strong class="special-term-1 notranslate">"अरण्यानी और कौशिक:..."</strong>...</p>
+            <p>कथा का ताना-बाना...</p>
+            <p><strong>संभावित स्रोत प्रेरणा...</strong></p>
+            <ul><li>...</li></ul>
+             <div class="post-meta">लेखक: आचार्य आशीष मिश्र | प्रकाशित: 27 अक्टूबर 2023</div>
+        </div>
+
+        <!-- Part 1 Content -->
+        <div id="part1" class="custom-div">
+            <h2 class="custom-h2">भाग 1: तपस्वी का आगमन</h2>
+            <div class="part-navigation">
+                <a href="#" class="custom-a prev-part-link disabled">पिछला भाग</a>
+                <a href="index.html" class="custom-a home-link">मुख्य पृष्ठ</a>
+                <a href="#" class="custom-a next-part-link disabled">अगला भाग</a>
+            </div>
+            <h3 class="custom-h3">प्रारंभिक यात्रा</h3>
+            <p class="custom-p">अतिप्राचीन काल की बात है...</p>
+            <div class="image-frame"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgwleTksIG6g9fYJK4_9N1caqeoI9WkCi7eM9FAe1vvLZzAXSmYZ7SdhzBJ7REOuR9XVIskbcNtXtYYFRXPl0SttBNg-EvAuZUTWi-YlSCGFXDFT0M2bFEeZEPM7OdSgyWCv68Dzyyxo1xksCOHkfvZKBFdZmqKCXOMPTn8aijNbajJtXFRebMMmn2FVHoh/s360/image_search_1733631578155.png" alt="घने वन में प्रवेश करता तपस्वी कौशिक" class="custom-image"><figcaption class="image-caption">...</figcaption></div>
+            <h3 class="custom-h3">वन में आसन</h3>
+            <p class="custom-p">उसने अपने गुरु से आशीर्वाद लिया...</p>
+            <p class="custom-p">वन केवल शांत ही नहीं था...</p>
+            <div class="part-navigation">
+                <a href="#" class="custom-a prev-part-link disabled">पिछला भाग</a>
+                <a href="index.html" class="custom-a home-link">मुख्य पृष्ठ</a>
+                <a href="#" class="custom-a next-part-link disabled">अगला भाग</a>
+            </div>
+        </div>
+
+        <!-- Ad Banner -->
+        <div class="tv-ad-frame">
+            <div class="tv-ad-screen">
+                <div class="tv-ad-content">
+                    <p class="tv-ad-head">ज्ञान की एक नई किरण</p>
+                    <h3 class="tv-ad-title">कालपथ समाचार</h3>
+                    <p class="tv-ad-subtitle">विचारों का अनंत प्रवाह</p>
+                    <p class="tv-ad-explanation">गहन विश्लेषण...</p>
+                    <a href="https://kaalpath.blogspot.com" class="tv-ad-button" target="_blank" rel="noopener noreferrer">अभी जुड़ें</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video Player -->
+         <div class="stylish-video-player">
+             <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=Xm-a88Xv-eS7h8_y&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+         </div>
+         <p class="video-caption-below">विशेष प्रस्तुति: आंतरिक शांति की यात्रा</p>
+
+    </div> <!-- कहानी कंटेनर बंद -->
+
+    <!-- ===== नया फुटर रैपर ===== -->
+    <div class="footer-wrapper">
+        <!-- ===== Cosmos फुटर विजेट (इसके अंदर) ===== -->
+        <footer class="sfcw-widget">
+          <div class="sfcw-background-depth"></div>
+          <canvas id="sfcw-particle-canvas"></canvas>
+          <div class="sfcw-container">
+            <div class="sfcw-content-screen">
+                <div class="sfcw-credits">
+                   <p><span class="sfcw-energized-text">आचार्य आशीष मिश्र</span></p>
+                   <p class="sfcw-author-title">वेब प्रोग्रामर<span class="sfcw-separator-icon">❖</span>साहित्य सर्जक<span class="sfcw-separator-icon">❖</span>विचारक</p>
+                </div>
+                <div class="sfcw-organization">
+                   <p><a href="index.html" target="_self" rel="noopener noreferrer"><strong class="sfcw-energized-text">अरण्यानी कथा</strong></a> की एक प्रस्तुति</p>
+                   <p style="font-size:0.9em; opacity: 0.8;">(एक <a href="https://abpiyush.blogspot.com" target="_blank" rel="noopener noreferrer" style="color: var(--sfcw-primary-glow);">Abhijit Piyush Organisation</a> पहल)</p>
+                </div>
+            </div>
+            <div class="sfcw-links">
+              <nav aria-label="सहयोगी और महत्वपूर्ण लिंक्स">
+                <span class="sfcw-link-label"><i class="fas fa-atom"></i> सहयोगी:</span>
+                <a href="https://qbuk.blogspot.com" target="_blank" rel="noopener noreferrer" title="Qbuk">Qbuk</a><span class="sfcw-separator">✧</span>
+                <a href="https://www.apgo.tech" target="_blank" rel="noopener noreferrer" title="Apgo Tech">Apgo Tech</a>
+                <br style="display: block; margin-bottom: 12px;">
+                <span class="sfcw-link-label"><i class="fas fa-meteor"></i> डिजिटल पदचिह्न:</span>
+                <a href="https://github.com/asheeshz" target="_blank" rel="noopener noreferrer" title="GitHub प्रोफाइल"><i class="fab fa-github"></i> GitHub</a><span class="sfcw-separator">✧</span>
+                <a href="https://www.blogger.com/profile/00546898432461025219" target="_blank" rel="noopener noreferrer" title="ब्लॉगर प्रोफाइल"><i class="fab fa-blogger-b"></i> Blogger</a><span class="sfcw-separator">✧</span>
+                <a href="https://kaalpath.blogspot.com" target="_blank" rel="noopener noreferrer" title="कालपथ न्यूज"><i class="fas fa-newspaper"></i> कालपथ</a>
+              </nav>
+            </div>
+            <div class="sfcw-copyright">
+              <p><i class="fas fa-copyright"></i><span id="sfcw-current-year"></span> आचार्य आशीष मिश्र एवं सहयोगी। सर्वाधिकार सुरक्षित। ब्रह्मांडीय चेतना से प्रेरित।</p>
+            </div>
+             <script type="application/ld+json">
+             { "@context": "https://schema.org", "@type": "BlogPosting", "mainEntityOfPage": { "@type": "WebPage", "@id": "[YOUR_PAGE_PERMALINK_HERE]/aranyani-kaushik-part1.html" }, "headline": "अरण्यानी और कौशिक: वन और वेदना की प्रेम गाथा - भाग १", "description": "युवा तपस्वी कौशिक आत्म-ज्ञान की खोज में हिमालय की तलहटी के एक निर्जन वन में प्रवेश करता है...", "image": { "@type": "ImageObject", "url": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh_fENNPRZTMF3PIzBmK4jmxs22EisH1DHqQZweHp3p42xg6Hm9NOhnd7M7XwjPG8HN0M42skdLwaQgDJVkzhhWZhzs_6N8hyphenhyphenx1ZpMMC2Q-vpEN1ix8vdHae4zWk1o4rEL6bXoVQcJ0O8ilJzcQaCebipAuZX55noNHUDQxRykbRW_hoDDm-nw9XTsYUnaJ/s1046/image_search_1733601703122.png" }, "author": { "@type": "Person", "name": "आचार्य आशीष मिश्र", "url": "https://acharyaasheeshmishra.blogspot.com", "sameAs": ["https://www.blogger.com/profile/00546898432461025219", "https://github.com/asheeshz"] }, "publisher": { "@type": "Organization", "name": "अरण्यानी कथा", "url": "index.html", "logo": { "@type": "ImageObject", "url": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgp12SGm6vq7iCMJQaJyAqS0E1UDH-Im-EgJGzGNagDEi1OKrr-Vf2c3foK-QTzr6oFf2HXmwViMtP3EWsppeFoN4AfBqMeykClVNHZvQHdSVdnkEBPtYCrEexvUA8Ik9zBFr2VN3AA_Kag8DjExeMv3y-Q72gFhuQGeFwsO7qDV3YMethPKP8FOI8xyov1/s160/IMG_1743928829710.png" } }, "datePublished": "2023-10-27", "dateModified": "2023-10-28" }
+             </script>
+          </div>
+        </footer>
+        <!-- Cosmos फुटर समाप्त -->
+    </div>
+    <!-- फुटर रैपर समाप्त -->
+
+    <!-- ===== पेजिनेशन सेक्शन (फुटर रैपर के बाद) ===== -->
+    <div class="pagination-section">
+        <!-- पेजिनेशन लिंक यहाँ JS द्वारा डाले जाएंगे -->
+    </div>
+    <!-- पेजिनेशन समाप्त -->
+
+</div> <!-- पेज रैपर बंद -->
+
+    <!-- सभी आवश्यक JS कोड -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+        // --- सामान्य स्क्रिप्ट्स ---
+        // (Smooth Scroll, Nav Update, TTS, Pagination)
+        // ... (ये स्क्रिप्ट्स अपरिवर्तित रहेंगे जैसा कि पिछले कोड ब्लॉक में था) ...
+        // --- स्मूथ स्क्रॉल और नेविगेशन अपडेट ---
+        const smoothScrollLinks = document.querySelectorAll(".custom-a[href^='#'], .story-nav a[href^='#']");
+        const navHeight = document.querySelector('.story-nav') ? document.querySelector('.story-nav').offsetHeight : 50;
+        smoothScrollLinks.forEach(link => {
+            link.addEventListener("click", (event) => {
+                const href = link.getAttribute("href");
+                if (href && href.startsWith("#") && href.length > 1) {
+                     const targetElement = document.querySelector(href);
+                     if (targetElement) {
+                        event.preventDefault();
+                        const offsetTop = targetElement.offsetTop;
+                        window.scrollTo({ top: offsetTop - navHeight - 15, behavior: 'smooth' });
+                        if (link.closest('.story-nav')) {
+                             document.querySelectorAll('.story-nav a').forEach(nav => nav.classList.remove('active'));
+                             link.classList.add('active');
+                        }
+                    } else { console.warn(`Element with ID ${href} not found.`); }
+                }
+            });
+        });
+         const sections = document.querySelectorAll('.custom-div[id^="part"]');
+         const navLinks = document.querySelectorAll('.story-nav a[href^="#part"]');
+         const updateActiveLinkBasedOnScroll = () => {
+             if (sections.length === 0 || navLinks.length === 0) return;
+             let current = '';
+             const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+             const windowHeight = window.innerHeight;
+             sections.forEach(section => {
+                 const sectionTop = section.offsetTop - navHeight - 50;
+                 const sectionBottom = sectionTop + section.offsetHeight;
+                 if (scrollPosition >= sectionTop && scrollPosition < sectionTop + (section.offsetHeight * 0.8) ) { current = section.getAttribute('id'); }
+             });
+              if (!current && sections.length > 0) {
+                 if (scrollPosition < (sections[0].offsetTop - navHeight - 50)) { current = sections[0].getAttribute('id'); }
+                 else if ((windowHeight + scrollPosition) >= document.body.offsetHeight - 100) { current = sections[sections.length - 1].getAttribute('id'); }
+              }
+             navLinks.forEach(link => {
+                 link.classList.remove('active');
+                 if (link.hash === `#${current}`) { link.classList.add('active'); }
+             });
+         };
+         updateActiveLinkBasedOnScroll();
+         window.addEventListener('scroll', updateActiveLinkBasedOnScroll);
+         const hash = window.location.hash;
+         if (hash && hash.startsWith("#part")) {
+             const activeLink = document.querySelector(`.story-nav a[href$="${hash}"]`);
+             if (activeLink) { document.querySelectorAll('.story-nav a').forEach(link => link.classList.remove('active')); activeLink.classList.add('active'); }
+             setTimeout(() => {
+                const targetElement = document.querySelector(hash);
+                if (targetElement) { window.scrollTo({ top: targetElement.offsetTop - navHeight - 15, behavior: 'auto' }); }
+             }, 100);
+          } else {
+              if ((window.pageYOffset || document.documentElement.scrollTop) < 100 && sections.length > 0) {
+                 const defaultActiveLink = document.querySelector('.story-nav a[href$="#part1"]');
+                 if(defaultActiveLink) { document.querySelectorAll('.story-nav a').forEach(link => link.classList.remove('active')); defaultActiveLink.classList.add('active'); }
+              }
+          }
+        // --- स्मूथ स्क्रॉल समाप्त ---
+
+        // --- स्वचालित पेजिनेशन और भाग नेविगेशन ---
+        function setupPaginationAndNav() {
+            const paginationContainer = document.querySelector('.pagination-section');
+            if (!paginationContainer) { console.warn("Pagination container not found."); return; }
+            const totalPages = 6; const baseFilename = 'aranyani-kaushik-part'; const fileExtension = '.html';
+            let currentPageNumber = 1; const currentPath = window.location.pathname;
+            const filenameMatch = currentPath.match(/part(\d+)\.html$/i);
+            if (filenameMatch && filenameMatch[1]) {
+                 const parsedNum = parseInt(filenameMatch[1], 10);
+                 if (!isNaN(parsedNum) && parsedNum >= 1 && parsedNum <= totalPages) { currentPageNumber = parsedNum; }
+                 else { console.warn("Pagination: Page number from URL filename invalid/out of range."); }
+            } else { console.warn("Pagination: Could not find page number in filename:", currentPath, ". Assuming page 1."); }
+            paginationContainer.innerHTML = ''; const maxVisibleLinks = 5; let startPage, endPage;
+            if (totalPages <= maxVisibleLinks) { startPage = 1; endPage = totalPages; }
+            else {
+                const maxBefore = Math.floor((maxVisibleLinks - 1) / 2); const maxAfter = Math.ceil((maxVisibleLinks - 1) / 2);
+                if (currentPageNumber <= maxBefore) { startPage = 1; endPage = maxVisibleLinks; }
+                else if (currentPageNumber + maxAfter >= totalPages) { startPage = totalPages - maxVisibleLinks + 1; endPage = totalPages; }
+                else { startPage = currentPageNumber - maxBefore; endPage = currentPageNumber + maxAfter; }
+            }
+            if (startPage > 1) { const firstLink = document.createElement('a'); firstLink.href = `${baseFilename}1${fileExtension}`; firstLink.textContent = '1'; firstLink.classList.add('pagination-link'); paginationContainer.appendChild(firstLink); if (startPage > 2) { const ellipsisStart = document.createElement('span'); ellipsisStart.textContent = '...'; ellipsisStart.classList.add('pagination-label'); paginationContainer.appendChild(ellipsisStart); } }
+            for (let i = startPage; i <= endPage; i++) { if (i === currentPageNumber) { const currentSpan = document.createElement('span'); currentSpan.textContent = i; currentSpan.classList.add('pagination-link', 'current'); paginationContainer.appendChild(currentSpan); } else { const link = document.createElement('a'); link.href = `${baseFilename}${i}${fileExtension}`; link.textContent = i; link.classList.add('pagination-link'); paginationContainer.appendChild(link); } }
+            if (endPage < totalPages) { if (endPage < totalPages - 1) { const ellipsisEnd = document.createElement('span'); ellipsisEnd.textContent = '...'; ellipsisEnd.classList.add('pagination-label'); paginationContainer.appendChild(ellipsisEnd); } const lastLink = document.createElement('a'); lastLink.href = `${baseFilename}${totalPages}${fileExtension}`; lastLink.textContent = totalPages; lastLink.classList.add('pagination-link'); paginationContainer.appendChild(lastLink); }
+            const prevPartLinks = document.querySelectorAll('.part-navigation .prev-part-link'); const nextPartLinks = document.querySelectorAll('.part-navigation .next-part-link');
+            prevPartLinks.forEach(btn => { if(btn) { if (currentPageNumber > 1) { btn.href = `${baseFilename}${currentPageNumber - 1}${fileExtension}`; btn.classList.remove('disabled'); } else { btn.href = '#'; btn.classList.add('disabled'); } } });
+            nextPartLinks.forEach(btn => { if(btn) { if (currentPageNumber < totalPages) { btn.href = `${baseFilename}${currentPageNumber + 1}${fileExtension}`; btn.classList.remove('disabled', 'hidden-on-last'); } else { btn.href = '#'; btn.classList.add('disabled', 'hidden-on-last'); } } });
+        }
+        setupPaginationAndNav();
+        // --- पेजिनेशन समाप्त ---
+
+        // --- TTS कार्यक्षमता ---
+        let currentSpeech = null;
+        function speakText(text, lang = "hi-IN") {
+            if ('speechSynthesis' in window) { if (currentSpeech && window.speechSynthesis.speaking) { window.speechSynthesis.cancel(); if (currentSpeech.text === text) { currentSpeech = null; return; } } const speech = new SpeechSynthesisUtterance(text); speech.lang = lang; speech.volume = 1; speech.rate = 0.9; speech.pitch = 1; currentSpeech = speech; speech.onend = () => { currentSpeech = null; }; window.speechSynthesis.speak(speech); } else { console.warn("Speech synthesis not supported."); alert("क्षमा करें, टेक्स्ट-टू-स्पीच समर्थित नहीं है।"); }
+        }
+        document.querySelectorAll(".special-term-1, .special-term-2, .special-term-3").forEach(term => { term.addEventListener("click", (event) => { event.stopPropagation(); speakText(term.textContent, "hi-IN"); }); term.title = "सुनने के लिए क्लिक करें"; });
+        document.querySelectorAll("p").forEach(paragraph => { if (paragraph.classList.contains('custom-p')) { paragraph.style.cursor = 'pointer'; paragraph.title = "पैराग्राफ सुनने के लिए क्लिक करें"; paragraph.addEventListener("click", () => { let clonedNode = paragraph.cloneNode(true); clonedNode.querySelectorAll(".special-term-1, .special-term-2, .special-term-3").forEach(span => span.remove()); let textToSpeak = (clonedNode.textContent || clonedNode.innerText || "").trim().replace(/\s+/g, ' '); speakText(textToSpeak, "hi-IN"); }); paragraph.addEventListener("mouseenter", () => { paragraph.style.backgroundColor = "#fffacd"; }); paragraph.addEventListener("mouseleave", () => { paragraph.style.backgroundColor = ""; }); } else { paragraph.style.cursor = 'default'; paragraph.title = ""; } });
+        window.addEventListener('beforeunload', () => { if ('speechSynthesis' in window) { window.speechSynthesis.cancel(); } });
+        // --- TTS समाप्त ---
+
+        /* ===== START: Screen Focus Cosmos Widget JS (v1.4 - Prefix: sfcw-) ===== */
+        // (यह JS ब्लॉक अपरिवर्तित रहेगा जैसा पिछले कोड ब्लॉक में था)
+        const sfcwYearSpan = document.getElementById('sfcw-current-year');
+        if (sfcwYearSpan) { sfcwYearSpan.textContent = " " + new Date().getFullYear(); }
+        else { console.warn("sfcw-current-year element not found!")}
+        const sfcwCanvas = document.getElementById('sfcw-particle-canvas');
+        if (!sfcwCanvas) { console.error("SFCW Particle canvas element (#sfcw-particle-canvas) not found!"); }
+        else {
+            const sfcwCtx = sfcwCanvas.getContext('2d');
+            let sfcwParticles = []; let sfcwAnimationFrameId = null;
+            function sfcwResizeCanvas() { if (!sfcwCanvas || !sfcwCtx) return; sfcwCanvas.width = sfcwCanvas.offsetWidth; sfcwCanvas.height = sfcwCanvas.offsetHeight; }
+            class SFCW_Particle {
+                constructor(x, y) { if (!sfcwCanvas) return; this.x = x || Math.random() * sfcwCanvas.width; this.y = y || Math.random() * sfcwCanvas.height; this.size = Math.random() * 2.5 + 1; this.speedX = (Math.random() * 1 - 0.5) * 0.5; this.speedY = (Math.random() * 1 - 0.5) * 0.5; const rootStyle = getComputedStyle(document.documentElement); const starColor = rootStyle.getPropertyValue('--sfcw-star-color').trim() || 'rgba(240, 248, 255, 0.85)'; const particleColor = rootStyle.getPropertyValue('--sfcw-particle-color').trim() || 'rgba(0, 160, 160, 0.5)'; this.color = Math.random() > 0.1 ? starColor : particleColor; this.opacity = Math.random() * 0.6 + 0.2; this.initialOpacity = this.opacity; this.life = Math.random() * 2 + 1; this.initialLife = this.life; }
+                update(deltaTime) { if (!sfcwCanvas) return; this.x += this.speedX * deltaTime * 30; this.y += this.speedY * deltaTime * 30; this.life -= deltaTime; if (this.life <= 0) { this.opacity -= deltaTime * 2; if (this.opacity <= 0) { this.opacity = 0; if (this.life <= -0.5) { this.reset(); } } } else { this.opacity = this.initialOpacity * (0.6 + Math.abs(Math.sin( (this.initialLife - this.life) * Math.PI / this.initialLife ) * 0.4)); } if (this.x <= 0 || this.x >= sfcwCanvas.width) { this.speedX *= -0.95; this.x = Math.max(1, Math.min(this.x, sfcwCanvas.width - 1)); } if (this.y <= 0 || this.y >= sfcwCanvas.height) { this.speedY *= -0.95; this.y = Math.max(1, Math.min(this.y, sfcwCanvas.height - 1)); } }
+                reset() { if (!sfcwCanvas) return; this.x = Math.random() * sfcwCanvas.width; this.y = Math.random() * sfcwCanvas.height; this.opacity = this.initialOpacity; this.life = this.initialLife; this.speedX = (Math.random() * 1 - 0.5) * 0.5; this.speedY = (Math.random() * 1 - 0.5) * 0.5; }
+                draw() { if (!sfcwCtx || this.opacity <= 0) return; sfcwCtx.globalAlpha = this.opacity; sfcwCtx.fillStyle = this.color; sfcwCtx.beginPath(); sfcwCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2); sfcwCtx.fill(); }
+            }
+            function sfcwInitParticles() { sfcwParticles = []; if (!sfcwCanvas || sfcwCanvas.width === 0 || sfcwCanvas.height === 0) return; let numberOfParticles = Math.floor(sfcwCanvas.width * sfcwCanvas.height / 15000); numberOfParticles = Math.max(50, Math.min(numberOfParticles, 150)); for (let i = 0; i < numberOfParticles; i++) { sfcwParticles.push(new SFCW_Particle()); } }
+            let sfcwLastTime = 0;
+            function sfcwAnimateParticles(timestamp) { if (!sfcwCtx || !sfcwCanvas) { cancelAnimationFrame(sfcwAnimationFrameId); return; } if (document.hidden) { sfcwLastTime = timestamp; sfcwAnimationFrameId = requestAnimationFrame(sfcwAnimateParticles); return; } const deltaTime = (timestamp - sfcwLastTime) / 1000; sfcwLastTime = timestamp; sfcwCtx.clearRect(0, 0, sfcwCanvas.width, sfcwCanvas.height); sfcwParticles.forEach(p => { if (deltaTime > 0 && deltaTime < 0.1) { p.update(deltaTime); } else if (deltaTime >= 0.1) { p.reset(); } p.draw(); }); sfcwCtx.globalAlpha = 1.0; sfcwAnimationFrameId = requestAnimationFrame(sfcwAnimateParticles); }
+            function sfcwStartAnimation() { if (!sfcwCanvas || !sfcwCtx) return; sfcwResizeCanvas(); sfcwInitParticles(); if (sfcwAnimationFrameId) { cancelAnimationFrame(sfcwAnimationFrameId); } sfcwLastTime = performance.now(); sfcwAnimationFrameId = requestAnimationFrame(sfcwAnimateParticles); }
+            const sfcwStartDelay = setTimeout(sfcwStartAnimation, 150); let sfcwResizeTimeout;
+            window.addEventListener('resize', () => { clearTimeout(sfcwResizeTimeout); sfcwResizeTimeout = setTimeout(() => { if (sfcwAnimationFrameId) { cancelAnimationFrame(sfcwAnimationFrameId); sfcwAnimationFrameId = null; } console.log("Resizing detected, restarting animation..."); sfcwStartAnimation(); }, 500); });
+            window.addEventListener('beforeunload', () => { if (sfcwAnimationFrameId) { cancelAnimationFrame(sfcwAnimationFrameId); } clearTimeout(sfcwStartDelay); clearTimeout(sfcwResizeTimeout); });
+        }
+        /* ===== END: Screen Focus Cosmos Widget JS ===== */
+
+    }); // DOMContentLoaded समाप्त
+    </script>
+
+</body>
+</html>
