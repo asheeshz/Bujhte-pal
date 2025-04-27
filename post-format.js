@@ -1,29 +1,30 @@
 document.addEventListener("DOMContentLoaded", function() {
 
     // --- सामान्य स्क्रिप्ट्स (Smooth Scroll, Nav Update, TTS, Pagination) ---
+    // (Prefixed versions from previous step)
 
     // --- स्मूथ स्क्रॉल और नेविगेशन अपडेट ---
-    const smoothScrollLinks = document.querySelectorAll(".akc-custom-a[href^='#'], .akc-story-nav a[href^='#']"); // Prefixed
-    const navHeight = document.querySelector('.akc-story-nav') ? document.querySelector('.akc-story-nav').offsetHeight : 50; // Prefixed
+    const smoothScrollLinks = document.querySelectorAll(".akc-custom-a[href^='#'], .akc-story-nav a[href^='#']");
+    const navHeight = document.querySelector('.akc-story-nav') ? document.querySelector('.akc-story-nav').offsetHeight : 50;
     smoothScrollLinks.forEach(link => {
         link.addEventListener("click", (event) => {
             const href = link.getAttribute("href");
             if (href && href.startsWith("#") && href.length > 1) {
-                 const targetElement = document.querySelector(href); // ID selector remains same
+                 const targetElement = document.querySelector(href);
                  if (targetElement) {
                     event.preventDefault();
                     const offsetTop = targetElement.offsetTop;
                     window.scrollTo({ top: offsetTop - navHeight - 15, behavior: 'smooth' });
-                    if (link.closest('.akc-story-nav')) { // Prefixed
-                         document.querySelectorAll('.akc-story-nav a').forEach(nav => nav.classList.remove('akc-active')); // Prefixed state
-                         link.classList.add('akc-active'); // Prefixed state
+                    if (link.closest('.akc-story-nav')) {
+                         document.querySelectorAll('.akc-story-nav a').forEach(nav => nav.classList.remove('akc-active'));
+                         link.classList.add('akc-active');
                     }
                 } else { console.warn(`Element with ID ${href} not found.`); }
             }
         });
     });
-     const sections = document.querySelectorAll('.akc-custom-div[id^="part"]'); // Prefixed
-     const navLinks = document.querySelectorAll('.akc-story-nav a[href^="#part"]'); // Prefixed
+     const sections = document.querySelectorAll('.akc-custom-div[id^="part"]');
+     const navLinks = document.querySelectorAll('.akc-story-nav a[href^="#part"]');
      const updateActiveLinkBasedOnScroll = () => {
          if (sections.length === 0 || navLinks.length === 0) return;
          let current = '';
@@ -31,7 +32,6 @@ document.addEventListener("DOMContentLoaded", function() {
          const windowHeight = window.innerHeight;
          sections.forEach(section => {
              const sectionTop = section.offsetTop - navHeight - 50;
-             // const sectionBottom = sectionTop + section.offsetHeight; // Not needed for this logic
              if (scrollPosition >= sectionTop && scrollPosition < sectionTop + (section.offsetHeight * 0.8) ) { current = section.getAttribute('id'); }
          });
           if (!current && sections.length > 0) {
@@ -39,40 +39,58 @@ document.addEventListener("DOMContentLoaded", function() {
              else if ((windowHeight + scrollPosition) >= document.body.offsetHeight - 100) { current = sections[sections.length - 1].getAttribute('id'); }
           }
          navLinks.forEach(link => {
-             link.classList.remove('akc-active'); // Prefixed state
-             if (link.hash === `#${current}`) { link.classList.add('akc-active'); } // Prefixed state
+             link.classList.remove('akc-active');
+             if (link.hash === `#${current}`) { link.classList.add('akc-active'); }
          });
      };
      updateActiveLinkBasedOnScroll();
      window.addEventListener('scroll', updateActiveLinkBasedOnScroll);
      const hash = window.location.hash;
      if (hash && hash.startsWith("#part")) {
-         const activeLink = document.querySelector(`.akc-story-nav a[href$="${hash}"]`); // Prefixed
-         if (activeLink) { document.querySelectorAll('.akc-story-nav a').forEach(link => link.classList.remove('akc-active')); activeLink.classList.add('akc-active'); } // Prefixed state
+         const activeLink = document.querySelector(`.akc-story-nav a[href$="${hash}"]`);
+         if (activeLink) { document.querySelectorAll('.akc-story-nav a').forEach(link => link.classList.remove('akc-active')); activeLink.classList.add('akc-active'); }
          setTimeout(() => {
             const targetElement = document.querySelector(hash);
             if (targetElement) { window.scrollTo({ top: targetElement.offsetTop - navHeight - 15, behavior: 'auto' }); }
          }, 100);
       } else {
           if ((window.pageYOffset || document.documentElement.scrollTop) < 100 && sections.length > 0) {
-             const defaultActiveLink = document.querySelector('.akc-story-nav a[href$="#part1"]'); // Prefixed
-             if(defaultActiveLink) { document.querySelectorAll('.akc-story-nav a').forEach(link => link.classList.remove('akc-active')); defaultActiveLink.classList.add('akc-active'); } // Prefixed state
+             const defaultActiveLink = document.querySelector('.akc-story-nav a[href$="#part1"]');
+             if(defaultActiveLink) { document.querySelectorAll('.akc-story-nav a').forEach(link => link.classList.remove('akc-active')); defaultActiveLink.classList.add('akc-active'); }
           }
       }
     // --- स्मूथ स्क्रॉल समाप्त ---
 
     // --- स्वचालित पेजिनेशन और भाग नेविगेशन ---
     function setupPaginationAndNav() {
-        const paginationContainer = document.querySelector('.akc-pagination-section'); // Prefixed
+        const paginationContainer = document.querySelector('.akc-pagination-section');
         if (!paginationContainer) { console.warn("Pagination container not found."); return; }
-        const totalPages = 6; const baseFilename = 'aranyani-kaushik-part'; const fileExtension = '.html';
-        let currentPageNumber = 1; const currentPath = window.location.pathname;
+
+        // नोट: यदि आप डेटा एट्रिब्यूट विधि का उपयोग करना चाहते हैं, तो इन मानों को बॉडी टैग से पढ़ें
+        const totalPages = 6; // <<< आप इसे डायनामिक बनाने के लिए data-total-pages से पढ़ सकते हैं
+        const baseFilename = 'aranyani-kaushik-part'; // <<< आप इसे data-base-filename से पढ़ सकते हैं
+        const fileExtension = '.html'; // <<< आप इसे data-file-extension से पढ़ सकते हैं
+
+        let currentPageNumber = 1; // <<< डिफ़ॉल्ट
+        const currentPath = window.location.pathname;
         const filenameMatch = currentPath.match(/part(\d+)\.html$/i);
         if (filenameMatch && filenameMatch[1]) {
              const parsedNum = parseInt(filenameMatch[1], 10);
-             if (!isNaN(parsedNum) && parsedNum >= 1 && parsedNum <= totalPages) { currentPageNumber = parsedNum; }
-             else { console.warn("Pagination: Page number from URL filename invalid/out of range."); }
-        } else { console.warn("Pagination: Could not find page number in filename:", currentPath, ". Assuming page 1."); }
+             if (!isNaN(parsedNum) && parsedNum >= 1 && parsedNum <= totalPages) {
+                 currentPageNumber = parsedNum; // <<< आप इसे data-current-page से भी पढ़ सकते हैं
+             } else {
+                 console.warn("Pagination: Page number from URL filename invalid/out of range. Using default.");
+             }
+        } else {
+             console.warn("Pagination: Could not find page number in filename:", currentPath, ". Using default.");
+             // वैकल्पिक: यहाँ data-current-page से पढ़ने का प्रयास करें
+             // const bodyData = document.body.dataset;
+             // const pageFromData = parseInt(bodyData.currentPage || '1', 10);
+             // if (!isNaN(pageFromData) && pageFromData >= 1 && pageFromData <= totalPages) {
+             //     currentPageNumber = pageFromData;
+             // }
+        }
+
         paginationContainer.innerHTML = ''; const maxVisibleLinks = 5; let startPage, endPage;
         if (totalPages <= maxVisibleLinks) { startPage = 1; endPage = totalPages; }
         else {
@@ -81,13 +99,13 @@ document.addEventListener("DOMContentLoaded", function() {
             else if (currentPageNumber + maxAfter >= totalPages) { startPage = totalPages - maxVisibleLinks + 1; endPage = totalPages; }
             else { startPage = currentPageNumber - maxBefore; endPage = currentPageNumber + maxAfter; }
         }
-        if (startPage > 1) { const firstLink = document.createElement('a'); firstLink.href = `${baseFilename}1${fileExtension}`; firstLink.textContent = '1'; firstLink.classList.add('akc-pagination-link'); paginationContainer.appendChild(firstLink); if (startPage > 2) { const ellipsisStart = document.createElement('span'); ellipsisStart.textContent = '...'; ellipsisStart.classList.add('akc-pagination-label'); paginationContainer.appendChild(ellipsisStart); } } // Prefixed class
-        for (let i = startPage; i <= endPage; i++) { if (i === currentPageNumber) { const currentSpan = document.createElement('span'); currentSpan.textContent = i; currentSpan.classList.add('akc-pagination-link', 'akc-current'); paginationContainer.appendChild(currentSpan); } else { const link = document.createElement('a'); link.href = `${baseFilename}${i}${fileExtension}`; link.textContent = i; link.classList.add('akc-pagination-link'); paginationContainer.appendChild(link); } } // Prefixed classes
-        if (endPage < totalPages) { if (endPage < totalPages - 1) { const ellipsisEnd = document.createElement('span'); ellipsisEnd.textContent = '...'; ellipsisEnd.classList.add('akc-pagination-label'); paginationContainer.appendChild(ellipsisEnd); } const lastLink = document.createElement('a'); lastLink.href = `${baseFilename}${totalPages}${fileExtension}`; lastLink.textContent = totalPages; lastLink.classList.add('akc-pagination-link'); paginationContainer.appendChild(lastLink); } // Prefixed class
-        const prevPartLinks = document.querySelectorAll('.akc-part-navigation .akc-prev-part-link'); // Prefixed
-        const nextPartLinks = document.querySelectorAll('.akc-part-navigation .akc-next-part-link'); // Prefixed
-        prevPartLinks.forEach(btn => { if(btn) { if (currentPageNumber > 1) { btn.href = `${baseFilename}${currentPageNumber - 1}${fileExtension}`; btn.classList.remove('akc-disabled'); } else { btn.href = '#'; btn.classList.add('akc-disabled'); } } }); // Prefixed state
-        nextPartLinks.forEach(btn => { if(btn) { if (currentPageNumber < totalPages) { btn.href = `${baseFilename}${currentPageNumber + 1}${fileExtension}`; btn.classList.remove('akc-disabled', 'akc-hidden-on-last'); } else { btn.href = '#'; btn.classList.add('akc-disabled', 'akc-hidden-on-last'); } } }); // Prefixed states
+        if (startPage > 1) { const firstLink = document.createElement('a'); firstLink.href = `${baseFilename}1${fileExtension}`; firstLink.textContent = '1'; firstLink.classList.add('akc-pagination-link'); paginationContainer.appendChild(firstLink); if (startPage > 2) { const ellipsisStart = document.createElement('span'); ellipsisStart.textContent = '...'; ellipsisStart.classList.add('akc-pagination-label'); paginationContainer.appendChild(ellipsisStart); } }
+        for (let i = startPage; i <= endPage; i++) { if (i === currentPageNumber) { const currentSpan = document.createElement('span'); currentSpan.textContent = i; currentSpan.classList.add('akc-pagination-link', 'akc-current'); paginationContainer.appendChild(currentSpan); } else { const link = document.createElement('a'); link.href = `${baseFilename}${i}${fileExtension}`; link.textContent = i; link.classList.add('akc-pagination-link'); paginationContainer.appendChild(link); } }
+        if (endPage < totalPages) { if (endPage < totalPages - 1) { const ellipsisEnd = document.createElement('span'); ellipsisEnd.textContent = '...'; ellipsisEnd.classList.add('akc-pagination-label'); paginationContainer.appendChild(ellipsisEnd); } const lastLink = document.createElement('a'); lastLink.href = `${baseFilename}${totalPages}${fileExtension}`; lastLink.textContent = totalPages; lastLink.classList.add('akc-pagination-link'); paginationContainer.appendChild(lastLink); }
+        const prevPartLinks = document.querySelectorAll('.akc-part-navigation .akc-prev-part-link');
+        const nextPartLinks = document.querySelectorAll('.akc-part-navigation .akc-next-part-link');
+        prevPartLinks.forEach(btn => { if(btn) { if (currentPageNumber > 1) { btn.href = `${baseFilename}${currentPageNumber - 1}${fileExtension}`; btn.classList.remove('akc-disabled'); } else { btn.href = '#'; btn.classList.add('akc-disabled'); } } });
+        nextPartLinks.forEach(btn => { if(btn) { if (currentPageNumber < totalPages) { btn.href = `${baseFilename}${currentPageNumber + 1}${fileExtension}`; btn.classList.remove('akc-disabled', 'akc-hidden-on-last'); } else { btn.href = '#'; btn.classList.add('akc-disabled', 'akc-hidden-on-last'); } } });
     }
     setupPaginationAndNav();
     // --- पेजिनेशन समाप्त ---
@@ -97,24 +115,21 @@ document.addEventListener("DOMContentLoaded", function() {
     function speakText(text, lang = "hi-IN") {
         if ('speechSynthesis' in window) { if (currentSpeech && window.speechSynthesis.speaking) { window.speechSynthesis.cancel(); if (currentSpeech.text === text) { currentSpeech = null; return; } } const speech = new SpeechSynthesisUtterance(text); speech.lang = lang; speech.volume = 1; speech.rate = 0.9; speech.pitch = 1; currentSpeech = speech; speech.onend = () => { currentSpeech = null; }; window.speechSynthesis.speak(speech); } else { console.warn("Speech synthesis not supported."); alert("क्षमा करें, टेक्स्ट-टू-स्पीच समर्थित नहीं है।"); }
     }
-    document.querySelectorAll(".akc-special-term-1, .akc-special-term-2, .akc-special-term-3").forEach(term => { term.addEventListener("click", (event) => { event.stopPropagation(); speakText(term.textContent, "hi-IN"); }); term.title = "सुनने के लिए क्लिक करें"; }); // Prefixed
+    document.querySelectorAll(".akc-special-term-1, .akc-special-term-2, .akc-special-term-3").forEach(term => { term.addEventListener("click", (event) => { event.stopPropagation(); speakText(term.textContent, "hi-IN"); }); term.title = "सुनने के लिए क्लिक करें"; });
     document.querySelectorAll("p").forEach(paragraph => {
-        // TTS केवल कहानी पैराग्राफ के लिए
-        if (paragraph.classList.contains('akc-custom-p')) { // Prefixed
+        if (paragraph.classList.contains('akc-custom-p')) {
              paragraph.style.cursor = 'pointer'; paragraph.title = "पैराग्राफ सुनने के लिए क्लिक करें";
              paragraph.addEventListener("click", () => {
                 let clonedNode = paragraph.cloneNode(true);
-                clonedNode.querySelectorAll(".akc-special-term-1, .akc-special-term-2, .akc-special-term-3").forEach(span => span.remove()); // Prefixed
+                clonedNode.querySelectorAll(".akc-special-term-1, .akc-special-term-2, .akc-special-term-3").forEach(span => span.remove());
                 let textToSpeak = (clonedNode.textContent || clonedNode.innerText || "").trim().replace(/\s+/g, ' ');
                 speakText(textToSpeak, "hi-IN");
              });
              paragraph.addEventListener("mouseenter", () => { paragraph.style.backgroundColor = "#fffacd"; });
              paragraph.addEventListener("mouseleave", () => { paragraph.style.backgroundColor = ""; });
-        } else if (paragraph.closest('.akc-story-description') || paragraph.closest('.akc-tv-ad-explanation') || paragraph.closest('.akc-video-caption-below')) { // Prefixed containers check
-             // विवरण, विज्ञापन, कैप्शन के लिए डिफ़ॉल्ट कर्सर
+        } else if (paragraph.closest('.akc-story-description') || paragraph.classList.contains('akc-tv-ad-explanation') || paragraph.classList.contains('akc-video-caption-below')) {
              paragraph.style.cursor = 'default'; paragraph.title = "";
         }
-        // अन्य <p> टैग्स को अनदेखा किया जाएगा
      });
     window.addEventListener('beforeunload', () => { if ('speechSynthesis' in window) { window.speechSynthesis.cancel(); } });
     // --- TTS समाप्त ---
