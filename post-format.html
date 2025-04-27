@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <!-- **रखें:** मानक HTML हेड तत्व -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- ==== चरण 1: पेज शीर्षक (अनिवार्य) ==== -->
+    <!-- निर्देश: इस विशिष्ट भाग के लिए अद्वितीय और वर्णनात्मक शीर्षक प्रदान करें। -->
+    <title>[[PAGE_TITLE: जैसे, अरण्यानी और कौशिक: भाग 2 - वनदेवी का रहस्य]]</title>
+
+    <!-- ==== गूगल फ़ॉन्ट्स (रखें) ==== -->
+    <!-- निर्देश: ये डिज़ाइन के लिए आवश्यक हैं। इन्हें न हटाएं जब तक कि आप इन्हें CSS में @import नहीं करते। -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400&family=Tiro+Devanagari+Sanskrit:ital@0;1&family=Orbitron:wght@700&family=Poppins:wght@400;500;700&family=Noto+Sans+Devanagari:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- ==== Font Awesome (रखें) ==== -->
+    <!-- निर्देश: आइकनों के लिए आवश्यक। -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- ==== चरण 2: बाहरी CSS लिंक (अनिवार्य) ==== -->
+    <!-- निर्देश: अपनी style.css फ़ाइल का सही URL (jsDelivr/GitHub/होस्टिंग) या स्थानीय पथ यहाँ डालें। -->
+    <link rel="stylesheet" href="[[CSS_FILE_URL: जैसे, https://cdn.jsdelivr.net/gh/user/repo@main/style.css]]">
+
+    <!-- **हटाएं:** पहले यहाँ मौजूद कोई भी <style>...</style> ब्लॉक हटा दें। -->
+
+</head>
+<!-- ==== चरण 3: बॉडी डेटा एट्रिब्यूट्स (अनिवार्य - JS के लिए महत्वपूर्ण!) ==== -->
+<!-- निर्देश: ये मान बाहरी JavaScript द्वारा पेजिनेशन आदि के लिए पढ़े जाते हैं। इन्हें सही ढंग से भरें। -->
+<body data-current-page="[[CURRENT_PAGE_NUMBER: जैसे, 2]]"
+      data-total-pages="[[TOTAL_PAGES: जैसे, 6]]"
+      data-base-filename="[[BASE_FILENAME: जैसे, aranyani-kaushik-part]]"
+      data-file-extension="[[FILE_EXTENSION: जैसे, .html]]">
+
+<!-- ==== पेज रैपर (रखें) ==== -->
+<div class="akc-page-wrapper">
+
+    <!-- ==== चरण 4: नेविगेशन बार (URL बदलें) ==== -->
+    <!-- निर्देश: लिंक्स के href बदलें। JS सक्रिय स्थिति को संभालेगा। -->
+    <nav class="akc-story-nav">
+        <a href="[[HOME_PAGE_URL: जैसे, index.html]]">मुख्य पृष्ठ</a>
+        <!-- JS इसे स्क्रॉल पर अपडेट करेगा, लेकिन प्रारंभिक लोड के लिए सही हैश दें -->
+        <a href="#part[[CURRENT_PAGE_NUMBER]]" class="akc-active">भाग [[CURRENT_PAGE_NUMBER]]</a>
+        <a href="[[ALL_WORKS_URL: जैसे, all-works.html]]">सभी रचनाएँ</a>
+    </nav>
+
+    <!-- ==== कहानी सामग्री कंटेनर (रखें) ==== -->
+    <div class="akc-story-container">
+
+        <!-- ==== चरण 5: टाइटल इमेज और ओवरले (कंटेंट बदलें) ==== -->
+        <div class="akc-animated-title-image-wrapper">
+            <img src="[[TITLE_IMAGE_URL: इमेज का पूर्ण URL]]" alt="[[TITLE_IMAGE_ALT: इमेज का वर्णनात्मक टेक्स्ट]]">
+            <div class="akc-full-image-tint-overlay"></div> <!-- रखें -->
+            <div class="akc-image-title-text-content">
+                <p class="akc-overlay-title-head">[[OVERLAY_HEAD: जैसे, एक कालजयी गाथा]]</p>
+                <span class="akc-overlay-main-title notranslate" data-text="[[OVERLAY_MAIN_TITLE_SANSKRIT: जैसे, अरण्यानी च कौशिकश्च]]">[[OVERLAY_MAIN_TITLE_SANSKRIT]]</span>
+                <p class="akc-overlay-subtitle">[[OVERLAY_SUBTITLE: जैसे, वन और वेदना की प्रेम गाथा]]</p>
+            </div>
+        </div>
+
+        <!-- ==== चरण 6: कहानी विवरण (कंटेंट बदलें, यदि आवश्यक हो) ==== -->
+        <!-- निर्देश: यदि यह हर भाग पर अलग है, तो कंटेंट बदलें। यदि समान है, तो सीधे HTML रख सकते हैं। -->
+        <div class="akc-story-description">
+            <h3>[[DESCRIPTION_TITLE: जैसे, कथा-परिचय एवं स्रोत संकेत]]</h3>
+            <!-- कहानी विवरण का HTML यहाँ डालें -->
+            [[STORY_DESCRIPTION_HTML: <p>...</p><ul><li>...</li></ul><div class="akc-post-meta">...</div>]]
+        </div>
+
+        <!-- ==== चरण 7: भाग की मुख्य सामग्री (अनिवार्य - ID और कंटेंट बदलें) ==== -->
+        <!-- निर्देश: div की ID में सही भाग संख्या डालें (`part1`, `part2`...) और मुख्य कंटेंट भरें। -->
+        <div id="part[[CURRENT_PAGE_NUMBER]]" class="akc-custom-div">
+            <h2 class="akc-custom-h2">[[PART_TITLE: जैसे, भाग 2: वनदेवी का रहस्य]]</h2>
+
+            <!-- भाग नेविगेशन (ऊपर) (रखें, URL जांचें) -->
+            <div class="akc-part-navigation">
+                <a href="#" class="akc-custom-a akc-prev-part-link akc-disabled">पिछला भाग</a>
+                <a href="[[HOME_PAGE_URL]]" class="akc-custom-a akc-home-link">मुख्य पृष्ठ</a>
+                <a href="#" class="akc-custom-a akc-next-part-link akc-disabled">अगला भाग</a>
+            </div>
+
+            <!-- भाग का मुख्य HTML कंटेंट यहाँ डालें -->
+            [[PART_CONTENT_HTML:
+                <h3 class="akc-custom-h3">उपशीर्षक 1</h3>
+                <p class="akc-custom-p">पैराग्राफ टेक्स्ट... <span class="akc-special-term-1 notranslate">विशेष शब्द 1</span>...</p>
+                <div class="akc-image-frame">
+                     <img src="[[IMAGE_URL]]" alt="[[IMAGE_ALT]]" class="akc-custom-image">
+                     <figcaption class="akc-image-caption">[[IMAGE_CAPTION]]</figcaption>
+                 </div>
+                 <h3 class="akc-custom-h3">उपशीर्षक 2</h3>
+                 <p class="akc-custom-p">दूसरा पैराग्राफ... <span class="akc-special-term-2 notranslate">विशेष शब्द 2</span>...</p>
+            ]]
+
+            <!-- भाग नेविगेशन (नीचे) (रखें, URL जांचें) -->
+            <div class="akc-part-navigation">
+                 <a href="#" class="akc-custom-a akc-prev-part-link akc-disabled">पिछला भाग</a>
+                 <a href="[[HOME_PAGE_URL]]" class="akc-custom-a akc-home-link">मुख्य पृष्ठ</a>
+                 <a href="#" class="akc-custom-a akc-next-part-link akc-disabled">अगला भाग</a>
+             </div>
+        </div> <!-- भाग कंटेंट div बंद -->
+
+        <!-- ==== चरण 8: विज्ञापन बैनर (कंटेंट बदलें या हटाएं) ==== -->
+        <!-- निर्देश: यदि विज्ञापन दिखाना है, तो कंटेंट बदलें। यदि नहीं, तो इस पूरे .akc-tv-ad-frame ब्लॉक को हटा दें। -->
+        <div class="akc-tv-ad-frame">
+            <div class="akc-tv-ad-screen">
+                <div class="akc-tv-ad-content">
+                    <p class="akc-tv-ad-head">[[AD_HEAD: जैसे, ज्ञान की एक नई किरण]]</p>
+                    <h3 class="akc-tv-ad-title">[[AD_TITLE: जैसे, कालपथ समाचार]]</h3>
+                    <p class="akc-tv-ad-subtitle">[[AD_SUBTITLE: जैसे, विचारों का अनंत प्रवाह]]</p>
+                    <p class="akc-tv-ad-explanation">[[AD_EXPLANATION: विज्ञापन का विवरण]]</p>
+                    <a href="[[AD_BUTTON_LINK: विज्ञापन का URL]]" class="akc-tv-ad-button" target="_blank" rel="noopener noreferrer">[[AD_BUTTON_TEXT: जैसे, अभी जुड़ें]]</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==== चरण 9: वीडियो प्लेयर (कंटेंट बदलें या हटाएं) ==== -->
+        <!-- निर्देश: यदि वीडियो दिखाना है, तो URL, शीर्षक, कैप्शन बदलें। यदि नहीं, तो .akc-stylish-video-player और p.akc-video-caption-below दोनों को हटा दें। -->
+         <div class="akc-stylish-video-player">
+             <iframe src="[[VIDEO_EMBED_URL: यूट्यूब/अन्य एम्बेड URL]]" title="[[VIDEO_TITLE: वीडियो का शीर्षक]]" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+         </div>
+         <p class="akc-video-caption-below">[[VIDEO_CAPTION: वीडियो का कैप्शन]]</p>
+
+    </div> <!-- कहानी कंटेनर बंद -->
+
+    <!-- ==== फुटर रैपर (रखें) ==== -->
+    <div class="akc-footer-wrapper">
+
+        <!-- ==== चरण 10, 11, 12, 13: Cosmos फुटर विजेट (कंटेंट बदलें) ==== -->
+        <!-- निर्देश: फुटर की संरचना रखें। टेक्स्ट, लिंक और JSON-LD को अपडेट करें। -->
+        <footer class="sfcw-widget">
+          <div class="sfcw-background-depth"></div> <!-- रखें -->
+          <canvas id="sfcw-particle-canvas"></canvas> <!-- रखें -->
+          <div class="sfcw-container">
+            <div class="sfcw-content-screen">
+                <!-- चरण 10: क्रेडिट्स और संगठन -->
+                <div class="sfcw-credits">
+                   <p><span class="sfcw-energized-text">[[FOOTER_AUTHOR_NAME: जैसे, आचार्य आशीष मिश्र]]</span></p>
+                   <p class="sfcw-author-title">[[FOOTER_AUTHOR_TITLE: जैसे, वेब प्रोग्रामर❖साहित्य सर्जक❖विचारक]]</p>
+                </div>
+                <div class="sfcw-organization">
+                   <p><a href="[[FOOTER_ORG_LINK_1: जैसे, index.html]]" target="_self" rel="noopener noreferrer"><strong class="sfcw-energized-text">[[FOOTER_ORG_NAME_1: जैसे, अरण्यानी कथा]]</strong></a> की एक प्रस्तुति</p>
+                   <p style="font-size:0.9em; opacity: 0.8;">(एक <a href="[[FOOTER_ORG_LINK_2: जैसे, https://abpiyush.blogspot.com]]" target="_blank" rel="noopener noreferrer" style="color: var(--sfcw-primary-glow);">[[FOOTER_ORG_NAME_2: जैसे, Abhijit Piyush Organisation]]</a> पहल)</p>
+                </div>
+            </div>
+            <!-- चरण 11: फुटर लिंक्स -->
+            <div class="sfcw-links">
+              <nav aria-label="सहयोगी और महत्वपूर्ण लिंक्स">
+                <!-- फुटर लिंक्स का HTML यहाँ डालें -->
+                [[FOOTER_LINKS_HTML:
+                    <span class="sfcw-link-label"><i class="fas fa-atom"></i> सहयोगी:</span>
+                    <a href="..." target="_blank">लिंक 1</a><span class="sfcw-separator">✧</span>
+                    <a href="..." target="_blank">लिंक 2</a>
+                    <br style="display: block; margin-bottom: 12px;">
+                    <span class="sfcw-link-label"><i class="fas fa-meteor"></i> डिजिटल पदचिह्न:</span>
+                    <a href="https://github.com/asheeshz" target="_blank" title="GitHub"><i class="fab fa-github"></i> GitHub</a>...
+                ]]
+              </nav>
+            </div>
+            <!-- चरण 12: कॉपीराइट टेक्स्ट -->
+            <div class="sfcw-copyright">
+              <p><i class="fas fa-copyright"></i><span id="sfcw-current-year"></span> <!-- JS वर्ष डालेगा --> [[COPYRIGHT_TEXT: जैसे, आचार्य आशीष मिश्र एवं सहयोगी। सर्वाधिकार सुरक्षित। ब्रह्मांडीय चेतना से प्रेरित।]]</p>
+            </div>
+             <!-- चरण 13: JSON-LD Schema डेटा (अनिवार्य - SEO के लिए महत्वपूर्ण!) -->
+             <!-- निर्देश: इस स्क्रिप्ट को **रखें** और इसके अंदर के सभी मानों को इस विशिष्ट भाग के लिए सही जानकारी से बदलें। -->
+             <script type="application/ld+json">
+             {
+               "@context": "https://schema.org",
+               "@type": "BlogPosting",
+               "mainEntityOfPage": {
+                 "@type": "WebPage",
+                 "@id": "[[JSON_LD_PERMALINK: इस पेज का पूर्ण URL]]"
+               },
+               "headline": "[[JSON_LD_HEADLINE: पेज का मुख्य शीर्षक]]",
+               "description": "[[JSON_LD_DESCRIPTION: पेज का संक्षिप्त विवरण (लगभग 160 अक्षर)]]",
+               "image": {
+                 "@type": "ImageObject",
+                 "url": "[[JSON_LD_IMAGE_URL: मुख्य इमेज का पूर्ण URL]]"
+               },
+               "author": {
+                 "@type": "Person",
+                 "name": "[[JSON_LD_AUTHOR_NAME: लेखक का नाम]]",
+                 "url": "[[JSON_LD_AUTHOR_URL: लेखक की प्रोफाइल URL, वैकल्पिक]]",
+                 "sameAs": [
+                   "[[JSON_LD_AUTHOR_PROFILE_URL_1: जैसे, GitHub लिंक]]",
+                   "[[JSON_LD_AUTHOR_PROFILE_URL_2: जैसे, Blogger प्रोफ़ाइल लिंक]]"
+                 ]
+               },
+               "publisher": {
+                 "@type": "Organization",
+                 "name": "[[JSON_LD_PUBLISHER_NAME: प्रकाशक का नाम]]",
+                 "url": "[[JSON_LD_PUBLISHER_URL: प्रकाशक का होमपेज URL]]",
+                 "logo": {
+                   "@type": "ImageObject",
+                   "url": "[[JSON_LD_PUBLISHER_LOGO_URL: प्रकाशक के लोगो का पूर्ण URL]]"
+                 }
+               },
+               "datePublished": "[[JSON_LD_DATE_PUBLISHED: YYYY-MM-DD]]",
+               "dateModified": "[[JSON_LD_DATE_MODIFIED: YYYY-MM-DD]]"
+             }
+             </script>
+          </div>
+        </footer>
+        <!-- Cosmos फुटर समाप्त -->
+    </div>
+    <!-- फुटर रैपर समाप्त -->
+
+    <!-- ==== पेजिनेशन सेक्शन (रखें) ==== -->
+    <!-- निर्देश: यह div खाली **रखें**। JS यहाँ पेजिनेशन लिंक डालेगा। -->
+    <div class="akc-pagination-section"></div>
+
+</div> <!-- पेज रैपर बंद -->
+
+    <!-- ==== चरण 14: बाहरी JavaScript लिंक (अनिवार्य) ==== -->
+    <!-- निर्देश: अपनी संशोधित script.js फ़ाइल का सही URL या स्थानीय पथ यहाँ डालें। -->
+    <script src="[[JS_FILE_URL: जैसे, https://cdn.jsdelivr.net/gh/user/repo@main/script.js]]"></script>
+
+    <!-- **हटाएं:** पहले यहाँ मौजूद कोई भी <script>...</script> ब्लॉक (जिसमें DOMContentLoaded या अन्य फंक्शन थे) हटा दें, सिवाय JSON-LD वाले स्क्रिप्ट के। -->
+
+</body>
+</html>
