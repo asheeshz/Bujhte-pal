@@ -1,220 +1,170 @@
-<!DOCTYPE html>
-<html lang="hi">
-<head>
-    <!-- **रखें:** मानक HTML हेड तत्व -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<div class="akc-page-wrapper"> <!-- पेज रैपर -->
 
-    <!-- ==== चरण 1: पेज शीर्षक (अनिवार्य) ==== -->
-    <!-- निर्देश: इस विशिष्ट भाग के लिए अद्वितीय और वर्णनात्मक शीर्षक प्रदान करें। -->
-    <title>[[PAGE_TITLE: जैसे, अरण्यानी और कौशिक: भाग 2 - वनदेवी का रहस्य]]</title>
-
-    <!-- ==== गूगल फ़ॉन्ट्स (रखें) ==== -->
-    <!-- निर्देश: ये डिज़ाइन के लिए आवश्यक हैं। इन्हें न हटाएं जब तक कि आप इन्हें CSS में @import नहीं करते। -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400&family=Tiro+Devanagari+Sanskrit:ital@0;1&family=Orbitron:wght@700&family=Poppins:wght@400;500;700&family=Noto+Sans+Devanagari:wght@400;500;700&display=swap" rel="stylesheet">
-
-    <!-- ==== Font Awesome (रखें) ==== -->
-    <!-- निर्देश: आइकनों के लिए आवश्यक। -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <!-- ==== चरण 2: बाहरी CSS लिंक (अनिवार्य) ==== -->
-    <!-- निर्देश: अपनी style.css फ़ाइल का सही URL (jsDelivr/GitHub/होस्टिंग) या स्थानीय पथ यहाँ डालें। -->
-    <link rel="stylesheet" href="[[CSS_FILE_URL: जैसे, https://cdn.jsdelivr.net/gh/user/repo@main/style.css]]">
-
-    <!-- **हटाएं:** पहले यहाँ मौजूद कोई भी <style>...</style> ब्लॉक हटा दें। -->
-
-</head>
-<!-- ==== चरण 3: बॉडी डेटा एट्रिब्यूट्स (अनिवार्य - JS के लिए महत्वपूर्ण!) ==== -->
-<!-- निर्देश: ये मान बाहरी JavaScript द्वारा पेजिनेशन आदि के लिए पढ़े जाते हैं। इन्हें सही ढंग से भरें। -->
-<body data-current-page="[[CURRENT_PAGE_NUMBER: जैसे, 2]]"
-      data-total-pages="[[TOTAL_PAGES: जैसे, 6]]"
-      data-base-filename="[[BASE_FILENAME: जैसे, aranyani-kaushik-part]]"
-      data-file-extension="[[FILE_EXTENSION: जैसे, .html]]">
-
-<!-- ==== पेज रैपर (रखें) ==== -->
-<div class="akc-page-wrapper">
-
-    <!-- ==== चरण 4: नेविगेशन बार (URL बदलें) ==== -->
-    <!-- निर्देश: लिंक्स के href बदलें। JS सक्रिय स्थिति को संभालेगा। -->
+    <!-- नेविगेशन बार -->
     <nav class="akc-story-nav">
-        <a href="[[HOME_PAGE_URL: जैसे, index.html]]">मुख्य पृष्ठ</a>
-        <!-- JS इसे स्क्रॉल पर अपडेट करेगा, लेकिन प्रारंभिक लोड के लिए सही हैश दें -->
-        <a href="#part[[CURRENT_PAGE_NUMBER]]" class="akc-active">भाग [[CURRENT_PAGE_NUMBER]]</a>
-        <a href="[[ALL_WORKS_URL: जैसे, all-works.html]]">सभी रचनाएँ</a>
+        <a href="index.html">मुख्य पृष्ठ</a>
+        <a href="#part1" class="akc-active">भाग 1</a>
+        <a href="all-works.html">सभी रचनाएँ</a>
     </nav>
 
-    <!-- ==== कहानी सामग्री कंटेनर (रखें) ==== -->
+    <!-- कहानी सामग्री -->
     <div class="akc-story-container">
-
-        <!-- ==== चरण 5: टाइटल इमेज और ओवरले (कंटेंट बदलें) ==== -->
+        <!-- Title Image -->
         <div class="akc-animated-title-image-wrapper">
-            <img src="[[TITLE_IMAGE_URL: इमेज का पूर्ण URL]]" alt="[[TITLE_IMAGE_ALT: इमेज का वर्णनात्मक टेक्स्ट]]">
-            <div class="akc-full-image-tint-overlay"></div> <!-- रखें -->
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh_fENNPRZTMF3PIzBmK4jmxs22EisH1DHqQZweHp3p42xg6Hm9NOhnd7M7XwjPG8HN0M42skdLwaQgDJVkzhhWZhzs_6N8hyphenhyphenx1ZpMMC2Q-vpEN1ix8vdHae4zWk1o4rEL6bXoVQcJ0O8ilJzcQaCebipAuZX55noNHUDQxRykbRW_hoDDm-nw9XTsYUnaJ/s1046/image_search_1733601703122.png" alt="अरण्यानी और कौशिक कहानी का दृश्य">
+            <div class="akc-full-image-tint-overlay"></div>
             <div class="akc-image-title-text-content">
-                <p class="akc-overlay-title-head">[[OVERLAY_HEAD: जैसे, एक कालजयी गाथा]]</p>
-                <span class="akc-overlay-main-title notranslate" data-text="[[OVERLAY_MAIN_TITLE_SANSKRIT: जैसे, अरण्यानी च कौशिकश्च]]">[[OVERLAY_MAIN_TITLE_SANSKRIT]]</span>
-                <p class="akc-overlay-subtitle">[[OVERLAY_SUBTITLE: जैसे, वन और वेदना की प्रेम गाथा]]</p>
+                <p class="akc-overlay-title-head">एक कालजयी गाथा</p>
+                <span class="akc-overlay-main-title notranslate" data-text="अरण्यानी च कौशिकश्च">अरण्यानी च कौशिकश्च</span>
+                <p class="akc-overlay-subtitle">वन और वेदना की प्रेम गाथा</p>
             </div>
         </div>
 
-        <!-- ==== चरण 6: कहानी विवरण (कंटेंट बदलें, यदि आवश्यक हो) ==== -->
-        <!-- निर्देश: यदि यह हर भाग पर अलग है, तो कंटेंट बदलें। यदि समान है, तो सीधे HTML रख सकते हैं। -->
+        <!-- Story Description -->
         <div class="akc-story-description">
-            <h3>[[DESCRIPTION_TITLE: जैसे, कथा-परिचय एवं स्रोत संकेत]]</h3>
-            <!-- कहानी विवरण का HTML यहाँ डालें -->
-            [[STORY_DESCRIPTION_HTML: <p>...</p><ul><li>...</li></ul><div class="akc-post-meta">...</div>]]
+             <h3>कथा-परिचय एवं स्रोत संकेत</h3>
+            <p>प्रस्तुत कथा, <strong class="akc-special-term-1 notranslate">"अरण्यानी और कौशिक: वन और वेदना की प्रेम गाथा"</strong>, प्राचीन भारतीय वांग्मय की पृष्ठभूमि में रची गई एक मौलिक कल्पना है। यह कथा प्रकृति, अध्यात्म, मानवीय भावनाओं और नियति के जटिल अंतर्संबंधों को दर्शाती है।</p>
+            <p>कथा का ताना-बाना एक युवा तपस्वी, कौशिक, के इर्द-गिर्द बुना गया है, जो आत्म-ज्ञान की तलाश में घने जंगल में तपस्या करने आता है। वहाँ उसका सामना होता है अरण्यानी से, जो मात्र वन की अधिष्ठात्री देवी ही नहीं, बल्कि स्वयं साकार प्रकृति है – रहस्यमयी, पोषण करने वाली और कभी-कभी भयावह भी। उनके बीच का संबंध पारंपरिक प्रेम कथाओं से परे है; यह ज्ञान, विस्मय, भय और अंततः एक गहरे आध्यात्मिक जुड़ाव की यात्रा है।</p>
+            <p><strong>संभावित स्रोत प्रेरणा (काल्पनिक संदर्भ):</strong></p>
+            <ul><li><strong>मूल भाव:</strong> ऋग्वेद, मंडल १०, सूक्त १४६ (अरण्यानी सूक्त)</li><li><strong>दार्शनिक पृष्ठभूमि:</strong> बृहदारण्यक उपनिषद् (आत्म-तत्व), छांदोग्य उपनिषद् (तत्त्वमसि)</li><li><strong>चरित्र-चित्रण:</strong> आरण्यक साहित्य में वर्णित तपस्वियों का जीवन एवं प्रकृति से उनका संबंध।</li><li><strong>काल्पनिक सर्ग/अध्याय:</strong> 'ज्ञान-वन पर्व', अध्याय ५-१० (यदि यह किसी महाकाव्य का हिस्सा होती)।</li></ul>
+             <div class="akc-post-meta">लेखक: आचार्य आशीष मिश्र | प्रकाशित: 27 अक्टूबर 2023</div>
         </div>
 
-        <!-- ==== चरण 7: भाग की मुख्य सामग्री (अनिवार्य - ID और कंटेंट बदलें) ==== -->
-        <!-- निर्देश: div की ID में सही भाग संख्या डालें (`part1`, `part2`...) और मुख्य कंटेंट भरें। -->
-        <div id="part[[CURRENT_PAGE_NUMBER]]" class="akc-custom-div">
-            <h2 class="akc-custom-h2">[[PART_TITLE: जैसे, भाग 2: वनदेवी का रहस्य]]</h2>
+        <!-- Part 1 Content -->
+        <div id="part1" class="akc-custom-div">
 
-            <!-- भाग नेविगेशन (ऊपर) (रखें, URL जांचें) -->
+            <!-- संपूर्ण भाग सुनें बटन -->
+            <div class="akc-tts-read-all-container">
+                <a id="akc-read-full-post-button" href="#" class="akc-tts-read-all" title="इस पूरे भाग को सुनने के लिए क्लिक करें">
+                    <i class="fas fa-volume-up"></i> संपूर्ण भाग सुनें
+                </a>
+            </div>
+
+            <h2 class="akc-custom-h2">भाग 1: तपस्वी का आगमन</h2>
             <div class="akc-part-navigation">
                 <a href="#" class="akc-custom-a akc-prev-part-link akc-disabled">पिछला भाग</a>
-                <a href="[[HOME_PAGE_URL]]" class="akc-custom-a akc-home-link">मुख्य पृष्ठ</a>
+                <a href="index.html" class="akc-custom-a akc-home-link">मुख्य पृष्ठ</a>
                 <a href="#" class="akc-custom-a akc-next-part-link akc-disabled">अगला भाग</a>
             </div>
 
-            <!-- भाग का मुख्य HTML कंटेंट यहाँ डालें -->
-            [[PART_CONTENT_HTML:
-                <h3 class="akc-custom-h3">उपशीर्षक 1</h3>
-                <p class="akc-custom-p">पैराग्राफ टेक्स्ट... <span class="akc-special-term-1 notranslate">विशेष शब्द 1</span>...</p>
-                <div class="akc-image-frame">
-                     <img src="[[IMAGE_URL]]" alt="[[IMAGE_ALT]]" class="akc-custom-image">
-                     <figcaption class="akc-image-caption">[[IMAGE_CAPTION]]</figcaption>
-                 </div>
-                 <h3 class="akc-custom-h3">उपशीर्षक 2</h3>
-                 <p class="akc-custom-p">दूसरा पैराग्राफ... <span class="akc-special-term-2 notranslate">विशेष शब्द 2</span>...</p>
-            ]]
-
-            <!-- भाग नेविगेशन (नीचे) (रखें, URL जांचें) -->
-            <div class="akc-part-navigation">
-                 <a href="#" class="akc-custom-a akc-prev-part-link akc-disabled">पिछला भाग</a>
-                 <a href="[[HOME_PAGE_URL]]" class="akc-custom-a akc-home-link">मुख्य पृष्ठ</a>
-                 <a href="#" class="akc-custom-a akc-next-part-link akc-disabled">अगला भाग</a>
+            <h3 class="akc-custom-h3">प्रारंभिक यात्रा</h3>
+            <p class="akc-custom-p">अतिप्राचीन काल की बात है, जब भारतवर्ष की भूमि वेदों की ऋचाओं से गुंजायमान थी और आरण्यक ज्ञान की खोज में ऋषि-मुनि घने वनों में तपस्यारत रहते थे। उन्हीं दिनों, सरस्वती नदी के तट पर बसे एक प्रसिद्ध गुरुकुल से निकलकर, युवा तपस्वी <span class="akc-special-term-1 notranslate">कौशिक</span> आत्म-ज्ञान की गहन खोज में हिमालय की तलहटी में स्थित एक निर्जन वन में प्रविष्ट हुआ। कौशिक मेधावी था, शास्त्रार्थ में निपुण, और उसका मन वेदांत के गूढ़ रहस्यों में रमता था। परन्तु, उसे अनुभव हुआ कि पुस्तकीय ज्ञान की सीमाएं हैं और सत्य का साक्षात्कार प्रकृति की गोद में, एकांत चिंतन से ही संभव है।</p>
+            <div class="akc-image-frame">
+                 <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgwleTksIG6g9fYJK4_9N1caqeoI9WkCi7eM9FAe1vvLZzAXSmYZ7SdhzBJ7REOuR9XVIskbcNtXtYYFRXPl0SttBNg-EvAuZUTWi-YlSCGFXDFT0M2bFEeZEPM7OdSgyWCv68Dzyyxo1xksCOHkfvZKBFdZmqKCXOMPTn8aijNbajJtXFRebMMmn2FVHoh/s360/image_search_1733631578155.png" alt="घने वन में प्रवेश करता तपस्वी कौशिक" class="akc-custom-image">
+                 <figcaption class="akc-image-caption">हिमालय की तलहटी का घना, रहस्यमयी वन, जहाँ कौशिक ने अपनी तपस्या आरम्भ की।</figcaption>
              </div>
-        </div> <!-- भाग कंटेंट div बंद -->
+            <h3 class="akc-custom-h3">वन में आसन</h3>
+            <p class="akc-custom-p">उसने अपने गुरु से आशीर्वाद लिया और न्यूनतम आवश्यकताओं के साथ वन की ओर प्रस्थान किया। वन घना था, रहस्यमयी और प्राचीन वृक्षों से आच्छादित। हवा में जंगली फूलों की मिश्रित सुगंध और अनजाने पक्षियों का कलरव व्याप्त था। कौशिक ने नदी से कुछ दूरी पर, एक विशाल वटवृक्ष के नीचे अपना छोटा सा आसन स्थापित किया। उसका लक्ष्य था – <span class="akc-special-term-2 notranslate">अहं ब्रह्मास्मि</span> के सत्य को अनुभव करना, अपनी चेतना को ब्रह्मांडीय चेतना में विलीन कर देना। प्रारंभिक दिन ध्यान और शास्त्रों के मनन में बीते। वह सूर्योदय के साथ उठता, नदी में स्नान करता, कंद-मूल फल का अल्पाहार लेता और फिर घंटों ध्यान में लीन हो जाता। वन की शांति उसके मन को स्थिरता प्रदान कर रही थी, किन्तु भीतर कहीं एक अपूर्णता का बोध शेष था।</p>
+            <p class="akc-custom-p">वन केवल शांत ही नहीं था, वह जीवन से स्पंदित था। हिरणों के झुंड निर्भयता से विचरण करते, मोर अपने पंख फैलाकर नृत्य करते और कभी-कभी रात्रि में वन्य पशुओं की गर्जना भी सुनाई दे जाती। कौशिक इन सबको <span class="akc-special-term-3 notranslate">साक्षी भाव</span> से देखता, प्रकृति के विराट चक्र का एक मौन दर्शक। उसे लगता था कि वह धीरे-धीरे इस वन का एक हिस्सा बनता जा रहा है, उसकी शहरी बुद्धि और शास्त्रीय अहंकार धीरे-धीरे पिघल रहे थे। पर वह नहीं जानता था कि यह वन उसके लिए केवल ज्ञान का ही नहीं, बल्कि एक ऐसे अनुभव का द्वार खोलने वाला था जो किसी शास्त्र में वर्णित नहीं था।</p>
+            <div class="akc-part-navigation">
+                <a href="#" class="akc-custom-a akc-prev-part-link akc-disabled">पिछला भाग</a>
+                <a href="index.html" class="akc-custom-a akc-home-link">मुख्य पृष्ठ</a>
+                <a href="#" class="akc-custom-a akc-next-part-link akc-disabled">अगला भाग</a>
+            </div>
+        </div>
 
-        <!-- ==== चरण 8: विज्ञापन बैनर (कंटेंट बदलें या हटाएं) ==== -->
-        <!-- निर्देश: यदि विज्ञापन दिखाना है, तो कंटेंट बदलें। यदि नहीं, तो इस पूरे .akc-tv-ad-frame ब्लॉक को हटा दें। -->
+        <!-- Ad Banner -->
         <div class="akc-tv-ad-frame">
             <div class="akc-tv-ad-screen">
                 <div class="akc-tv-ad-content">
-                    <p class="akc-tv-ad-head">[[AD_HEAD: जैसे, ज्ञान की एक नई किरण]]</p>
-                    <h3 class="akc-tv-ad-title">[[AD_TITLE: जैसे, कालपथ समाचार]]</h3>
-                    <p class="akc-tv-ad-subtitle">[[AD_SUBTITLE: जैसे, विचारों का अनंत प्रवाह]]</p>
-                    <p class="akc-tv-ad-explanation">[[AD_EXPLANATION: विज्ञापन का विवरण]]</p>
-                    <a href="[[AD_BUTTON_LINK: विज्ञापन का URL]]" class="akc-tv-ad-button" target="_blank" rel="noopener noreferrer">[[AD_BUTTON_TEXT: जैसे, अभी जुड़ें]]</a>
+                    <p class="akc-tv-ad-head">ज्ञान की एक नई किरण</p>
+                    <h3 class="akc-tv-ad-title">कालपथ समाचार</h3>
+                    <p class="akc-tv-ad-subtitle">विचारों का अनंत प्रवाह</p>
+                    <p class="akc-tv-ad-explanation">गहन विश्लेषण, ताज़ा दृष्टिकोण और सत्य की खोज - कालपथ पर सब कुछ पाएं।</p>
+                    <a href="https://kaalpath.blogspot.com" class="akc-tv-ad-button" target="_blank" rel="noopener noreferrer">अभी जुड़ें</a>
                 </div>
             </div>
         </div>
 
-        <!-- ==== चरण 9: वीडियो प्लेयर (कंटेंट बदलें या हटाएं) ==== -->
-        <!-- निर्देश: यदि वीडियो दिखाना है, तो URL, शीर्षक, कैप्शन बदलें। यदि नहीं, तो .akc-stylish-video-player और p.akc-video-caption-below दोनों को हटा दें। -->
+        <!-- Video Player -->
          <div class="akc-stylish-video-player">
-             <iframe src="[[VIDEO_EMBED_URL: यूट्यूब/अन्य एम्बेड URL]]" title="[[VIDEO_TITLE: वीडियो का शीर्षक]]" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+             <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=Xm-a88Xv-eS7h8_y&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
          </div>
-         <p class="akc-video-caption-below">[[VIDEO_CAPTION: वीडियो का कैप्शन]]</p>
+         <p class="akc-video-caption-below">विशेष प्रस्तुति: आंतरिक शांति की यात्रा</p>
 
     </div> <!-- कहानी कंटेनर बंद -->
 
-    <!-- ==== फुटर रैपर (रखें) ==== -->
+    <!-- ===== फुटर रैपर ===== -->
     <div class="akc-footer-wrapper">
-
-        <!-- ==== चरण 10, 11, 12, 13: Cosmos फुटर विजेट (कंटेंट बदलें) ==== -->
-        <!-- निर्देश: फुटर की संरचना रखें। टेक्स्ट, लिंक और JSON-LD को अपडेट करें। -->
+        <!-- ===== START: Screen Focus Cosmos Widget HTML (v1.4 - Prefix: sfcw-) ===== -->
         <footer class="sfcw-widget">
-          <div class="sfcw-background-depth"></div> <!-- रखें -->
-          <canvas id="sfcw-particle-canvas"></canvas> <!-- रखें -->
+          <div class="sfcw-background-depth"></div>
+          <canvas id="sfcw-particle-canvas"></canvas>
           <div class="sfcw-container">
             <div class="sfcw-content-screen">
-                <!-- चरण 10: क्रेडिट्स और संगठन -->
                 <div class="sfcw-credits">
-                   <p><span class="sfcw-energized-text">[[FOOTER_AUTHOR_NAME: जैसे, आचार्य आशीष मिश्र]]</span></p>
-                   <p class="sfcw-author-title">[[FOOTER_AUTHOR_TITLE: जैसे, वेब प्रोग्रामर❖साहित्य सर्जक❖विचारक]]</p>
+                   <p><span class="sfcw-energized-text">आचार्य आशीष मिश्र</span></p>
+                   <p class="sfcw-author-title">
+                       वेब प्रोग्रामर<span class="sfcw-separator-icon">❖</span>साहित्य सर्जक<span class="sfcw-separator-icon">❖</span>विचारक
+                   </p>
                 </div>
                 <div class="sfcw-organization">
-                   <p><a href="[[FOOTER_ORG_LINK_1: जैसे, index.html]]" target="_self" rel="noopener noreferrer"><strong class="sfcw-energized-text">[[FOOTER_ORG_NAME_1: जैसे, अरण्यानी कथा]]</strong></a> की एक प्रस्तुति</p>
-                   <p style="font-size:0.9em; opacity: 0.8;">(एक <a href="[[FOOTER_ORG_LINK_2: जैसे, https://abpiyush.blogspot.com]]" target="_blank" rel="noopener noreferrer" style="color: var(--sfcw-primary-glow);">[[FOOTER_ORG_NAME_2: जैसे, Abhijit Piyush Organisation]]</a> पहल)</p>
+                   <p><a href="index.html" target="_self" rel="noopener noreferrer"><strong class="sfcw-energized-text">अरण्यानी कथा</strong></a> की एक प्रस्तुति</p>
+                    <p style="font-size:0.9em; opacity: 0.8;">(एक <a href="https://abpiyush.blogspot.com" target="_blank" rel="noopener noreferrer" style="color: var(--sfcw-primary-glow);">Abhijit Piyush Organisation</a> पहल)</p>
                 </div>
             </div>
-            <!-- चरण 11: फुटर लिंक्स -->
             <div class="sfcw-links">
               <nav aria-label="सहयोगी और महत्वपूर्ण लिंक्स">
-                <!-- फुटर लिंक्स का HTML यहाँ डालें -->
-                [[FOOTER_LINKS_HTML:
-                    <span class="sfcw-link-label"><i class="fas fa-atom"></i> सहयोगी:</span>
-                    <a href="..." target="_blank">लिंक 1</a><span class="sfcw-separator">✧</span>
-                    <a href="..." target="_blank">लिंक 2</a>
-                    <br style="display: block; margin-bottom: 12px;">
-                    <span class="sfcw-link-label"><i class="fas fa-meteor"></i> डिजिटल पदचिह्न:</span>
-                    <a href="https://github.com/asheeshz" target="_blank" title="GitHub"><i class="fab fa-github"></i> GitHub</a>...
-                ]]
+                <span class="sfcw-link-label"><i class="fas fa-atom"></i> सहयोगी:</span>
+                <a href="https://qbuk.blogspot.com" target="_blank" rel="noopener noreferrer" title="Qbuk">Qbuk</a>
+                <span class="sfcw-separator">✧</span>
+                <a href="https://www.apgo.tech" target="_blank" rel="noopener noreferrer" title="Apgo Tech">Apgo Tech</a>
+                <br style="display: block; margin-bottom: 12px;">
+                <span class="sfcw-link-label"><i class="fas fa-meteor"></i> डिजिटल पदचिह्न:</span>
+                <a href="https://github.com/asheeshz" target="_blank" rel="noopener noreferrer" title="GitHub प्रोफाइल"><i class="fab fa-github"></i> GitHub</a>
+                <span class="sfcw-separator">✧</span>
+                <a href="https://www.blogger.com/profile/00546898432461025219" target="_blank" rel="noopener noreferrer" title="ब्लॉगर प्रोफाइल"><i class="fab fa-blogger-b"></i> Blogger</a>
+                <span class="sfcw-separator">✧</span>
+                <a href="https://kaalpath.blogspot.com" target="_blank" rel="noopener noreferrer" title="कालपथ न्यूज"><i class="fas fa-newspaper"></i> कालपथ</a>
               </nav>
             </div>
-            <!-- चरण 12: कॉपीराइट टेक्स्ट -->
             <div class="sfcw-copyright">
-              <p><i class="fas fa-copyright"></i><span id="sfcw-current-year"></span> <!-- JS वर्ष डालेगा --> [[COPYRIGHT_TEXT: जैसे, आचार्य आशीष मिश्र एवं सहयोगी। सर्वाधिकार सुरक्षित। ब्रह्मांडीय चेतना से प्रेरित।]]</p>
+              <p><i class="fas fa-copyright"></i><span id="sfcw-current-year"></span> आचार्य आशीष मिश्र एवं सहयोगी। सर्वाधिकार सुरक्षित। ब्रह्मांडीय चेतना से प्रेरित।</p>
             </div>
-             <!-- चरण 13: JSON-LD Schema डेटा (अनिवार्य - SEO के लिए महत्वपूर्ण!) -->
-             <!-- निर्देश: इस स्क्रिप्ट को **रखें** और इसके अंदर के सभी मानों को इस विशिष्ट भाग के लिए सही जानकारी से बदलें। -->
+             <!-- JSON-LD संरचित डेटा यहीं रहेगा -->
              <script type="application/ld+json">
              {
                "@context": "https://schema.org",
                "@type": "BlogPosting",
                "mainEntityOfPage": {
                  "@type": "WebPage",
-                 "@id": "[[JSON_LD_PERMALINK: इस पेज का पूर्ण URL]]"
+                 "@id": "aranyani-kaushik-part1.html" /* इसे अपने पेज के सही URL से बदलें */
                },
-               "headline": "[[JSON_LD_HEADLINE: पेज का मुख्य शीर्षक]]",
-               "description": "[[JSON_LD_DESCRIPTION: पेज का संक्षिप्त विवरण (लगभग 160 अक्षर)]]",
+               "headline": "अरण्यानी और कौशिक: वन और वेदना की प्रेम गाथा - भाग १",
+               "description": "युवा तपस्वी कौशिक आत्म-ज्ञान की खोज में हिमालय की तलहटी के एक निर्जन वन में प्रवेश करता है...",
                "image": {
                  "@type": "ImageObject",
-                 "url": "[[JSON_LD_IMAGE_URL: मुख्य इमेज का पूर्ण URL]]"
+                 "url": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh_fENNPRZTMF3PIzBmK4jmxs22EisH1DHqQZweHp3p42xg6Hm9NOhnd7M7XwjPG8HN0M42skdLwaQgDJVkzhhWZhzs_6N8hyphenhyphenx1ZpMMC2Q-vpEN1ix8vdHae4zWk1o4rEL6bXoVQcJ0O8ilJzcQaCebipAuZX55noNHUDQxRykbRW_hoDDm-nw9XTsYUnaJ/s1046/image_search_1733601703122.png"
                },
                "author": {
                  "@type": "Person",
-                 "name": "[[JSON_LD_AUTHOR_NAME: लेखक का नाम]]",
-                 "url": "[[JSON_LD_AUTHOR_URL: लेखक की प्रोफाइल URL, वैकल्पिक]]",
-                 "sameAs": [
-                   "[[JSON_LD_AUTHOR_PROFILE_URL_1: जैसे, GitHub लिंक]]",
-                   "[[JSON_LD_AUTHOR_PROFILE_URL_2: जैसे, Blogger प्रोफ़ाइल लिंक]]"
-                 ]
+                 "name": "आचार्य आशीष मिश्र",
+                 "url": "https://acharyaasheeshmishra.blogspot.com",
+                 "sameAs": ["https://www.blogger.com/profile/00546898432461025219", "https://github.com/asheeshz"]
                },
                "publisher": {
                  "@type": "Organization",
-                 "name": "[[JSON_LD_PUBLISHER_NAME: प्रकाशक का नाम]]",
-                 "url": "[[JSON_LD_PUBLISHER_URL: प्रकाशक का होमपेज URL]]",
+                 "name": "अरण्यानी कथा",
+                 "url": "index.html", /* या आपके ब्लॉग का होमपेज URL */
                  "logo": {
                    "@type": "ImageObject",
-                   "url": "[[JSON_LD_PUBLISHER_LOGO_URL: प्रकाशक के लोगो का पूर्ण URL]]"
+                   "url": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgp12SGm6vq7iCMJQaJyAqS0E1UDH-Im-EgJGzGNagDEi1OKrr-Vf2c3foK-QTzr6oFf2HXmwViMtP3EWsppeFoN4AfBqMeykClVNHZvQHdSVdnkEBPtYCrEexvUA8Ik9zBFr2VN3AA_Kag8DjExeMv3y-Q72gFhuQGeFwsO7qDV3YMethPKP8FOI8xyov1/s160/IMG_1743928829710.png" /* आपके लोगो का URL */
                  }
                },
-               "datePublished": "[[JSON_LD_DATE_PUBLISHED: YYYY-MM-DD]]",
-               "dateModified": "[[JSON_LD_DATE_MODIFIED: YYYY-MM-DD]]"
+               "datePublished": "2023-10-27",
+               "dateModified": "2024-03-10" /* अंतिम संशोधन तिथि अपडेट करें */
              }
              </script>
           </div>
         </footer>
-        <!-- Cosmos फुटर समाप्त -->
+        <!-- ===== END: Screen Focus Cosmos Widget HTML ===== -->
     </div>
     <!-- फुटर रैपर समाप्त -->
 
-    <!-- ==== पेजिनेशन सेक्शन (रखें) ==== -->
-    <!-- निर्देश: यह div खाली **रखें**। JS यहाँ पेजिनेशन लिंक डालेगा। -->
-    <div class="akc-pagination-section"></div>
+    <!-- ===== पेजिनेशन सेक्शन (फुटर रैपर के बाद) ===== -->
+    <div class="akc-pagination-section">
+        <!-- पेजिनेशन लिंक यहाँ JS द्वारा डाले जाएंगे -->
+    </div>
+    <!-- पेजिनेशन समाप्त -->
 
 </div> <!-- पेज रैपर बंद -->
-
-    <!-- ==== चरण 14: बाहरी JavaScript लिंक (अनिवार्य) ==== -->
-    <!-- निर्देश: अपनी संशोधित script.js फ़ाइल का सही URL या स्थानीय पथ यहाँ डालें। -->
-    <script src="[[JS_FILE_URL: जैसे, https://cdn.jsdelivr.net/gh/user/repo@main/script.js]]"></script>
-
-    <!-- **हटाएं:** पहले यहाँ मौजूद कोई भी <script>...</script> ब्लॉक (जिसमें DOMContentLoaded या अन्य फंक्शन थे) हटा दें, सिवाय JSON-LD वाले स्क्रिप्ट के। -->
-
-</body>
-</html>
