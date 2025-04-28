@@ -31,24 +31,21 @@ document.addEventListener("DOMContentLoaded", function() {
          const windowHeight = window.innerHeight;
          sections.forEach(section => {
              const sectionTop = section.offsetTop - navHeight - 50;
-             // सुनिश्चित करें कि वर्तमान सेक्शन को ठीक से पहचाना जाए
              const sectionBottom = sectionTop + section.offsetHeight;
-             if (scrollPosition >= sectionTop && scrollPosition < sectionBottom - (windowHeight * 0.3) ) { // सेक्शन का ऊपरी 70% दिखने पर एक्टिव करें
+             if (scrollPosition >= sectionTop && scrollPosition < sectionBottom - (windowHeight * 0.3) ) {
                  current = section.getAttribute('id');
              }
          });
-          // यदि कोई सेक्शन सक्रिय नहीं है, तो पहले या अंतिम को संभालें
           if (!current && sections.length > 0) {
              if (scrollPosition < (sections[0].offsetTop - navHeight - 50)) { current = sections[0].getAttribute('id'); }
              else if ((windowHeight + scrollPosition) >= document.body.offsetHeight - 100) { current = sections[sections.length - 1].getAttribute('id'); }
-             // यदि स्क्रॉल मध्य में है और कोई सेक्शन नहीं मिला, तो निकटतम को चुनें (वैकल्पिक, अधिक जटिल)
           }
          navLinks.forEach(link => {
              link.classList.remove('akc-active');
              if (link.hash === `#${current}`) { link.classList.add('akc-active'); }
          });
      };
-     updateActiveLinkBasedOnScroll(); // Initial check
+     updateActiveLinkBasedOnScroll();
      window.addEventListener('scroll', updateActiveLinkBasedOnScroll);
      const hash = window.location.hash;
      if (hash && hash.startsWith("#part")) {
@@ -69,15 +66,33 @@ document.addEventListener("DOMContentLoaded", function() {
     // --- स्वचालित पेजिनेशन और भाग नेविगेशन ---
     function setupPaginationAndNav() {
         const paginationContainer = document.querySelector('.akc-pagination-section');
-        if (!paginationContainer) { console.warn("Pagination container not found."); return; }
-        const totalPages = 6; const baseFilename = 'aranyani-kaushik-part'; const fileExtension = '.html';
+        if (!paginationContainer) { /* console.warn("Pagination container not found."); */ return; } // कंसोल वार्निंग हटाई
+
+        // *** महत्वपूर्ण: कुल पृष्ठों की संख्या यहाँ सेट करें ***
+        const totalPages = 2; // पटाचारा कहानी के लिए (या जितने भाग हों)
+
+        const baseFilename = 'patachara-story-part'; // *** बदलें: फ़ाइल नाम का आधार ***
+        const fileExtension = '.html'; // या जो भी एक्सटेंशन हो
         let currentPageNumber = 1; const currentPath = window.location.pathname;
-        const filenameMatch = currentPath.match(/part(\d+)\.html$/i);
+        // पेज नंबर का पता लगाने के लिए अधिक लचीला तरीका (उदा. part1, part2)
+        const filenameMatch = currentPath.match(/part(\d+)(\.html|$)/i);
         if (filenameMatch && filenameMatch[1]) {
              const parsedNum = parseInt(filenameMatch[1], 10);
              if (!isNaN(parsedNum) && parsedNum >= 1 && parsedNum <= totalPages) { currentPageNumber = parsedNum; }
              else { console.warn("Pagination: Page number from URL filename invalid/out of range."); }
-        } else { console.warn("Pagination: Could not find page number in filename:", currentPath, ". Assuming page 1."); }
+        } else {
+            // यदि URL में नंबर नहीं है, तो #part1, #part2 आदि से प्रयास करें
+            const hashMatch = window.location.hash.match(/#part(\d+)$/i);
+             if (hashMatch && hashMatch[1]) {
+                 const parsedNum = parseInt(hashMatch[1], 10);
+                 if (!isNaN(parsedNum) && parsedNum >= 1 && parsedNum <= totalPages) { currentPageNumber = parsedNum; }
+                 else { console.warn("Pagination: Page number from URL hash invalid/out of range."); currentPageNumber = 1;}
+             } else {
+                console.warn("Pagination: Could not find page number in filename or hash:", currentPath+window.location.hash, ". Assuming page 1.");
+                currentPageNumber = 1; // Default to 1 if no number found
+             }
+        }
+
         paginationContainer.innerHTML = ''; const maxVisibleLinks = 5; let startPage, endPage;
         if (totalPages <= maxVisibleLinks) { startPage = 1; endPage = totalPages; }
         else {
@@ -89,29 +104,62 @@ document.addEventListener("DOMContentLoaded", function() {
         if (startPage > 1) { const firstLink = document.createElement('a'); firstLink.href = `${baseFilename}1${fileExtension}`; firstLink.textContent = '1'; firstLink.classList.add('akc-pagination-link'); paginationContainer.appendChild(firstLink); if (startPage > 2) { const ellipsisStart = document.createElement('span'); ellipsisStart.textContent = '...'; ellipsisStart.classList.add('akc-pagination-label'); paginationContainer.appendChild(ellipsisStart); } }
         for (let i = startPage; i <= endPage; i++) { if (i === currentPageNumber) { const currentSpan = document.createElement('span'); currentSpan.textContent = i; currentSpan.classList.add('akc-pagination-link', 'akc-current'); paginationContainer.appendChild(currentSpan); } else { const link = document.createElement('a'); link.href = `${baseFilename}${i}${fileExtension}`; link.textContent = i; link.classList.add('akc-pagination-link'); paginationContainer.appendChild(link); } }
         if (endPage < totalPages) { if (endPage < totalPages - 1) { const ellipsisEnd = document.createElement('span'); ellipsisEnd.textContent = '...'; ellipsisEnd.classList.add('akc-pagination-label'); paginationContainer.appendChild(ellipsisEnd); } const lastLink = document.createElement('a'); lastLink.href = `${baseFilename}${totalPages}${fileExtension}`; lastLink.textContent = totalPages; lastLink.classList.add('akc-pagination-link'); paginationContainer.appendChild(lastLink); }
-        const prevPartLinks = document.querySelectorAll('.akc-part-navigation .akc-prev-part-link');
-        const nextPartLinks = document.querySelectorAll('.akc-part-navigation .akc-next-part-link');
-        prevPartLinks.forEach(btn => { if(btn) { if (currentPageNumber > 1) { btn.href = `${baseFilename}${currentPageNumber - 1}${fileExtension}`; btn.classList.remove('akc-disabled'); } else { btn.href = '#'; btn.classList.add('akc-disabled'); } } });
-        nextPartLinks.forEach(btn => { if(btn) { if (currentPageNumber < totalPages) { btn.href = `${baseFilename}${currentPageNumber + 1}${fileExtension}`; btn.classList.remove('akc-disabled', 'akc-hidden-on-last'); } else { btn.href = '#'; btn.classList.add('akc-disabled', 'akc-hidden-on-last'); } } });
+
+         // भाग नेविगेशन बटन को भी अपडेट करें (यदि वे पेज में मौजूद हैं)
+         // ध्यान दें: अब हम हैश (#part1, #part2) का उपयोग करेंगे यदि फ़ाइल नाम अलग नहीं हैं
+         const prevPartLinks = document.querySelectorAll('.akc-part-navigation .akc-prev-part-link');
+         const nextPartLinks = document.querySelectorAll('.akc-part-navigation .akc-next-part-link');
+
+         prevPartLinks.forEach(btn => {
+             if (btn) {
+                 if (currentPageNumber > 1) {
+                     // यदि सभी भाग एक ही HTML फ़ाइल में हैं, तो हैश का उपयोग करें
+                     if (baseFilename === 'patachara-story-part') { // या कोई अन्य शर्त यह जांचने के लिए कि क्या यह सिंगल-पेज है
+                          btn.href = `#part${currentPageNumber - 1}`;
+                     } else {
+                          btn.href = `${baseFilename}${currentPageNumber - 1}${fileExtension}`;
+                     }
+                     btn.classList.remove('akc-disabled');
+                 } else {
+                     btn.href = '#';
+                     btn.classList.add('akc-disabled');
+                 }
+             }
+         });
+         nextPartLinks.forEach(btn => {
+             if (btn) {
+                 if (currentPageNumber < totalPages) {
+                      if (baseFilename === 'patachara-story-part') { // सिंगल-पेज हैश लिंक
+                          btn.href = `#part${currentPageNumber + 1}`;
+                      } else {
+                          btn.href = `${baseFilename}${currentPageNumber + 1}${fileExtension}`;
+                      }
+                     btn.classList.remove('akc-disabled', 'akc-hidden-on-last');
+                 } else {
+                     btn.href = '#';
+                     btn.classList.add('akc-disabled', 'akc-hidden-on-last');
+                 }
+             }
+         });
     }
     setupPaginationAndNav();
     // --- पेजिनेशन समाप्त ---
 
     // --- TTS कार्यक्षमता ---
     let currentSpeech = null;
-    function speakText(text, lang = "hi-IN", buttonElement = null) { // Added buttonElement parameter
+    function speakText(text, lang = "hi-IN", buttonElement = null) {
         if ('speechSynthesis' in window) {
-            const readAllBtn = document.getElementById('akc-read-full-post-button');
+            const readAllBtn = buttonElement && buttonElement.matches('.akc-tts-read-all') ? buttonElement : null; // Identify if it's a 'read all' button
 
-            // यदि कुछ बोला जा रहा है, तो उसे रोकें
             if (window.speechSynthesis.speaking) {
                 window.speechSynthesis.cancel();
-                 // Reset the 'Read All' button if it was speaking
-                 if(readAllBtn && readAllBtn.classList.contains('akc-tts-speaking')) {
-                     readAllBtn.classList.remove('akc-tts-speaking');
-                     readAllBtn.innerHTML = '<i class="fas fa-volume-up"></i> संपूर्ण भाग सुनें';
+                 // Reset the specific 'Read All' button if it was speaking
+                 if(currentSpeech && currentSpeech.buttonElement && currentSpeech.buttonElement.matches('.akc-tts-read-all')) {
+                     currentSpeech.buttonElement.classList.remove('akc-tts-speaking');
+                     const partNum = currentSpeech.buttonElement.dataset.targetPart.replace('part','');
+                     currentSpeech.buttonElement.innerHTML = `<i class="fas fa-volume-up"></i> भाग ${partNum} सुनें`;
                  }
-                // यदि वही टेक्स्ट दोबारा क्लिक किया गया है, तो बस रुकें
+                 // If the same text was clicked again, just stop.
                 if (currentSpeech && currentSpeech.text === text) {
                      currentSpeech = null;
                      return;
@@ -124,36 +172,37 @@ document.addEventListener("DOMContentLoaded", function() {
             speech.rate = 0.9;
             speech.pitch = 1;
             currentSpeech = speech;
-             // Store reference to the button if it's the 'Read All' button
-             if(buttonElement && buttonElement.id === 'akc-read-full-post-button') {
-                 currentSpeech.buttonElement = buttonElement;
-                 buttonElement.dataset.fullText = text; // Store text on the button itself
+             // Store reference only if it's a 'read all' button
+             if(readAllBtn) {
+                 currentSpeech.buttonElement = readAllBtn;
              }
 
             speech.onend = () => {
-                 // Reset button only if it was the 'Read All' button
-                 if(currentSpeech && currentSpeech.buttonElement) {
+                 // Reset button only if it was the specific 'Read All' button being spoken
+                 if(currentSpeech && currentSpeech.buttonElement && currentSpeech.buttonElement.matches('.akc-tts-read-all')) {
                      currentSpeech.buttonElement.classList.remove('akc-tts-speaking');
-                     currentSpeech.buttonElement.innerHTML = '<i class="fas fa-volume-up"></i> संपूर्ण भाग सुनें';
+                      const partNum = currentSpeech.buttonElement.dataset.targetPart.replace('part','');
+                      currentSpeech.buttonElement.innerHTML = `<i class="fas fa-volume-up"></i> भाग ${partNum} सुनें`;
                  }
                  currentSpeech = null;
             };
             speech.onerror = (event) => {
                 console.error("Speech synthesis error:", event);
-                 // Reset button only if it was the 'Read All' button
-                 if(currentSpeech && currentSpeech.buttonElement) {
+                 // Reset button only if it was the specific 'Read All' button being spoken
+                 if(currentSpeech && currentSpeech.buttonElement && currentSpeech.buttonElement.matches('.akc-tts-read-all')) {
                      currentSpeech.buttonElement.classList.remove('akc-tts-speaking');
-                     currentSpeech.buttonElement.innerHTML = '<i class="fas fa-volume-up"></i> संपूर्ण भाग सुनें';
+                      const partNum = currentSpeech.buttonElement.dataset.targetPart.replace('part','');
+                      currentSpeech.buttonElement.innerHTML = `<i class="fas fa-volume-up"></i> भाग ${partNum} सुनें`;
                  }
                  currentSpeech = null;
             };
 
             window.speechSynthesis.speak(speech);
 
-             // Change button appearance only if it's the 'Read All' button
-             if(buttonElement && buttonElement.id === 'akc-read-full-post-button') {
-                 buttonElement.classList.add('akc-tts-speaking');
-                 buttonElement.innerHTML = '<i class="fas fa-stop-circle"></i> रोका जा रहा है...';
+             // Change button appearance only if it's a 'Read All' button
+             if(readAllBtn) {
+                 readAllBtn.classList.add('akc-tts-speaking');
+                 readAllBtn.innerHTML = '<i class="fas fa-stop-circle"></i> रोका जा रहा है...';
              }
 
         } else {
@@ -183,43 +232,57 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // संपूर्ण भाग सुनें बटन के लिए TTS
-    const readAllButton = document.getElementById('akc-read-full-post-button');
-    if (readAllButton) {
-        readAllButton.addEventListener('click', (event) => {
-            event.preventDefault();
+    // *** बदला हुआ: सभी 'संपूर्ण भाग सुनें' बटनों के लिए इवेंट लिस्नर ***
+    const readAllButtons = document.querySelectorAll('a.akc-tts-read-all');
 
-            // यदि वर्तमान में यही टेक्स्ट बोला जा रहा है, तो उसे रोकें (speakText function handles this)
-             // Check if the same button click is intended to stop speech
-             if (window.speechSynthesis.speaking && currentSpeech && currentSpeech.buttonElement === readAllButton) {
-                 speakText(readAllButton.dataset?.fullText || '', "hi-IN", readAllButton); // Call speakText to handle cancellation
-                 return;
-             }
+    if (readAllButtons.length > 0) {
+        readAllButtons.forEach(button => { // प्रत्येक बटन के लिए लूप करें
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
 
-            const contentDiv = document.getElementById('part1');
-            if (contentDiv) {
-                let fullText = "";
-                const elementsToRead = contentDiv.querySelectorAll('h2.akc-custom-h2, h3.akc-custom-h3, p.akc-custom-p');
+                // यदि यह बटन वर्तमान में बोल रहा है, तो उसे रोकने के लिए speakText को कॉल करें
+                 if (window.speechSynthesis.speaking && currentSpeech && currentSpeech.buttonElement === button) {
+                     speakText("", "hi-IN", button); // खाली टेक्स्ट भेजकर कैंसिलेशन और रीसेट ट्रिगर करें
+                     return;
+                 }
 
-                elementsToRead.forEach((el) => {
-                    let clonedNode = el.cloneNode(true);
-                    clonedNode.querySelectorAll(".akc-special-term-1, .akc-special-term-2, .akc-special-term-3").forEach(span => span.remove());
-                    let text = (clonedNode.textContent || clonedNode.innerText || "").trim().replace(/\s+/g, ' ');
-                    if (text) {
-                         fullText += text + ". ";
-                    }
-                    if(el.tagName === 'H2' || el.tagName === 'H3') {
-                        fullText += ". "; // Extra pause
-                    }
-                });
-
-                if (fullText) {
-                    speakText(fullText, "hi-IN", readAllButton); // Pass the button element
-                } else {
-                    console.warn("Could not extract text to read for the full post.");
+                const targetPartId = button.dataset.targetPart; // THIS बटन से टारगेट प्राप्त करें
+                if (!targetPartId) {
+                    console.error("TTS Read All: Button is missing 'data-target-part' attribute.");
+                    return;
                 }
-            }
+                const contentDiv = document.getElementById(targetPartId); // टारगेट div प्राप्त करें
+
+                if (contentDiv) {
+                    let fullText = "";
+                    // संबंधित भाग के अंदर के तत्वों को चुनें
+                    const elementsToRead = contentDiv.querySelectorAll('h2.akc-custom-h2, h3.akc-custom-h3, p.akc-custom-p');
+
+                    elementsToRead.forEach((el) => {
+                        let clonedNode = el.cloneNode(true);
+                        clonedNode.querySelectorAll(".akc-special-term-1, .akc-special-term-2, .akc-special-term-3").forEach(span => span.remove());
+                        let text = (clonedNode.textContent || clonedNode.innerText || "").trim().replace(/\s+/g, ' ');
+                        if (text) {
+                             fullText += text + ". ";
+                        }
+                        if(el.tagName === 'H2' || el.tagName === 'H3') {
+                            fullText += ". "; // हेडिंग के बाद अतिरिक्त विराम
+                        }
+                    });
+
+                    if (fullText) {
+                        speakText(fullText, "hi-IN", button); // speakText को THIS बटन पास करें
+                    } else {
+                        console.warn(`Could not extract text to read for the part: ${targetPartId}`);
+                    }
+                } else {
+                     console.error(`TTS Read All: Target content div with ID '${targetPartId}' not found.`);
+                }
+            });
         });
+    } else {
+        // यदि कोई बटन नहीं मिला तो कंसोल वार्निंग (वैकल्पिक)
+        // console.warn("No 'Read All TTS' buttons found with class 'akc-tts-read-all'.");
     }
 
 
@@ -234,9 +297,9 @@ document.addEventListener("DOMContentLoaded", function() {
     /* ===== START: Screen Focus Cosmos Widget JS (v1.4 - Prefix: sfcw-) ===== */
     const sfcwYearSpan = document.getElementById('sfcw-current-year');
     if (sfcwYearSpan) { sfcwYearSpan.textContent = " " + new Date().getFullYear(); }
-    else { console.warn("sfcw-current-year element not found!")}
+    else { /* console.warn("sfcw-current-year element not found!") */} // कंसोल वार्निंग हटाई
     const sfcwCanvas = document.getElementById('sfcw-particle-canvas');
-    if (!sfcwCanvas) { console.error("SFCW Particle canvas element (#sfcw-particle-canvas) not found!"); }
+    if (!sfcwCanvas) { /* console.error("SFCW Particle canvas element (#sfcw-particle-canvas) not found!"); */ } // कंसोल एरर हटाई
     else {
         const sfcwCtx = sfcwCanvas.getContext('2d');
         let sfcwParticles = []; let sfcwAnimationFrameId = null;
@@ -252,7 +315,7 @@ document.addEventListener("DOMContentLoaded", function() {
         function sfcwAnimateParticles(timestamp) { if (!sfcwCtx || !sfcwCanvas) { cancelAnimationFrame(sfcwAnimationFrameId); return; } if (document.hidden) { sfcwLastTime = timestamp; sfcwAnimationFrameId = requestAnimationFrame(sfcwAnimateParticles); return; } const deltaTime = (timestamp - sfcwLastTime) / 1000; sfcwLastTime = timestamp; sfcwCtx.clearRect(0, 0, sfcwCanvas.width, sfcwCanvas.height); sfcwParticles.forEach(p => { if (deltaTime > 0 && deltaTime < 0.1) { p.update(deltaTime); } else if (deltaTime >= 0.1) { p.reset(); } p.draw(); }); sfcwCtx.globalAlpha = 1.0; sfcwAnimationFrameId = requestAnimationFrame(sfcwAnimateParticles); }
         function sfcwStartAnimation() { if (!sfcwCanvas || !sfcwCtx) return; sfcwResizeCanvas(); sfcwInitParticles(); if (sfcwAnimationFrameId) { cancelAnimationFrame(sfcwAnimationFrameId); } sfcwLastTime = performance.now(); sfcwAnimationFrameId = requestAnimationFrame(sfcwAnimateParticles); }
         const sfcwStartDelay = setTimeout(sfcwStartAnimation, 150); let sfcwResizeTimeout;
-        window.addEventListener('resize', () => { clearTimeout(sfcwResizeTimeout); sfcwResizeTimeout = setTimeout(() => { if (sfcwAnimationFrameId) { cancelAnimationFrame(sfcwAnimationFrameId); sfcwAnimationFrameId = null; } console.log("Resizing detected, restarting animation..."); sfcwStartAnimation(); }, 500); });
+        window.addEventListener('resize', () => { clearTimeout(sfcwResizeTimeout); sfcwResizeTimeout = setTimeout(() => { if (sfcwAnimationFrameId) { cancelAnimationFrame(sfcwAnimationFrameId); sfcwAnimationFrameId = null; } /* console.log("Resizing detected, restarting animation..."); */ sfcwStartAnimation(); }, 500); }); // कंसोल लॉग हटाई
         window.addEventListener('beforeunload', () => { if (sfcwAnimationFrameId) { cancelAnimationFrame(sfcwAnimationFrameId); } clearTimeout(sfcwStartDelay); clearTimeout(sfcwResizeTimeout); });
     }
     /* ===== END: Screen Focus Cosmos Widget JS ===== */
