@@ -1,182 +1,130 @@
-// ==========================================================
-// पोस्ट फॉर्मेट स्क्रिप्ट (post-format.js) - Defer के साथ
-// ==========================================================
-// बाहरी DOMContentLoaded रैपर हटा दिया गया है क्योंकि 'defer' का उपयोग किया गया है
+// circle-menu.js
+// यह स्क्रिप्ट <script defer> के साथ उपयोग के लिए है।
+// बाहरी DOMContentLoaded लिस्नर हटा दिया गया है।
 
-// --------------------------------------------------
-// विजेट 1: सर्कल मेन्यू लॉजिक (Prefix: cm-)
-// --------------------------------------------------
-(function() {
+(function() { // विजेट कोड को एनकैप्सुलेट करने के लिए IIFE का उपयोग करना अभी भी अच्छा अभ्यास है
+
+    // सुनिश्चित करें कि JS कोड यूनिक आईडी के अंदर के एलिमेंट को टारगेट करे
     const menuWidget = document.getElementById('my-unique-circle-menu');
+
+    // यदि विजेट मौजूद नहीं है, तो कुछ भी न करें और बाहर निकल जाएं
     if (!menuWidget) {
-        // console.log("Circle Menu widget not found.");
+        // console.log("Circle Menu widget not found on this page."); // वैकल्पिक डीबगिंग संदेश
         return;
     }
 
+    // --- विजेट के आंतरिक तत्व ---
+    // (यहां से आपका बाकी कोड अपरिवर्तित रहेगा)
+
+    // मेन्यू टॉगल बटन और मेन्यू एलिमेंट्स प्राप्त करें (विजेट के अंदर से)
     const menuToggle = menuWidget.querySelector('.menu-toggle');
     const categoriesMenu = menuWidget.querySelector('.menu-categories');
     const linksMenu = menuWidget.querySelector('.menu-links');
+    // सुनिश्चित करें कि ये एलिमेंट मौजूद हैं, अन्यथा त्रुटि आ सकती है
     const linksTitle = linksMenu ? linksMenu.querySelector('.links-title') : null;
     const categoryTitleElement = categoriesMenu ? categoriesMenu.querySelector('.category-title') : null;
+
+    // सभी कैटेगरी एलिमेंट्स प्राप्त करें (विजेट के अंदर से)
     const categories = menuWidget.querySelectorAll('.category');
+
+    // सभी लिंक्स कंटेंट एलिमेंट्स प्राप्त करें (विजेट के अंदर से)
     const linksContent = menuWidget.querySelectorAll('.links-content .links');
 
-    const categoryIcons = { /* ... आपका आइकन मैपिंग ... */ };
-    const gradientClasses = [ /* ... आपकी ग्रेडिएंट क्लासेज ... */ ];
+    // आइकन मैपिंग
+    const categoryIcons = {
+        'class-1-5': '<i class="fas fa-book-reader"></i>', 'class-6-8': '<i class="fas fa-graduation-cap"></i>',
+        'class-9-10': '<i class="fas fa-school"></i>', 'class-11-12': '<i class="fas fa-university"></i>',
+        'competitive-exam': '<i class="fas fa-trophy"></i>', 'news-channel': '<i class="fas fa-newspaper"></i>',
+        'yoga-ayurveda': '<i class="fas fa-heart"></i>', 'marriage-links': '<i class="fas fa-ring"></i>',
+        'editorial-links': '<i class="fas fa-edit"></i>', 'government-links': '<i class="fas fa-flag"></i>',
+        'astrology-links': '<i class="fas fa-star"></i>', 'vaidik-links': '<i class="fas fa-om"></i>'
+    };
 
-    function removeGradientClasses(element) { /* ... आपका फ़ंक्शन ... */ }
+    // Gradient classes
+    const gradientClasses = [
+        'gradient-1', 'gradient-2', 'gradient-3', 'gradient-4', 'gradient-5', 'gradient-6',
+        'gradient-7', 'gradient-8', 'gradient-9', 'gradient-10', 'gradient-11', 'gradient-12'
+    ];
 
-    // इवेंट लिस्टनर्स (पहले जैसे ही)
+    // Function to remove all gradient classes
+    function removeGradientClasses(element) {
+         if (element) {
+             gradientClasses.forEach(cls => element.classList.remove(cls));
+         }
+     }
+
+    // --- इवेंट लिस्टनर्स ---
+
+    // मेन्यू टॉगल बटन पर क्लिक इवेंट जोड़ें
     if (menuToggle && categoriesMenu && linksMenu && categoryTitleElement) {
-        menuToggle.addEventListener('click', (event) => { /* ... टॉगल लॉजिक ... */ });
-    }
-    if (categories.length > 0 && linksMenu && linksTitle && categoriesMenu && categoryTitleElement) {
-        categories.forEach((category, index) => {
-            category.addEventListener('click', (event) => { /* ... कैटेगरी क्लिक लॉजिक ... */ });
-        });
-    }
+        menuToggle.addEventListener('click', (event) => {
+            event.stopPropagation();
+            const isActive = categoriesMenu.classList.contains('active');
 
-    // डॉक्यूमेंट क्लिक लिस्नर (पहले जैसा ही)
-    document.addEventListener('click', (event) => {
-        if (menuToggle && categoriesMenu && linksMenu && categoryTitleElement) {
-            if (!menuToggle.contains(event.target) && !categoriesMenu.contains(event.target) && !linksMenu.contains(event.target)) {
+            if (isActive) {
                 categoriesMenu.classList.remove('active');
                 linksMenu.classList.remove('show');
                 categoryTitleElement.style.display = 'none';
+            } else {
+                linksMenu.classList.remove('show'); // Close links if opening categories
+                categoriesMenu.classList.add('active');
+                categoryTitleElement.style.display = 'block';
+                removeGradientClasses(categoryTitleElement);
+                const randomGradientIndex = Math.floor(Math.random() * gradientClasses.length);
+                categoryTitleElement.classList.add(gradientClasses[randomGradientIndex]);
+                categoryTitleElement.innerHTML = '<i class="fas fa-hand-point-down"></i> अपनी पसंद पर क्लिक करें';
             }
+        });
+    }
+
+     // हर कैटेगरी के लिए क्लिक इवेंट जोड़ें
+     if (categories.length > 0 && linksMenu && linksTitle && categoriesMenu && categoryTitleElement) {
+         categories.forEach((category, index) => {
+             category.addEventListener('click', (event) => {
+                 event.stopPropagation();
+
+                 const categoryData = category.getAttribute('data-category');
+                 const titleText = category.getAttribute('data-title');
+                 const iconHtml = categoryIcons[categoryData] || '<i class="fas fa-link"></i>';
+
+                 linksContent.forEach(linkBox => {
+                     linkBox.style.display = 'none';
+                 });
+
+                 const targetLinks = linksMenu.querySelector(`.links-content .${categoryData}`);
+                 if (targetLinks) {
+                     targetLinks.style.display = 'block';
+                 }
+
+                 if (linksTitle) { // Check if linksTitle exists
+                     linksTitle.innerHTML = `${iconHtml} ${titleText}`;
+                     removeGradientClasses(linksTitle);
+                     linksTitle.classList.add(gradientClasses[index % gradientClasses.length]);
+                 }
+
+                 categoriesMenu.classList.remove('active');
+                 linksMenu.classList.add('show');
+                 categoryTitleElement.style.display = 'none';
+             });
+         });
+     }
+
+    // डॉक्यूमेंट पर कहीं और क्लिक होने पर मेन्यू छिपाने के लिए इवेंट जोड़ें
+    document.addEventListener('click', (event) => {
+        // Ensure elements exist before checking contains
+        if (menuToggle && categoriesMenu && linksMenu && categoryTitleElement) {
+             if (
+                !menuToggle.contains(event.target) &&
+                !categoriesMenu.contains(event.target) &&
+                !linksMenu.contains(event.target)
+             ) {
+                categoriesMenu.classList.remove('active');
+                linksMenu.classList.remove('show');
+                categoryTitleElement.style.display = 'none';
+             }
         }
     });
 
-    console.log("Circle Menu Initialized.");
+    console.log("Circle Menu Initialized (deferred)."); // पुष्टि संदेश
 
-})(); // सर्कल मेन्यू IIFE समाप्त
-
-// --------------------------------------------------
-// विजेट 2: टेबल ऑफ कंटेंट्स (TOC) लॉजिक
-// --------------------------------------------------
-(function() {
-    // कॉन्फ़िगरेशन (यह IIFE के अंदर रहेगा)
-    const config = {
-        postContainerSelector: ".post-body",
-        headingsSelector: "h2, h3",
-        minHeadingsForToc: 2,
-        tocTitleText: "Table of Contents",
-        showButtonBaseText: "Explore Topics",
-        hideButtonBaseText: "Hide Contents",
-        showIconClass: "fa-solid fa-chevron-down",
-        hideIconClass: "fa-solid fa-chevron-up",
-        highlightDuration: 3000,
-        useIcons: true,
-        h2IconClass: "fa-solid fa-book-reader",
-        h3IconClass: "fa-regular fa-circle",
-    };
-
-    let currentHighlightTimeout = null;
-    let tocContainer = null;
-    let toc = null;
-    let toggleButton = null;
-
-    // यदि मुख्य पोस्ट कंटेनर मौजूद नहीं है, तो इस विजेट के लिए कुछ न करें
-    const postContent = document.querySelector(config.postContainerSelector);
-    if (!postContent) {
-        // console.warn("TOC: Container '" + config.postContainerSelector + "' not found.");
-        return;
-    }
-
-    // हेल्पर फ़ंक्शंस (createSafeId, clearHighlights, applyHighlight, smoothScrollToTarget, controlButtonGlow, updateButtonContent)
-    function createSafeId(heading, index) { /* ... */ }
-    function clearHighlights(specificHeading = null, specificContent = []) { /* ... */ }
-    function applyHighlight(targetHeading) { /* ... */ }
-    function smoothScrollToTarget(element) { /* ... */ }
-    function controlButtonGlow(buttonElement, shouldGlow) { /* ... */ }
-    function updateButtonContent(isExpanded) { /* ... */ }
-
-    // initializeToc और setupEventListeners फ़ंक्शंस
-    function initializeToc() {
-        const headings = Array.from(postContent.querySelectorAll(config.headingsSelector));
-        // ... (बाकी initializeToc लॉजिक, जैसा पहले था) ...
-        // सुनिश्चित करें कि postContent पहले से परिभाषित है (ऊपर देखें)
-
-        const validHeadings = [];
-        let firstValidHeading = null;
-        headings.forEach(heading => { /* ... */ });
-
-        if (validHeadings.length < config.minHeadingsForToc) return;
-
-        tocContainer = document.createElement("div"); tocContainer.id = "toc-container";
-        toggleButton = document.createElement("button"); toggleButton.id = "toc-toggle-button";
-        updateButtonContent(false);
-        toggleButton.setAttribute("aria-controls", "toc");
-        controlButtonGlow(toggleButton, true);
-        // ... (बाकी TOC HTML निर्माण लॉजिक) ...
-         toc = document.createElement("div"); toc.id = "toc";
-         const tocTitle = document.createElement("h2");
-         tocTitle.textContent = config.tocTitleText;
-         toc.appendChild(tocTitle);
-         const tocList = document.createElement("ul");
-         validHeadings.forEach((heading, index) => { /* ... लिस्ट आइटम बनाएं ... */ });
-         toc.appendChild(tocList); tocContainer.appendChild(toggleButton); tocContainer.appendChild(toc);
-         if (firstValidHeading?.parentNode) { firstValidHeading.parentNode.insertBefore(tocContainer, firstValidHeading); }
-         else if (postContent.firstChild) { postContent.insertBefore(tocContainer, postContent.firstChild); }
-         else { postContent.appendChild(tocContainer); }
-
-
-        setupEventListeners(); // initializeToc के अंत में कॉल करें
-    }
-
-    function setupEventListeners() {
-        if (!tocContainer || !toc || !toggleButton) return;
-        toggleButton.addEventListener('click', () => { /* ... */ });
-        toc.addEventListener('click', (event) => { /* ... */ });
-    }
-
-    // विजेट इनिशियलाइज़ेशन
-    try {
-        initializeToc();
-        console.log("Table of Contents Initialized.");
-    } catch (error) {
-        console.error("TOC Script Error:", error);
-    }
-
-})(); // TOC IIFE समाप्त
-
-// --------------------------------------------------
-// === अन्य विजेट/गैजेट यहाँ जोड़े जा सकते हैं ===
-// --------------------------------------------------
-// (function() {
-//    // विजेट 3 का कोड
-// })();
-
-// --- अन्य सामान्य स्क्रिप्ट्स (जैसे स्क्रॉल-आधारित नेविगेशन अपडेट) ---
-// इन्हें भी IIFE में रखा जा सकता है या सीधे यहाँ लिखा जा सकता है,
-// क्योंकि defer सुनिश्चित करता है कि तत्व मौजूद हैं जब यह कोड चलता है।
-
-const updateActiveLinkBasedOnScroll = () => {
-    const sections = document.querySelectorAll('.akc-custom-div[id^="part"]');
-    const navLinks = document.querySelectorAll('.akc-story-nav a[href^="#part"]');
-    const navHeight = document.querySelector('.akc-story-nav') ? document.querySelector('.akc-story-nav').offsetHeight : 50;
-    if (sections.length === 0 || navLinks.length === 0) return;
-    // ... (बाकी स्क्रॉल लॉजिक जैसा पहले था) ...
-};
-
-// पेज लोड/रीफ्रेश पर प्रारंभिक जांच
-if (document.readyState === "complete" || (document.readyState !== "loading" && !document.documentElement.doScroll)) {
-  updateActiveLinkBasedOnScroll();
-} else {
-  // दुर्लभ मामलों के लिए फॉलबैक
-  document.addEventListener("DOMContentLoaded", updateActiveLinkBasedOnScroll);
-}
-window.addEventListener('scroll', updateActiveLinkBasedOnScroll);
-
-// हैश आधारित स्क्रॉलिंग और लिंक एक्टिवेशन (पहले जैसा)
-const hash = window.location.hash;
-// ... (हैश प्रोसेसिंग लॉजिक) ...
-if (hash && hash.startsWith("#part")) {
-    // ... (लिंक एक्टिवेशन और स्क्रॉलिंग, थोड़ा विलंब के साथ) ...
-    setTimeout(() => { /* ... */ }, 150);
-} else {
-     // ... (डिफ़ॉल्ट लिंक एक्टिवेशन) ...
-}
-
-// अंत में पुष्टि का संदेश
-console.log("Post Format Script Loaded (deferred).");
+})(); // End IIFE
