@@ -1,12 +1,24 @@
-/* --- सामान्य बॉडी और लेआउट --- */
-body {
-    padding-top: 60px; background-color: #fff5e1; color: #3c2a21;
-    font-family: 'Hind', sans-serif; line-height: 1.8; overflow-x: hidden;
-    display: flex; flex-direction: column; min-height: 100vh; margin: 0;
+/* style.css */
+
+/* --- गैजेट का मुख्य रैपर (बॉडी स्टाइल हटा दिए गए) --- */
+.akc-page-wrapper {
+    padding-top: 60px;
+    background-color: #fff5e1;
+    color: #3c2a21;
+    font-family: 'Hind', sans-serif;
+    line-height: 1.8;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    flex-grow: 1;
 }
-.akc-page-wrapper { flex-grow: 1; display: flex; flex-direction: column; }
+
+/* --- कहानी कंटेनर (चौड़ाई बढ़ाई गई) --- */
 .akc-story-container {
-     flex-grow: 1; max-width: 1100px; width: 100%; margin: 0 auto;
+     flex-grow: 1;
+     max-width: 1300px; /* बढ़ी हुई चौड़ाई */
+     width: 100%; margin: 0 auto;
      padding: 0 15px; box-sizing: border-box;
 }
 
@@ -30,7 +42,7 @@ body {
 }
 .akc-prev-part-link.akc-disabled, .akc-next-part-link.akc-disabled { visibility: hidden; pointer-events: none; }
 .akc-custom-a {
-     display: inline-block; padding: 10px 18px; /* डिफ़ॉल्ट (डेस्कटॉप) पैडिंग */
+     display: inline-block; padding: 10px 18px;
      background: linear-gradient(to bottom right, #8b4513, #a0522d); color: #fff;
      text-decoration: none; border-radius: 6px; font-family: 'Hind', sans-serif; font-weight: bold;
      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
@@ -40,8 +52,6 @@ body {
 .akc-custom-a:hover { background: linear-gradient(to bottom right, #a0522d, #8b4513); transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
 .akc-custom-a.akc-disabled { background: #cccccc; color: #888888; pointer-events: none; box-shadow: none; opacity: 0.7; border-color: #bbbbbb; cursor: default; }
 .akc-hidden-on-last.akc-disabled { visibility: hidden; }
-
-/* भाग नेविगेशन बटनों के लिए डिफ़ॉल्ट (डेस्कटॉप) पैडिंग */
 .akc-part-navigation .akc-home-link,
 .akc-part-navigation .akc-next-part-link,
 .akc-part-navigation .akc-prev-part-link {
@@ -68,10 +78,20 @@ body {
      transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.35);
 }
 .akc-tts-read-all i { margin-right: 8px; font-size: 0.9em; vertical-align: middle; }
+.akc-tts-read-all.akc-tts-speaking { /* जोड़ा गया: स्पीकिंग स्थिति के लिए स्टाइल */
+    background: linear-gradient(to bottom right, #e57373, #c62828); /* लाल रंग का ग्रेडिएंट */
+}
+.akc-tts-read-all.akc-tts-speaking:hover {
+    background: linear-gradient(to bottom right, #c62828, #e57373);
+}
 
 
-/* --- इमेज टाइटल स्टाइल (akc- prefix) --- */
- .akc-animated-title-image-wrapper { position: relative; margin: 30px auto; max-width: 1100px; width: 100%; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+/* --- इमेज टाइटल स्टाइल (चौड़ाई बढ़ाई गई) --- */
+ .akc-animated-title-image-wrapper {
+     position: relative; margin: 30px auto;
+     max-width: 1300px; /* बढ़ी हुई चौड़ाई */
+     width: 100%; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+ }
  .akc-animated-title-image-wrapper img { display: block; width: 100%; height: auto; z-index: 0; transition: transform 0.6s ease; }
 .akc-full-image-tint-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.45); border-radius: inherit; z-index: 1; pointer-events: none; }
 @keyframes akc-fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -83,24 +103,32 @@ body {
 .akc-overlay-main-title::after { content: attr(data-text); position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 0; color: transparent; filter: blur(3px); opacity: 0; animation: akc-sunPulseGlow 3.5s ease-in-out infinite, akc-fadeIn 1.8s ease-out 0.9s forwards; }
 .akc-overlay-subtitle { font-family: 'Hind', sans-serif; font-size: 1.4em; font-weight: 500; opacity: 0; transform: translateY(15px); margin-top: 0; letter-spacing: 0.8px; background: linear-gradient(to right, #ffcdd2, #ffffff, #f8bbd0); -webkit-background-clip: text; background-clip: text; color: transparent; animation: akc-fadeInUpSlight 1.5s cubic-bezier(0.25, 0.8, 0.25, 1) 1.0s forwards; }
 
-/* --- कहानी विवरण अनुभाग (akc- prefix) --- */
-.akc-story-description { background-color: #fffaf1; border: 1px solid #e0cfc2; border-left: 8px solid #ff8a00; padding: 20px 30px; margin: 35px auto 20px auto; max-width: 850px; border-radius: 0 15px 15px 0; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); text-align: left; font-size: 1.1em; }
+/* --- कहानी विवरण अनुभाग (चौड़ाई बढ़ाई गई) --- */
+.akc-story-description {
+    background-color: #fffaf1; border: 1px solid #e0cfc2; border-left: 8px solid #ff8a00; padding: 20px 30px; margin: 35px auto 20px auto;
+    max-width: 1000px; /* बढ़ी हुई चौड़ाई */
+    border-radius: 0 15px 15px 0; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); text-align: left; font-size: 1.1em;
+}
 .akc-story-description h3 { font-family: 'Lora', serif; color: #6a4f3c; margin-top: 0; margin-bottom: 15px; border-bottom: 2px solid #e0cfc2; padding-bottom: 5px; font-size: 1.5em; }
  .akc-story-description p { margin-bottom: 10px; line-height: 1.7; color: #5a3e36; cursor: default; background-color: transparent !important; padding: 0 !important; border: none !important; box-shadow: none !important; }
  .akc-story-description strong { color: #8b4513; font-weight: bold; }
 
-/* --- इमेज फ़्रेम और कैप्शन (akc- prefix) --- */
-.akc-image-frame { position: relative; margin: 30px auto; padding: 12px; background: linear-gradient(135deg, #e0d8c0, #c8bca7); border-radius: 18px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2), inset 0 0 5px rgba(0,0,0,0.1); max-width: 700px; overflow: hidden; }
+/* --- इमेज फ़्रेम और कैप्शन (चौड़ाई बढ़ाई गई) --- */
+.akc-image-frame {
+    position: relative; margin: 30px auto; padding: 12px; background: linear-gradient(135deg, #e0d8c0, #c8bca7); border-radius: 18px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2), inset 0 0 5px rgba(0,0,0,0.1);
+    max-width: 900px; /* बढ़ी हुई चौड़ाई */
+    overflow: hidden;
+}
 .akc-image-frame img, .akc-image-frame video, .akc-image-frame iframe { display: block; width: 100%; height: auto; max-width: 100%; border-radius: 10px; object-fit: cover; border: 1px solid rgba(0,0,0,0.1); }
 .akc-image-caption { font-family: 'Lora', serif; position: absolute; bottom: 12px; left: 12px; right: 12px; background: rgba(40, 30, 20, 0.85); color: #fff8e1; padding: 10px 15px; border-radius: 0 0 10px 10px; text-align: center; font-size: 1em; font-style: italic; opacity: 0; transition: opacity 0.4s ease-in-out; box-sizing: border-box; pointer-events: none; }
 .akc-image-frame:hover .akc-image-caption { opacity: 1; }
 
-/* --- H2 विशेष डिज़ाइन (akc- prefix) --- */
+/* --- H2 विशेष डिज़ाइन --- */
 @keyframes akc-custom-shimmer { 0% { background-position: -1200px 0; } 100% { background-position: 1200px 0; } }
 .akc-custom-h2 { font-family: 'Lora', serif; font-size: 1.8em; letter-spacing: 1px; font-weight: 700; margin: 2.2em auto 1.4em auto; padding: 16px 30px; max-width: fit-content; border-radius: 8px; background: linear-gradient(140deg, #fff7e0, #efebe9); box-shadow: inset 0 0 6px rgba(188, 143, 143, 0.25), 4px 4px 10px rgba(188, 170, 164, 0.4), -2px -2px 6px #ffffff; position: relative; color: transparent; background-clip: text; -webkit-background-clip: text; background-image: linear-gradient(to right, #6d4c41 30%, #bf360c 50%, #6d4c41 70%); background-size: 250% auto; animation: akc-custom-shimmer 4s linear infinite; border-bottom: 3px double #d7ccc8; transition: all 0.3s ease; }
 .akc-custom-h2:hover { box-shadow: inset 0 0 8px rgba(188, 143, 143, 0.3), 6px 6px 15px rgba(188, 170, 164, 0.5), -3px -3px 8px #ffffff; transform: translateY(-1px); }
 
-/* --- H3 हल्की स्टाइल (akc- prefix) --- */
+/* --- H3 हल्की स्टाइल --- */
 .akc-custom-h3 {
      font-family: 'Lora', serif; font-size: 1.35em; color: #a1887f;
      font-weight: 600; margin-top: 2em; margin-bottom: 0.8em;
@@ -108,38 +136,39 @@ body {
      position: relative; padding-left: 10px;
  }
 
-/* --- पैराग्राफ स्टाइल (कस्टम) (akc- prefix) --- */
+/* --- पैराग्राफ स्टाइल (कस्टम) --- */
 .akc-custom-p {
-    color: #5a3c20; /* डिफ़ॉल्ट टेक्स्ट रंग */
+    color: #5a3c20;
     text-align: justify; margin-bottom: 1.5em;
     font-size: 1.08em;
     transition: background-color 0.3s ease, color 0.3s ease, background-image 0.3s ease;
     cursor: pointer; position: relative; padding: 15px 20px;
     border-radius: 12px;
-    line-height: 1.85; background-color: #fffde7; /* डिफ़ॉल्ट पृष्ठभूमि */
+    line-height: 1.85; background-color: #fffde7;
     border: 1px solid rgba(224, 216, 192, 0.4);
     border-left: 6px solid #ffcc80;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
-    /* डिफ़ॉल्ट अवस्था में ग्रेडिएंट और क्लिपिंग रीसेट */
     background-image: none;
     -webkit-background-clip: initial;
     background-clip: initial;
 }
-/* पैराग्राफ होवर स्टाइल (ग्रेडिएंट टेक्स्ट) */
 .akc-custom-p:hover {
-    background-color: #f5e6c4; /* गहरा बेज/हल्का भूरा पृष्ठभूमि */
-    color: transparent; /* टेक्स्ट पारदर्शी */
-    /* गहरा काला/ग्रे, गहरा गुलाबी, गहरा लाल ग्रेडिएंट */
+    background-color: #f5e6c4;
+    color: transparent;
     background-image: linear-gradient(to right, #1a1a1a, #c71585, #a00000);
-    -webkit-background-clip: text; /* ग्रेडिएंट को टेक्स्ट पर क्लिप करें */
+    -webkit-background-clip: text;
     background-clip: text;
 }
 
-/* --- टीवी विज्ञापन बैनर (akc- prefix) --- */
+/* --- टीवी विज्ञापन बैनर (चौड़ाई बढ़ाई गई) --- */
 @keyframes akc-tvPulseGlow { 0%, 100% { box-shadow: inset 0 0 10px 2px rgba(135, 206, 250, 0.3), 0 0 8px 1px rgba(135, 206, 250, 0.2); } 50% { box-shadow: inset 0 0 15px 4px rgba(135, 206, 250, 0.5), 0 0 15px 3px rgba(135, 206, 250, 0.4); } }
 @keyframes akc-zoomInOutText { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.95; } }
 @keyframes akc-slideInHorizontal { from { transform: translateX(-30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-.akc-tv-ad-frame { margin: 50px auto; padding: 20px; max-width: 700px; border-radius: 25px; background: linear-gradient(145deg, #444, #222); box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.4), -5px -5px 10px rgba(80, 80, 80, 0.3), inset 0 0 5px rgba(0,0,0,0.5); perspective: 1200px; transition: transform 0.4s ease; }
+.akc-tv-ad-frame {
+    margin: 50px auto; padding: 20px;
+    max-width: 850px; /* बढ़ी हुई चौड़ाई */
+    border-radius: 25px; background: linear-gradient(145deg, #444, #222); box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.4), -5px -5px 10px rgba(80, 80, 80, 0.3), inset 0 0 5px rgba(0,0,0,0.5); perspective: 1200px; transition: transform 0.4s ease;
+}
 .akc-tv-ad-frame:hover { transform: scale(1.02) rotateY(2deg); }
 .akc-tv-ad-screen { background: radial-gradient(ellipse at center, #1a1a1d 0%, #0c0c0e 100%); border-radius: 10px; padding: 30px 25px; overflow: hidden; position: relative; min-height: 250px; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: inset 0 0 15px 5px rgba(0, 0, 0, 0.6); animation: akc-tvPulseGlow 6s infinite ease-in-out; }
 .akc-tv-ad-content { color: #f0f0f0; text-align: center; z-index: 3; }
@@ -150,16 +179,20 @@ body {
 .akc-tv-ad-button { display: inline-block; padding: 10px 25px; background: linear-gradient(45deg, #4fc3f7, #00bcd4); color: #000; border: none; border-radius: 5px; text-decoration: none; font-weight: bold; font-family: 'Hind', sans-serif; font-size: 1em; box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 1px rgba(0,0,0,0.2); transition: all 0.3s ease; opacity: 0; animation: akc-fadeInUpSlight 1.2s ease-out 1.7s forwards; z-index: 5; position: relative; cursor: pointer; }
 .akc-tv-ad-button:hover { background: linear-gradient(45deg, #00bcd4, #4fc3f7); color: #fff; transform: translateY(-2px); box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4), inset 0 -1px 0px rgba(0,0,0,0.1); }
 
-/* --- स्टाइलिश वीडियो प्लेयर (akc- prefix) --- */
-.akc-stylish-video-player { margin: 50px auto; max-width: 800px; position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 15px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); border: 3px solid #c8bca7; background-color: #000; }
+/* --- स्टाइलिश वीडियो प्लेयर (चौड़ाई बढ़ाई गई) --- */
+.akc-stylish-video-player {
+    margin: 50px auto;
+    max-width: 1000px; /* बढ़ी हुई चौड़ाई */
+    position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 15px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); border: 3px solid #c8bca7; background-color: #000;
+}
 .akc-stylish-video-player iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 .akc-video-caption-below { font-family: 'Lora', serif; text-align: center; font-size: 1em; color: #6d4c41; margin-top: 15px; font-style: italic; }
 
-/* --- कस्टम डिव (ग्रेडिएंट बैकग्राउंड) (akc- prefix) --- */
+/* --- कस्टम डिव/कहानी भाग (चौड़ाई बढ़ाई गई) --- */
  .akc-custom-div {
      padding: 20px 25px; background: linear-gradient(135deg, #ffdde1, #fffacd, #ffcccb);
      margin: 30px auto;
-     max-width: 1000px;
+     max-width: 1200px; /* बढ़ी हुई चौड़ाई */
      border: 1px solid #e0cfc2; border-radius: 20px;
      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
      transition: box-shadow 0.3s ease, transform 0.3s ease;
@@ -170,22 +203,24 @@ body {
  .akc-custom-image { display: block; transition: transform 0.3s ease; }
  .akc-image-frame:hover .akc-custom-image { transform: scale(1.05); }
 
- /* पोस्ट मेटा (akc- prefix) */
+ /* पोस्ट मेटा */
  .akc-post-meta { font-size: 0.9em; color: #9e6d4f; margin-bottom: 20px; text-align: center; }
 
- /* विशेष शब्द (akc- prefix) */
+ /* विशेष शब्द */
 .akc-special-term, .akc-special-term-1, .akc-special-term-2, .akc-special-term-3 { font-weight: bold; cursor: help; padding: 0 2px; transition: all 0.3s ease; font-family: 'Tiro Devanagari Sanskrit', serif; }
 .akc-special-term-1 { color: #c71585; border-bottom: 2px dotted #e91e63; } .akc-special-term-1:hover { background-color: rgba(233, 30, 99, 0.1); color: #ab0f5a; }
 .akc-special-term-2 { color: #ff5722; background-color: #fff3e0; padding: 1px 4px; border-radius: 4px; } .akc-special-term-2:hover { background-color: #ffe0b2; color: #e64a19; }
 .akc-special-term-3 { color: #6a4f3c; text-shadow: 1px 1px 3px rgba(255, 138, 0, 0.4); border-bottom: 2px solid #ff8a00; } .akc-special-term-3:hover { color: #ff8a00; text-shadow: 1px 1px 5px rgba(255, 138, 0, 0.6); }
 
-/* ===== फुटर रैपर स्टाइल (akc- prefix) ===== */
+/* ===== फुटर रैपर स्टाइल (चौड़ाई बढ़ाई गई) ===== */
 .akc-footer-wrapper {
     background-color: #fffaf1; border: 1px solid #e0cfc2;
     border-radius: 20px; padding: 25px;
-    margin: 60px auto 0 auto; max-width: 1100px; width: 100%;
+    margin: 60px auto 0 auto;
+    max-width: 1300px; /* बढ़ी हुई चौड़ाई */
+    width: 100%;
     box-sizing: border-box; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    margin-top: auto;
+    margin-top: auto; /* फुटर को नीचे रखने के लिए */
 }
 
 /* ===== START: Screen Focus Cosmos Widget CSS (v1.4 - Prefix: sfcw-) ===== */
@@ -218,15 +253,15 @@ body {
 .sfcw-links .sfcw-separator { color: rgba(0, 160, 160, 0.4); margin: 0 8px; font-size: 1em; opacity: 0.7; }
 .sfcw-copyright { font-size: 0.9em; color: var(--sfcw-primary-glow); opacity: 0.75; margin-top: 25px; padding-top: 18px; border-top: 1px solid rgba(0, 160, 160, 0.2); }
 .sfcw-copyright i.fa-copyright { margin-right: 5px; vertical-align: middle; }
-/* Responsiveness for sfcw-widget */
 @media (max-width: 768px) { .sfcw-content-screen { max-width: 90%; padding: 20px 15px 15px 15px;} .sfcw-widget { padding: 35px 0 25px 0; } .sfcw-credits p, .sfcw-organization p { font-size: 1.05em; } .sfcw-energized-text { font-size: 1.4em; } .sfcw-links a { margin: 6px 10px; font-size: 1em; } }
 @media (max-width: 480px) { .sfcw-content-screen { max-width: 95%; padding: 15px 10px 10px 10px;} .sfcw-credits p, .sfcw-organization p { font-size: 1em; } .sfcw-energized-text { font-size: 1.2em; } .sfcw-author-title { letter-spacing: 0.5px; word-spacing: 2px; } .sfcw-links nav { padding: 15px 5px; } .sfcw-links a { margin: 8px 8px; font-size: 0.95em; } .sfcw-links span.sfcw-link-label { display: block; margin-bottom: 8px; } .sfcw-separator { display: none; } }
 /* ===== END: Screen Focus Cosmos Widget CSS ===== */
 
-/* --- पेजिनेशन स्टाइल (फुटर के नीचे) (akc- prefix) --- */
+/* --- पेजिनेशन स्टाइल (फुटर के नीचे) (चौड़ाई बढ़ाई गई) --- */
 .akc-pagination-section {
     text-align: center; margin: 40px auto 30px auto; padding-top: 10px;
-    max-width: 900px; width: 100%; padding-left: 15px; padding-right: 15px;
+    max-width: 1200px; /* बढ़ी हुई चौड़ाई */
+    width: 100%; padding-left: 15px; padding-right: 15px;
     box-sizing: border-box; position: relative; z-index: 5;
 }
 .akc-pagination-link { display: inline-block; margin: 0 6px; padding: 10px 18px; border: 1px solid #ccbbaa; border-radius: 8px; color: #795548; background-color: rgba(190, 160, 130, 0.1); text-decoration: none; font-family: 'Hind', sans-serif; transition: all 0.3s ease; font-size: 1em; box-shadow: 2px 2px 5px rgba(0,0,0,0.05); }
@@ -235,12 +270,13 @@ body {
 .akc-pagination-label { margin: 0 10px; color: #757575; font-size: 0.9em; vertical-align: middle; }
 
 
-/* --- मीडिया क्वेरी समायोजन (शेष भाग) --- */
+/* --- मीडिया क्वेरी समायोजन --- */
 @media (max-width: 768px) { /* मोबाइल और टैबलेट के लिए */
-    body { padding-top: 50px; }
+    .akc-page-wrapper { padding-top: 50px; }
     .akc-story-container { padding: 0 10px; }
     .akc-story-nav { padding: 8px 5px; } .akc-story-nav a { margin: 0 5px; font-size: 14px; }
-    .akc-animated-title-image-wrapper { border-radius: 15px; } .akc-image-title-text-content { padding: 15px 20px; }
+    .akc-animated-title-image-wrapper { border-radius: 15px; max-width: 95%; }
+    .akc-image-title-text-content { padding: 15px 20px; }
     .akc-overlay-title-head { font-size: 1em; }
     .akc-overlay-main-title { font-size: 2.4em; }
     .akc-overlay-main-title::after { animation: none; text-shadow: 0 0 8px rgba(255, 223, 0, 0.5); filter: blur(2px); opacity: 0.7; }
@@ -256,25 +292,20 @@ body {
     .akc-part-navigation a { margin-bottom: 12px; width: 100%; max-width: none; text-align: center; order: 2; }
     .akc-part-navigation .akc-home-link { order: 2; } .akc-part-navigation .akc-prev-part-link { order: 1; } .akc-part-navigation .akc-next-part-link { order: 3; }
     .akc-part-navigation .akc-prev-part-link.akc-disabled, .akc-part-navigation .akc-next-part-link.akc-disabled, .akc-part-navigation .akc-next-part-link.akc-hidden-on-last { visibility: hidden !important; pointer-events: none !important; height: 0 !important; padding: 0 !important; margin: 0 !important; border: none !important; line-height: 0 !important; overflow: hidden !important; }
-
-    /* मोबाइल पर भाग नेविगेशन बटन संकरे करें (दाईं ओर से ज़्यादा) */
     .akc-part-navigation .akc-home-link,
     .akc-part-navigation .akc-next-part-link,
     .akc-part-navigation .akc-prev-part-link {
         padding-left: 12px;
         padding-right: 8px;
     }
-
-     /* मोबाइल पर TTS बटन का फ़ॉन्ट साइज़ */
      .akc-tts-read-all {
          font-size: 1em;
          padding: 8px 15px;
      }
-
     .akc-custom-div { max-width: 95%; padding: 15px; }
     .akc-image-frame { padding: 8px; max-width: 95%; } .akc-image-caption { font-size: 0.9em; }
     .akc-footer-wrapper { max-width: 100%; width: auto; margin-left: 10px; margin-right: 10px; padding: 15px; margin-top: 40px; border-radius: 15px; }
-    .akc-pagination-section { margin: 30px auto 20px auto; }
+    .akc-pagination-section { margin: 30px auto 20px auto; max-width: 95%; }
     .akc-pagination-link { padding: 8px 12px; margin: 0 4px; font-size: 0.9em; }
     .akc-pagination-label { display: none; }
 }
@@ -283,8 +314,6 @@ body {
     .akc-pagination-link { padding: 6px 10px; margin: 0 3px; font-size: 0.85em;}
     .akc-footer-wrapper { padding: 10px; border-radius: 10px; margin-left: 5px; margin-right: 5px; }
     .akc-custom-p { border-radius: 8px; }
-
-    /* छोटे मोबाइल पर भाग नेविगेशन बटन और संकरे करें */
     .akc-part-navigation .akc-home-link,
     .akc-part-navigation .akc-next-part-link,
     .akc-part-navigation .akc-prev-part-link {
@@ -293,7 +322,11 @@ body {
     }
 }
 
-/* डेस्कटॉप के लिए स्पेसिफिक ओवरराइड (769px और उससे ऊपर) */
 @media (min-width: 769px) {
-     /* डेस्कटॉप पर भाग नेविगेशन बटन चौड़े करें (डिफ़ॉल्ट 20px पैडिंग लागू रहेगी) */
+     /* डेस्कटॉप स्टाइल डिफ़ॉल्ट रूप से लागू होते हैं */
+}
+
+/* डेमो प्लेसहोल्डर के लिए सरल स्टाइल */
+.placeholder-block {
+    /* स्टाइल पहले से ही HTML में इनलाइन जोड़े गए हैं, आप चाहें तो यहाँ भी जोड़ सकते हैं */
 }
