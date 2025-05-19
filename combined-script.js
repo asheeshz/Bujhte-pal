@@ -339,369 +339,68 @@
 // --------------------------------------------------
 // विजेट 3: खोजें और सीखें विजेट लॉजिक
 // --------------------------------------------------
-(function() { // Start IIFE for Search & Learn widget
-
-    // सबसे पहले मुख्य विजेट तत्व प्राप्त करें
-    const mainVSWWidget = document.getElementById('vsw-main-widget');
-
-    // यदि विजेट HTML पेज पर मौजूद नहीं है, तो बाहर निकल जाएं
-    if (!mainVSWWidget) {
-        // console.log("Search & Learn widget (vsw) not found on this page."); // वैकल्पिक डीबगिंग संदेश
-        return;
-    }
-
-    // --- विजेट के आंतरिक वेरिएबल्स (अब IIFE के अंदर स्कोप्ड) ---
-    // नोट: DOMContentLoaded से हटाए गए वेरिएबल घोषणाएँ यहाँ ले आएँ
-    let vsw_categoryButtonsContainer;
-    let vsw_categoryBanner;
-    let vsw_allSearchContainers;
-    let vsw_videoSliderContainer;
-    let vsw_videoDisplay;
-    let vsw_videoSliderNav;
-    let vsw_messageBox;
-    let vsw_videoSlider;
-    let vsw_youtubeIframe;
-    let vsw_messageTexts;
-
-    let vsw_currentVideoItems = [];
-    let vsw_videoSlideIndex = 0;
-    let vsw_itemsPerPage = 4; // Default, will be recalculated
-    let vsw_activeSearchContainerId = null;
-    let vsw_messageTimeout;
-    let vsw_resizeTimeout;
-
-    // --- विजेट के आंतरिक फंक्शन्स (अब IIFE के अंदर स्कोप्ड) ---
-    // नोट: सभी vsw_... फंक्शन परिभाषाएँ यहाँ कॉपी करें
-
-    // --- Banner Helper Functions (Prefixed) ---
-    function vsw_showBanner() {
-        // Ensure vsw_categoryBanner is assigned *before* calling this if needed immediately
-        if(vsw_categoryBanner) vsw_categoryBanner.style.display = 'block';
-    }
-    function vsw_hideBanner() {
-         if(vsw_categoryBanner) vsw_categoryBanner.style.display = 'none';
-    }
-
-    // --- Helper function to get text from hidden message elements (Prefixed) ---
-    function vsw_getTextById(id) {
-        // Ensure vsw_messageTexts is assigned first
-        if (!vsw_messageTexts) {
-            console.error("VSW Error: Message text container not found (check initialization order).");
-            return `[${id}]`;
-        }
-        const element = vsw_messageTexts.querySelector(`#${id}`);
-        if (element) {
-            return element.textContent || `[${id}]`;
-        } else {
-            console.warn(`VSW Warning: Message ID "${id}" not found.`);
-            return `[${id}]`;
-        }
-    }
-
-    // --- Category Button Logic (Prefixed) ---
-    function vsw_setupCategoryButtons() {
-        if (!vsw_categoryButtonsContainer) return;
-        const buttons = vsw_categoryButtonsContainer.querySelectorAll('button');
-        buttons.forEach(button => {
-            button.addEventListener('click', (event) => {
-                event.stopPropagation();
-                const targetId = button.getAttribute('data-target');
-                if (targetId) {
-                    vsw_toggleCategory(targetId);
-                } else {
-                     console.warn("VSW Warning: Button missing data-target attribute.");
-                }
-            });
-        });
-    }
-
-    function vsw_closeCurrentlyActiveCategory() {
-        if (vsw_activeSearchContainerId) {
-            const currentActiveContainer = document.getElementById(vsw_activeSearchContainerId);
-            if (currentActiveContainer) {
-                currentActiveContainer.classList.remove('vsw-active-search-box');
-                // Use optional chaining in case elements aren't yet attached
-                if (vsw_videoSliderContainer && currentActiveContainer.contains(vsw_videoSliderContainer)) vsw_videoSliderContainer.remove();
-                if (vsw_videoDisplay && currentActiveContainer.contains(vsw_videoDisplay)) vsw_videoDisplay.remove();
-            } else {
-                 console.warn(`VSW Warning: Active container ID ${vsw_activeSearchContainerId} not found in DOM during close.`);
-            }
-            vsw_activeSearchContainerId = null;
-            vsw_showBanner(); // Show banner when a category closes
-        }
-    }
-
-    function vsw_toggleCategory(containerIdToShow) {
-        const containerToShow = document.getElementById(containerIdToShow);
-        if (!containerToShow) {
-            console.error(`VSW Error: Target container ID ${containerIdToShow} not found.`);
-            return;
-        }
-
-        const isAlreadyActive = (containerIdToShow === vsw_activeSearchContainerId);
-        vsw_closeCurrentlyActiveCategory(); // Close any open category
-
-        if (!isAlreadyActive) {
-            containerToShow.classList.add('vsw-active-search-box');
-            vsw_activeSearchContainerId = containerIdToShow;
-
-            // Append video sections (ensure they exist)
-            if (vsw_videoSliderContainer) containerToShow.appendChild(vsw_videoSliderContainer);
-            if (vsw_videoDisplay) containerToShow.appendChild(vsw_videoDisplay);
-
-            vsw_clearVideoResults();
-            vsw_hideVideoSections(); // Start hidden
-            vsw_hideBanner();
-            vsw_itemsPerPage = vsw_calculateItemsPerPage(); // Recalculate contextually
-            // Use scrollIntoView on the *container that was shown*
-            containerToShow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-        vsw_hideMessage();
-    }
-
-    // --- Click Outside Logic (Prefixed) ---
-    function vsw_setupOutsideClickListener() {
-        document.addEventListener('click', (event) => {
-            if (!vsw_activeSearchContainerId) return;
-            const activeContainer = document.getElementById(vsw_activeSearchContainerId);
-            // Important: Check if the click originated *inside* the main widget container
-            // OR on a category button OR the banner. If so, do nothing.
-            if (mainVSWWidget.contains(event.target) ||
-                event.target.closest('.vsw-category-buttons button') ||
-                event.target.closest('#vsw-category-banner')) {
-                return;
-            }
-            // If click is outside all relevant areas, close the active category
-            vsw_closeCurrentlyActiveCategory();
-        });
-    }
-
-    // --- YouTube API Interaction (Prefixed) ---
-    async function vsw_fetchYouTubeData(searchTerm = '') {
-        const apiKey = 'AIzaSyBYVKCeEIlBjCoS6Xy_mWatJywG3hUPv3Q'; // WARNING: Exposed Key!
-        if (!apiKey || apiKey === 'YOUR_API_KEY_HERE' || apiKey.length < 30) {
-             console.error("VSW Error: Invalid or missing API Key configuration.");
-             vsw_showMessage(vsw_getTextById('vsw-msgApiKeyError'), 5000);
-             vsw_hideVideoSections();
-             return;
-        }
-        const apiHost = 'youtube.googleapis.com';
-        const maxResults = 30;
-        const safeSearchTerm = searchTerm || 'शैक्षणिक वीडियो हिंदी';
-        let apiUrl = `https://${apiHost}/youtube/v3/search?part=snippet&type=video&maxResults=${maxResults}&key=${apiKey}&q=${encodeURIComponent(safeSearchTerm)}`;
-        if (safeSearchTerm.includes("हिंदी") || safeSearchTerm.match(/[\u0900-\u097F]/)) {
-             apiUrl += `&relevanceLanguage=hi`;
-        }
-
-        vsw_showMessage(vsw_getTextById('vsw-msgSearchingVideos'), 2500);
-        vsw_hideVideoSections(); vsw_clearVideoResults();
-
-        try {
-            const response = await fetch(apiUrl, { method: 'GET', headers: { 'Accept': 'application/json' } });
-            const data = await response.json();
-            if (!response.ok) { /* ... (error handling as before) ... */
-                console.error('VSW API Error Response:', data);
-                let errorId = 'vsw-msgApiGenericErrorPrefix'; let errorDetails = `(${response.status})`;
-                if (data.error?.message) {
-                    errorDetails += `: ${data.error.message}`;
-                    if (data.error.errors?.[0]?.reason === 'quotaExceeded') { errorId = 'vsw-msgApiQuotaError'; errorDetails = ''; }
-                    else if (data.error.errors?.[0]?.reason === 'keyInvalid') { errorId = 'vsw-msgApiKeyInvalid'; errorDetails = ''; }
-                }
-                const apiError = new Error(vsw_getTextById(errorId) + errorDetails); apiError.statusCode = response.status; throw apiError;
-            }
-            if (!data?.items || data.items.length === 0) { /* ... (no videos handling) ... */
-                 vsw_showMessage(vsw_getTextById('vsw-msgNoVideosFound'), 4000); vsw_hideVideoSections(); vsw_clearVideoResults(); vsw_currentVideoItems = []; return;
-             }
-            vsw_currentVideoItems = data.items.filter(item => item.id?.videoId && item.snippet);
-            if (vsw_currentVideoItems.length === 0) { /* ... (no valid videos handling) ... */
-                 vsw_showMessage(vsw_getTextById('vsw-msgNoVideosFound') + " (filtered)", 4000); vsw_hideVideoSections(); vsw_clearVideoResults(); return;
-            }
-            vsw_displayVideos(vsw_currentVideoItems); vsw_showVideoSections(); vsw_hideMessage();
-        } catch (error) { /* ... (fetch error handling as before) ... */
-            console.error('VSW Fetch Error:', error);
-            let displayError = vsw_getTextById('vsw-msgInternalError');
-            if (error.message) {
-                 if (error.message.startsWith(vsw_getTextById('vsw-msgApiGenericErrorPrefix')) || error.message.startsWith(vsw_getTextById('vsw-msgApiQuotaError')) || error.message.startsWith(vsw_getTextById('vsw-msgApiKeyInvalid')) || error.message.startsWith(vsw_getTextById('vsw-msgApiKeyError'))) { displayError = error.message; }
-                 else { displayError = `${vsw_getTextById('vsw-msgVideoLoadErrorPrefix')}: ${error.message}`; }
-            }
-            vsw_showMessage(displayError, 6000); vsw_hideVideoSections(); vsw_clearVideoResults(); vsw_currentVideoItems = [];
-        }
-    }
-
-    // --- Video Display (Prefixed) ---
-    function vsw_displayVideos(videos) {
-        if (!vsw_videoSlider) return;
-        vsw_videoSlider.innerHTML = ''; vsw_videoSlideIndex = 0;
-        if (!videos || videos.length === 0) { /* ... (no videos message) ... */
-             vsw_videoSlider.innerHTML = `<p style="color:#ccc; padding: 20px; text-align: center; width: 100%;">${vsw_getTextById('vsw-msgNoVideosFound')}</p>`;
-             if (vsw_videoSliderNav) vsw_videoSliderNav.style.display = 'none';
-             if (vsw_youtubeIframe) vsw_youtubeIframe.src = '';
-             if (vsw_videoDisplay) vsw_videoDisplay.style.display = 'none';
-             return;
-         }
-        videos.forEach((video, index) => { /* ... (create video item as before) ... */
-            if (!video.id?.videoId || !video.snippet) { console.warn("VSW Skipping invalid item:", video); return; };
-            const videoId = video.id.videoId; const videoTitle = video.snippet.title || 'Untitled';
-            const thumbnailUrl = video.snippet.thumbnails?.medium?.url || video.snippet.thumbnails?.default?.url || 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
-            const videoItem = document.createElement('div'); videoItem.classList.add('vsw-video-item'); videoItem.setAttribute('data-index', index); videoItem.setAttribute('data-videoid', videoId);
-            const thumbnail = document.createElement('img'); thumbnail.src = thumbnailUrl; thumbnail.alt = videoTitle;
-            thumbnail.onerror = function() { this.onerror=null; this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'; console.warn(`VSW Thumb fail: ${thumbnailUrl}`); };
-            const title = document.createElement('p'); const tempEl = document.createElement('textarea'); tempEl.innerHTML = videoTitle; title.textContent = tempEl.value;
-            videoItem.appendChild(thumbnail); videoItem.appendChild(title);
-            videoItem.addEventListener('click', () => { vsw_displayEmbeddedVideo(videoId); if (vsw_videoDisplay) { vsw_videoDisplay.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } });
-            vsw_videoSlider.appendChild(videoItem);
-        });
-        if (videos.length > 0 && videos[0].id?.videoId) { vsw_displayEmbeddedVideo(videos[0].id.videoId); }
-        else { if (vsw_youtubeIframe) vsw_youtubeIframe.src = ''; if (vsw_videoDisplay) vsw_videoDisplay.style.display = 'none'; }
-        vsw_itemsPerPage = vsw_calculateItemsPerPage(); vsw_updateVideoSlider();
-        if (vsw_videoSliderNav) { vsw_videoSliderNav.style.display = vsw_currentVideoItems.length > vsw_itemsPerPage ? 'flex' : 'none'; }
-    }
-
-    function vsw_displayEmbeddedVideo(videoId) { /* ... (function as before) ... */
-        if (!vsw_youtubeIframe || !vsw_videoDisplay) return;
-        if (!videoId) { vsw_youtubeIframe.src = ''; vsw_videoDisplay.style.display = 'none'; return; }
-        vsw_youtubeIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0&modestbranding=1&hl=hi`;
-        vsw_videoDisplay.style.display = 'block';
-        vsw_youtubeIframe.onerror = () => { console.error('VSW iFrame fail:', videoId); vsw_showMessage(vsw_getTextById('vsw-msgVideoLoadFailed'), 3000); if(vsw_videoDisplay) vsw_videoDisplay.style.display = 'none'; };
-    }
-
-    function vsw_clearVideoResults() { /* ... (function as before) ... */
-        if (vsw_videoSlider) vsw_videoSlider.innerHTML = '';
-        if (vsw_youtubeIframe) vsw_youtubeIframe.src = '';
-        vsw_currentVideoItems = []; vsw_videoSlideIndex = 0;
-    }
-
-    // --- Video Slider Navigation (Prefixed) ---
-    function vsw_calculateItemsPerPage() { /* ... (function as before) ... */
-        if (!vsw_videoSliderContainer || !document.body.contains(vsw_videoSliderContainer)) { return 4; }
-        const containerWidth = vsw_videoSliderContainer.offsetWidth - 20;
-        const itemWidth = 150; const itemMargin = 12; const itemTotalWidth = itemWidth + itemMargin;
-        if (containerWidth <= 0 || itemTotalWidth <= 0) { return 1; }
-        const calculatedItems = Math.max(1, Math.floor(containerWidth / itemTotalWidth));
-        return calculatedItems;
-    }
-
-    function vsw_slideVideo(direction) { /* ... (function as before) ... */
-        const numVideoItems = vsw_currentVideoItems.length; vsw_itemsPerPage = vsw_calculateItemsPerPage();
-        if (numVideoItems <= vsw_itemsPerPage) return;
-        const maxIndex = numVideoItems - vsw_itemsPerPage;
-        let newIndex = vsw_videoSlideIndex + direction;
-        vsw_videoSlideIndex = Math.max(0, Math.min(maxIndex, newIndex));
-        vsw_updateVideoSlider();
-    }
-
-    function vsw_updateVideoSlider() { /* ... (function as before) ... */
-         if (!vsw_videoSlider || vsw_currentVideoItems.length === 0) { if (vsw_videoSlider) vsw_videoSlider.style.transform = `translateX(0px)`; return; };
-        const itemWidth = 150; const itemMargin = 12;
-        const slideAmount = -vsw_videoSlideIndex * (itemWidth + itemMargin);
-        vsw_videoSlider.style.transform = `translateX(${slideAmount}px)`;
-    }
-
-    // Prefixed resize handler
-    function vsw_handleResize() { /* ... (function as before) ... */
-        clearTimeout(vsw_resizeTimeout);
-        vsw_resizeTimeout = setTimeout(() => {
-            if (vsw_videoSliderContainer && document.body.contains(vsw_videoSliderContainer)) {
-                const oldItemsPerPage = vsw_itemsPerPage; vsw_itemsPerPage = vsw_calculateItemsPerPage();
-                if (oldItemsPerPage !== vsw_itemsPerPage) {
-                    const maxIndex = Math.max(0, vsw_currentVideoItems.length - vsw_itemsPerPage);
-                    vsw_videoSlideIndex = Math.min(vsw_videoSlideIndex, maxIndex);
-                    vsw_updateVideoSlider();
-                    if (vsw_videoSliderNav) { vsw_videoSliderNav.style.display = vsw_currentVideoItems.length > vsw_itemsPerPage ? 'flex' : 'none'; }
-                }
-            }
-        }, 250);
-    }
-
-    // --- Search Logic (Prefixed) ---
-    // This function needs to be callable from the HTML (onclick), so it remains globally accessible *within the IIFE*.
-    // To make it callable from inline HTML `onclick`, we need to attach it to the window object, but *only* if the widget exists.
-    window.vsw_performSearch = function(searchBoxId) { // Attach to window
-        const searchBox = document.getElementById(searchBoxId);
-        if (!searchBox) { console.error("VSW Error: Search box not found:", searchBoxId); return; }
-        let finalSearchTerm = ''; let dropdownSelectionMade = false; let dropdownSearchTerm = '';
-        const selects = searchBox.querySelectorAll('select');
-        const textInput = searchBox.querySelector('.vsw-custom-search-input');
-        selects.forEach(select => { if (select.value?.trim()) { dropdownSearchTerm += select.value.trim() + ' '; dropdownSelectionMade = true; } });
-        dropdownSearchTerm = dropdownSearchTerm.trim();
-        const textValue = textInput ? textInput.value.trim() : '';
-        if (textValue) { finalSearchTerm = textValue; } // Prioritize text input
-        else if (dropdownSelectionMade) { finalSearchTerm = dropdownSearchTerm; }
-        else { vsw_showMessage(vsw_getTextById('vsw-msgValidationError'), 4000); return; }
-        vsw_hideMessage(); console.log(`VSW Performing search for: "${finalSearchTerm}"`);
-        vsw_fetchYouTubeData(finalSearchTerm);
-    }
-    // Similarly for slideVideo if called from HTML onclick
-    window.vsw_slideVideo = vsw_slideVideo; // Attach existing function to window
-
-
-    // --- UI Helper Functions (Prefixed) ---
-    function vsw_showVideoSections() { /* ... (function as before) ... */
-        if (vsw_currentVideoItems.length > 0) {
-            if (vsw_videoSliderContainer) vsw_videoSliderContainer.style.display = 'block';
-            if (vsw_youtubeIframe && vsw_youtubeIframe.src && vsw_youtubeIframe.src !== 'about:blank' && vsw_videoDisplay) { vsw_videoDisplay.style.display = 'block'; }
-            else { if (vsw_videoDisplay) vsw_videoDisplay.style.display = 'none'; }
-            vsw_itemsPerPage = vsw_calculateItemsPerPage();
-            if (vsw_videoSliderNav) { vsw_videoSliderNav.style.display = vsw_currentVideoItems.length > vsw_itemsPerPage ? 'flex' : 'none'; }
-        } else { vsw_hideVideoSections(); }
-    }
-
-    function vsw_hideVideoSections() { /* ... (function as before) ... */
-        if (vsw_videoSliderContainer) vsw_videoSliderContainer.style.display = 'none';
-        if (vsw_videoDisplay) vsw_videoDisplay.style.display = 'none';
-        if (vsw_videoSliderNav) vsw_videoSliderNav.style.display = 'none';
-    }
-
-    function vsw_showMessage(messageText, duration = 3000) { /* ... (function as before) ... */
-        if (!vsw_messageBox) return; clearTimeout(vsw_messageTimeout);
-        const textToShow = messageText || vsw_getTextById('vsw-msgInternalError');
-        vsw_messageBox.textContent = textToShow; vsw_messageBox.style.display = 'block';
-        vsw_messageTimeout = setTimeout(vsw_hideMessage, duration);
-    }
-
-    function vsw_hideMessage() { /* ... (function as before) ... */
-        if (!vsw_messageBox) return; clearTimeout(vsw_messageTimeout);
-        vsw_messageBox.style.display = 'none';
-    }
-
-
-    // --- Initialization Logic (Moved from DOMContentLoaded) ---
-    // Assign DOM elements to IIFE-scoped variables
-    // Note: mainVSWWidget is already assigned at the start of the IIFE
-    vsw_categoryButtonsContainer = mainVSWWidget.querySelector('.vsw-category-buttons'); // Use querySelector within the widget
-    vsw_categoryBanner = document.getElementById('vsw-category-banner'); // This might be outside main widget? Check HTML. If yes, document is fine.
-    vsw_allSearchContainers = mainVSWWidget.querySelectorAll('.vsw-search-category-container'); // Use querySelectorAll within the widget
-    vsw_videoSliderContainer = document.getElementById('vsw-video-slider-container'); // Get reference to the template/placeholder
-    vsw_videoDisplay = document.getElementById('vsw-video-display'); // Get reference to the template/placeholder
-    vsw_messageBox = document.getElementById('vsw-messageBox'); // Message box is likely outside main widget
-    vsw_messageTexts = document.getElementById('vsw-message-texts'); // Hidden texts likely outside main widget
-
-    // Check critical elements again *before* proceeding with setup that depends on them
-    if (!vsw_categoryButtonsContainer || !vsw_messageTexts || !vsw_messageBox || !vsw_videoSliderContainer || !vsw_videoDisplay ) {
-         console.error("VSW Error: One or more essential *internal* or related widget elements not found. Initialization aborted.");
-         // Clean up functions attached to window if initialization fails
-         if (window.vsw_performSearch === arguments.callee.vsw_performSearch) delete window.vsw_performSearch; // Avoid deleting if defined elsewhere
-         if (window.vsw_slideVideo === arguments.callee.vsw_slideVideo) delete window.vsw_slideVideo;
-         return; // Stop initialization
-    }
-    // Now get references to elements *inside* the placeholders
-    vsw_videoSliderNav = vsw_videoSliderContainer.querySelector('#vsw-video-slider-nav');
-    vsw_videoSlider = vsw_videoSliderContainer.querySelector('#vsw-video-slider');
-    vsw_youtubeIframe = vsw_videoDisplay.querySelector('#vsw-youtube-iframe');
-
-
-    // Initial setup
-    if (vsw_videoSliderContainer) vsw_videoSliderContainer.remove(); // Remove placeholders from initial position
-    if (vsw_videoDisplay) vsw_videoDisplay.remove();
-
-    vsw_showBanner(); // Show banner initially
-    vsw_itemsPerPage = vsw_calculateItemsPerPage(); // Calculate initial items per page
-    vsw_setupCategoryButtons(); // Set up category button listeners
-    vsw_setupOutsideClickListener(); // Set up listener to close category on outside click
-    window.addEventListener('resize', vsw_handleResize); // Add resize listener
-
-    vsw_hideVideoSections(); // Ensure video sections start hidden
-
-    console.log("Search & Learn Widget (VSW) Initialized (deferred)."); // Confirmation message
-
-})(); // End IIFE for Search & Learn widget
+let mw,cbc,cb,asc,vsc,vd,vsn,mb,vs,yi,mt;let cvi=[],vsi=0,ipp=4,asci=null,mtm,rtm,stm;
+mw=document.getElementById('vsw-main-widget');cbc=document.getElementById('vsw-category-buttons');cb=document.getElementById('vsw-category-banner');asc=document.querySelectorAll('.vsw-search-category-container');vsc=document.getElementById('vsw-video-slider-container');vd=document.getElementById('vsw-video-display');vsn=document.getElementById('vsw-video-slider-nav');mb=document.getElementById('vsw-messageBox');vs=document.getElementById('vsw-video-slider');yi=document.getElementById('vsw-youtube-iframe');mt=document.getElementById('vsw-message-texts');
+if(mw&&cbc&&mt&&mb){
+    suc();sub();soc();window.addEventListener('resize',hr);window.addEventListener('scroll',hs);
+    mw.addEventListener('change',hii);mw.addEventListener('input',hii);mw.addEventListener('click',hsb);
+    scb();
+    asc.forEach(c=>{c.style.display='none';c.classList.remove('vsw-active-search-box');c.style.opacity=0;});
+    hvs();
+}else{
+    console.error("VSW Error: Essential elements missing.");
+    if(mb){mb.textContent="VSW Initialization Error: Essential elements missing.";mb.style.display='block';}
+}
+function hsb(e){const t=e.target;const s=t.closest('.vsw-search-button');if(s){const sb=s.closest('.vsw-search-box');const cc=sb?sb.closest('.vsw-search-category-container'):null;if(cc&&cc.id===asci){if(s.disabled){e.preventDefault();e.stopPropagation();sm(gtx('vsw-msgMinInputRequired'),4000);}}}}
+function hii(e){const t=e.target;if(t.tagName==='SELECT'||(t.tagName==='INPUT'&&t.classList.contains('vsw-custom-search-input'))){const sb=t.closest('.vsw-search-box');const cc=sb?sb.closest('.vsw-search-category-container'):null;if(sb&&cc&&cc.id===asci){cit(sb);hm();}}}
+function cit(s){const b=s.querySelector('.vsw-search-button');if(!b)return;let ic=0;const sl=s.querySelectorAll('select');const ti=s.querySelector('.vsw-custom-search-input');sl.forEach(select=>{if(select.value?.trim()&&select.value!==""){ic++;}});if(ti&&ti.value.trim()){ic++;}
+const mir=2;if(ic>=mir){b.disabled=false;}else{b.disabled=true;}}
+function scb(){if(cbc){cbc.style.display='flex';setTimeout(()=>{cbc.classList.remove('vsw-hidden');cbc.style.opacity=1;},10);}if(cb){cb.style.display='block';setTimeout(()=>{cb.classList.remove('vsw-hidden');cb.style.opacity=1;},10);}}
+function hcb(){if(cbc){cbc.style.opacity=0;const ch=function(){this.style.display='none';this.removeEventListener('transitionend',ch);};if(parseFloat(cbc.style.opacity)>0){cbc.addEventListener('transitionend',ch,{once:true});}else{cbc.style.display='none';}cbc.classList.add('vsw-hidden');}if(cb){cb.style.opacity=0;const bh=function(){this.style.display='none';this.removeEventListener('transitionend',bh);};if(parseFloat(cb.style.opacity)>0){cb.addEventListener('transitionend',bh,{once:true});}else{cb.style.display='none';}cb.classList.add('vsw-hidden');}}
+function gtx(id){if(!mt){console.error("VSW Error: Message text container not found.");return`[${id}]`;}const e=mt.querySelector(`#${id}`);if(e){return e.textContent||`[${id}]`;}else{console.warn(`VSW Warning: Message ID "${id}" not found.`);return`[${id}]`;}}
+function suc(){if(!cbc)return;const b=cbc.querySelectorAll('button[data-target]');b.forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();const tid=btn.getAttribute('data-target');if(tid){tc(tid);}else{console.warn("VSW Warning: Button missing data-target.");}});});}
+function sub(){const b=document.querySelectorAll('.vsw-back-button');b.forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();cca();});});}
+function cca(){if(asci){const c=document.getElementById(asci);if(c){const b=c.querySelector('.vsw-search-button');if(b){b.disabled=true;}c.style.opacity=0;const ch=function(){this.style.display='none';this.classList.remove('vsw-active-search-box');const sl=this.querySelectorAll('select');const ti=this.querySelector('.vsw-custom-search-input');sl.forEach(s=>s.value="");if(ti)ti.value="";this.removeEventListener('transitionend',ch);};if(parseFloat(c.style.opacity)>0){c.addEventListener('transitionend',ch,{once:true});}else{c.style.display='none';c.classList.remove('vsw-active-search-box');const sl=c.querySelectorAll('select');const ti=c.querySelector('.vsw-custom-search-input');sl.forEach(s=>s.value="");if(ti)ti.value="";}hvs();cvr();}else{console.warn(`VSW Warning: Active container ID ${asci} not found.`);}}asci=null;scb();hm();}
+function tc(cs){const ct=document.getElementById(cs);if(!ct){console.error(`VSW Error: Target container ID ${cs} not found.`);return;}if(cs===asci){cca();return;}if(asci){const cc=document.getElementById(asci);if(cc){const b=cc.querySelector('.vsw-search-button');if(b){b.disabled=true;}cc.style.opacity=0;const och=function(){this.style.display='none';this.classList.remove('vsw-active-search-box');const sl=this.querySelectorAll('select');const ti=this.querySelector('.vsw-custom-search-input');sl.forEach(s=>s.value="");if(ti)ti.value="";this.removeEventListener('transitionend',och);};if(parseFloat(cc.style.opacity)>0){cc.addEventListener('transitionend',och,{once:true});}else{cc.style.display='none';cc.classList.remove('vsw-active-search-box');const sl=cc.querySelectorAll('select');const ti=cc.querySelector('.vsw-custom-search-input');sl.forEach(s=>s.value="");if(ti)ti.value="";}}}hcb();
+ct.style.display='block';setTimeout(()=>{ct.classList.add('vsw-active-search-box');ct.style.opacity=1;const sb=ct.querySelector('.vsw-search-box');if(sb){cit(sb);}setTimeout(()=>{const wr=mw.getBoundingClientRect();const tst=window.scrollY+wr.top;window.scrollTo({top:tst,behavior:'smooth'});},400);},10);
+asci=cs;cvr();hvs();ipp=cip();hm();}
+function soc(){if(!mw)return;document.addEventListener('click',e=>{if(!asci)return;if(mw.contains(e.target)){return;}cca();});}
+function hs(){clearTimeout(stm);stm=setTimeout(()=>{if(asci&&mw){if(vd&&vd.style.display!=='none'){return;}const wr=mw.getBoundingClientRect();const th=Math.min(wr.height*.3,window.innerHeight*.3);const ioo=(wr.bottom<th||wr.top>window.innerHeight-th);if(ioo){cca();}}},100);}
+async function fyd(st=''){const ak='AIzaSyBYVKCeEIlBjCoS6Xy_mWatJywG3hUPv3Q';if(!ak||ak==='YOUR_API_KEY_HERE'||ak.length<30||ak.startsWith('AIzaSyB')){console.error("VSW Error: API Key config missing/invalid.");sm(gtx('vsw-msgApiKeyError'),8000);hvs();cvr();return;}
+const ah='youtube.googleapis.com';const mr=30;const sst=st||'educational videos in Hindi';let au=`https://${ah}/youtube/v3/search?part=snippet&type=video&maxResults=${mr}&key=${ak}`;au+=`&q=${encodeURIComponent(sst)}`;const hhc=/[\u0900-\u097F]/.test(sst);const hchw=/\b(हिंदी|कक्षा|परीक्षा|विज्ञान|गणित|इतिहास|भूगोल|समाचार|लाइव|कहानी|कविता)\b/i.test(sst);if(hhc||hchw||sst.toLowerCase().includes("hindi")){au+=`&relevanceLanguage=hi`;}
+sm(gtx('vsw-msgSearchingVideos'),2500);hvs();cvr();
+try{const r=await fetch(au,{method:'GET',headers:{'Accept':'application/json'}});const d=await r.json();
+if(!r.ok){console.error('VSW API Error Response:',d);let eid='vsw-msgApiGenericErrorPrefix';let ed=`(${r.status})`;if(d.error?.message){if(d.error.errors?.[0]?.reason==='quotaExceeded'){eid='vsw-msgApiQuotaError';ed='';}else if(d.error.errors?.[0]?.reason==='keyInvalid'){eid='vsw-msgApiKeyInvalid';ed='';}else{ed=`:${d.error.message}`;}}else{ed=`(${r.status})`;}const ae=new Error(gtx(eid)+ed);ae.statusCode=r.status;throw ae;}
+if(!d?.items||d.items.length===0){sm(gtx('vsw-msgNoVideosFound'),4000);hvs();cvr();cvi=[];return;}
+cvi=d.items.filter(i=>i.id?.videoId&&i.snippet);if(cvi.length===0){sm(gtx('vsw-msgNoVideosFound')+" (valid items not found)",4000);hvs();cvr();return;}
+dv(cvi);svs();hm();}catch(e){console.error('VSW Fetch Error:',e);let de=gtx('vsw-msgInternalError');if(e.message&&(e.message.startsWith(gtx('vsw-msgApiGenericErrorPrefix'))||e.message.startsWith(gtx('vsw-msgApiQuotaError'))||e.message.startsWith(gtx('vsw-msgApiKeyInvalid'))||e.message.startsWith(gtx('vsw-msgApiKeyError')))){de=e.message;}else if(e.message){de=`${gtx('vsw-msgVideoLoadErrorPrefix')}: ${e.message.substring(0,100)}...`;}
+sm(de,6000);hvs();cvr();cvi=[];}}
+function dv(v){if(!vs||!vsc||!vd||!yi){console.error("VSW Video display elements not found.");return;}vs.innerHTML='';vsi=0;cvi=v;
+if(!cvi||cvi.length===0){if(vsc){vs.innerHTML=`<p style="color:#ccc; padding: 20px; text-align: center; width: 100%;">${gtx('vsw-msgNoVideosFound')}</p>`;vsc.style.display='block';}if(vsn)vsn.style.display='none';if(yi)yi.src='';if(vd)vd.style.display='none';return;}
+cvi.forEach((video,i)=>{if(!video.id?.videoId||!video.snippet){console.warn("VSW Skipping invalid video item:",video);return;}const vid=video.id.videoId;const vt=video.snippet.title||'Untitled Video';const tu=video.snippet.thumbnails?.medium?.url||video.snippet.thumbnails?.default?.url||'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+const vi=document.createElement('div');vi.classList.add('vsw-video-item');vi.setAttribute('data-index',i);vi.setAttribute('data-videoid',vid);
+const th=document.createElement('img');th.src=tu;th.alt=vt;th.onerror=function(){this.onerror=null;this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';console.warn(`VSW Thumbnail failed for ${vid}`);};
+const t=document.createElement('p');const te=document.createElement('textarea');te.innerHTML=vt;t.textContent=te.value;
+vi.appendChild(th);vi.appendChild(t);
+vi.addEventListener('click',()=>{dev(vid);if(vd&&vd.style.display!=='none'){const pr=vd.getBoundingClientRect();if(pr.top<20){window.scrollTo({top:window.scrollY+pr.top-20,behavior:'smooth'});}}});
+vs.appendChild(vi);});
+if(cvi.length>0&&cvi[0].id?.videoId){dev(cvi[0].id.videoId);}else{if(yi)yi.src='';if(vd)vd.style.display='none';}
+ipp=cip();uvs();if(vsc)vsc.style.display='block';if(vsn){vsn.style.display=cvi.length>ipp?'flex':'none';}}
+function dev(vid){if(!yi||!vd)return;if(!vid){yi.src='';vd.style.display='none';return;}yi.src=`https://www.youtube.com/embed/${vid}?autoplay=0&rel=0&modestbranding=1&hl=hi`;vd.style.display='block';yi.onerror=()=>{console.error('VSW iFrame failed to load video ID:',vid);sm(gtx('vsw-msgVideoLoadFailed'),3000);vd.style.display='none';};yi.onload=()=>{console.log(`VSW iFrame loaded ID: ${vid}`);if(yi.src.includes(vid)){vd.style.display='block';}};if(!yi.src||yi.src==='about:blank'){vd.style.display='none';}}
+function cvr(){if(vs)vs.innerHTML='';if(yi){if(yi.contentWindow){try{yi.contentWindow.postMessage('{"event":"command","func":"stopVideo","args":""}','*');}catch(e){}}yi.src='';}cvi=[];vsi=0;}
+function cip(){if(!vsc||vsc.offsetWidth<=0){const iw=150;const im=12;const itw=iw+im;const cwf=mw?mw.offsetWidth*.95-50:window.innerWidth*.95-50;const cal=Math.max(1,Math.floor(cwf/itw));return cal;}const cw=vsc.offsetWidth-20;const iw=150;const im=12;const itw=iw+im;if(cw<=0||itw<=0){return 1;}const ci=Math.max(1,Math.floor(cw/itw));return ci;}
+function sv(d){const nvi=cvi.length;ipp=cip();if(nvi<=ipp)return;const mi=Math.max(0,nvi-ipp);let ni=vsi+d;vsi=Math.max(0,Math.min(mi,ni));uvs();}
+function uvs(){if(!vs||cvi.length===0){if(vs)vs.style.transform='translateX(0px)';return;}const iw=150;const im=12;const sa=-vsi*(iw+im);vs.style.transform=`translateX(${sa}px)`;}
+function hr(){clearTimeout(rtm);rtm=setTimeout(()=>{if(vsc&&vsc.style.display!=='none'){const oipp=ipp;ipp=cip();if(oipp!==ipp){const mi=Math.max(0,cvi.length-ipp);vsi=Math.min(vsi,mi);uvs();if(vsn){vsn.style.display=cvi.length>ipp?'flex':'none';}}}if(asci){const ac=document.getElementById(asci);if(ac){const sb=ac.querySelector('.vsw-search-box');if(sb){cit(sb);}}}},250);}
+function ps(sbid){const sb=document.getElementById(sbid);if(!sb){console.error("VSW Error: Search box not found:",sbid);sm(gtx('vsw-msgInternalError'),4000);return;}const sbtn=sb.querySelector('.vsw-search-button');if(sbtn&&sbtn.disabled){console.warn("VSW: performSearch called on disabled button.");sm(gtx('vsw-msgMinInputRequired'),4000);return;}
+let fst='';let ic=0;let dst='';const sl=sb.querySelectorAll('select');const ti=sb.querySelector('.vsw-custom-search-input');
+sl.forEach(s=>{if(s.value?.trim()&&s.value!==""){dst+=s.value.trim()+' ';ic++;}});dst=dst.trim();const tv=ti?ti.value.trim():'';if(tv){ic++;}
+const mir=2;if(ic<mir){console.warn("VSW: performSearch called with insufficient inputs (fallback).");sm(gtx('vsw-msgMinInputRequired'),4000);return;}
+if(tv){fst=(dst+' '+tv).trim();}else{fst=dst;}hm();console.log(`VSW Performing search for: "${fst}"`);fyd(fst);}
+function svs(){if(cvi&&cvi.length>0){if(vsc&&vsc.style.display==='none'){vsc.style.display='block';}if(yi&&yi.src&&yi.src!=='about:blank'&&vd&&vd.style.display==='none'){vd.style.display='block';}ipp=cip();if(vsn){vsn.style.display=cvi.length>ipp?'flex':'none';}}else{hvs();}}
+function hvs(){if(vsc)vsc.style.display='none';if(vd)vd.style.display='none';if(vsn)vsn.style.display='none';}
+function sm(mtxt,d=3000){if(!mb)return;clearTimeout(mtm);const tts=mtxt||gtx('vsw-msgInternalError');mb.textContent=tts;mb.style.display='block';if(d>0){mtm=setTimeout(hm,d);}}
+function hm(){if(!mb)return;clearTimeout(mtm);mb.style.display='none';}
+})(); /*
+अंत: यह 'खोजें और सीखें' विजेट स्क्रिप्ट का अंत है।
+*/
