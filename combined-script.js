@@ -142,7 +142,7 @@
         controlButtonGlow(toggleButton, true);
 
         toc = document.createElement("div"); toc.id = "toc";
-        const tocTitleElement = document.createElement("h2"); // Renamed from tocTitle to avoid conflict
+        const tocTitleElement = document.createElement("h2");
         tocTitleElement.textContent = config.tocTitleText;
         toc.appendChild(tocTitleElement);
         const tocList = document.createElement("ul");
@@ -184,9 +184,6 @@
         console.log("Table of Contents Initialized.");
     }
 
-    // `defer` सुनिश्चित करता है कि DOM पार्स हो गया है।
-    // तो, हम `initializeToc` को सीधे कॉल कर सकते हैं।
-    // वैकल्पिक रूप से, अधिक सुरक्षित दृष्टिकोण के लिए:
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initializeToc);
     } else {
@@ -310,7 +307,16 @@
 // ==================================================
 (function() { // IIFE for VSW
     /*
-    विजेट का परिचय: ... (शेष टिप्पणियां वैसी ही रहेंगी)
+    विजेट का परिचय:
+    यह एक 'खोजें और सीखें' विजेट है जो उपयोगकर्ताओं को YouTube पर विभिन्न श्रेणियों (पढ़ाई, परीक्षा, मनोरंजन, समाचार) में वीडियो खोजने की अनुमति देता है।
+    यह इनपुट विकल्पों के आधार पर खोज बटन को सक्षम/अक्षम करता है और परिणामों को एक स्लाइडर और प्लेयर में दिखाता है।
+
+    उपयोग के निर्देश:
+    1. कैटेगरी बटन पर क्लिक करके अपनी पसंद की श्रेणी चुनें।
+    2. खुले हुए बॉक्स में ड्रॉपडाउन से कम से कम दो विकल्प चुनें या टेक्स्ट बॉक्स में कुछ टाइप करें।
+    3. जब 'खोजें' बटन सक्षम हो जाए (मंद दिखना बंद हो जाए), तो उस पर क्लिक करें।
+    4. खोज परिणाम नीचे वीडियो स्लाइडर में दिखाई देंगे। किसी वीडियो को मुख्य प्लेयर में देखने के लिए उसके थंबनेल पर क्लिक करें।
+    5. मुख्य मेनू पर वापस जाने के लिए 'Main Menu' बटन का उपयोग करें।
     */
     let vsw_mainWidget,vsw_categoryButtonsContainer,vsw_categoryBanner,vsw_allSearchContainers,vsw_videoSliderContainer,vsw_videoDisplay,vsw_videoSliderNav,vsw_messageBox,vsw_videoSlider,vsw_youtubeIframe,vsw_messageTexts;
     let vsw_currentVideoItems=[],vsw_videoSlideIndex=0,vsw_itemsPerPage=4,vsw_activeSearchContainerId=null,vsw_messageTimeout,vsw_resizeTimeout,vsw_scrollTimeout;
@@ -493,11 +499,17 @@
          },100);
     }
     async function vsw_fetchYouTubeData(searchTerm=''){
+        // मूल कोड से API की
         const apiKey='AIzaSyBYVKCeEIlBjCoS6Xy_mWatJywG3hUPv3Q'; /* DEMO KEY - REPLACE IN PRODUCTION! */
-        if(!apiKey||apiKey==='YOUR_API_KEY_HERE'||apiKey.length<30||apiKey.startsWith('AIzaSyB')){
-             console.error("VSW Error: API Key config missing/invalid.");vsw_showMessage(vsw_getTextById('vsw-msgApiKeyError'),8000);
+
+        // API की की बुनियादी जाँच (प्लेसहोल्डर 'YOUR_DEMO_YOUTUBE_API_KEY_HERE' के लिए भी जाँच करता है,
+        // यदि गलती से वह रह गया हो, लेकिन मुख्य रूप से अपरिभाषित या बहुत छोटी की के लिए)
+        if(!apiKey || apiKey === 'YOUR_DEMO_YOUTUBE_API_KEY_HERE' || apiKey.length < 30){
+             console.error("VSW Error: API Key config missing/invalid. Please ensure a valid API key is configured.");
+             vsw_showMessage(vsw_getTextById('vsw-msgApiKeyError') + " (Please configure a valid API key)", 8000);
              vsw_hideVideoSections();vsw_clearVideoResults();return;
         }
+
         const apiHost='youtube.googleapis.com';const maxResults=30;const safeSearchTerm=searchTerm||'educational videos in Hindi';
         let apiUrl=`https://${apiHost}/youtube/v3/search?part=snippet&type=video&maxResults=${maxResults}&key=${apiKey}`;
         apiUrl+=`&q=${encodeURIComponent(safeSearchTerm)}`;
@@ -547,7 +559,7 @@
             const videoItem=document.createElement('div');videoItem.classList.add('vsw-video-item');videoItem.setAttribute('data-index',index);videoItem.setAttribute('data-videoid',videoId);
             const thumbnail=document.createElement('img');thumbnail.src=thumbnailUrl;thumbnail.alt=videoTitle;
             thumbnail.onerror=function(){this.onerror=null;this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';console.warn(`VSW Thumbnail failed for ${videoId}`);};
-            const titleElement=document.createElement('p'); // Renamed from title to avoid conflict
+            const titleElement=document.createElement('p');
             const tempEl=document.createElement('textarea');tempEl.innerHTML=videoTitle;titleElement.textContent=tempEl.value;
             videoItem.appendChild(thumbnail);videoItem.appendChild(titleElement);
             videoItem.addEventListener('click',()=>{vsw_displayEmbeddedVideo(videoId);
@@ -585,7 +597,7 @@
         if(containerWidth<=0||itemTotalWidth<=0){return 1;}
         const calculatedItems=Math.max(1,Math.floor(containerWidth/itemTotalWidth));return calculatedItems;
     }
-    function vsw_slideVideoInternal(direction){ // Renamed to avoid conflict if window.vsw_slideVideo is already set by HTML
+    function vsw_slideVideoInternal(direction){
         const numVideoItems=vsw_currentVideoItems.length;vsw_itemsPerPage=vsw_calculateItemsPerPage();
         if(numVideoItems<=vsw_itemsPerPage)return;
         const maxIndex=Math.max(0,numVideoItems-vsw_itemsPerPage);let newIndex=vsw_videoSlideIndex+direction;
@@ -615,7 +627,7 @@
              }
         },250);
     }
-    function vsw_performSearchInternal(searchBoxId){ // Renamed
+    function vsw_performSearchInternal(searchBoxId){
         const searchBox=document.getElementById(searchBoxId);if(!searchBox){console.error("VSW Error: Search box not found:",searchBoxId);vsw_showMessage(vsw_getTextById('vsw-msgInternalError'),4000);return;}
          const searchButton=searchBox.querySelector('.vsw-search-button');if(searchButton&&searchButton.disabled){console.warn("VSW: performSearch called on disabled button.");vsw_showMessage(vsw_getTextById('vsw-msgMinInputRequired'),4000);return;}
         let finalSearchTerm='';let inputCount=0;let dropdownSearchTerm='';
